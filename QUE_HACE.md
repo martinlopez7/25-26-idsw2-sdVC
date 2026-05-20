@@ -1,3 +1,3 @@
 # ¿Qué hace el sistema?
 
-> *En una frase. No qué gestiona: **qué hace**.*
+El sistema permite a un docente generar exámenes tipo test personalizados a partir de una batería de preguntas.
