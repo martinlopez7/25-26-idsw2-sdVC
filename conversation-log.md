@@ -14,6 +14,6 @@
 
 **Resultado:** Se interiorizó el modelo de dominio y los casos de uso. Se explicaron los diagramas de contexto de Docente y Admin Institucional. Se explicó la relación de precedencia entre crearDocente e iniciarSesion (crearDocente produce las credenciales que iniciarSesion consume). Se identificó que los estados "contextuales" son aquellos que pertenecen a una asignatura específica (vs. globales). Se realizó el análisis MVC completo de verGrados() generando README.md, colaboracion.puml y secuencia.puml.
 
-**Enlace:** [conversation-10:14-2026-05-21.md](conversations\session-ses_1bae.md)
+**Enlace:** [conversation-10:14-2026-05-21.md](conversations/session-ses_1bae.md)
 
 **Decisión:** 
