@@ -11,7 +11,6 @@ package verGrados as "verGrados()" {
 }
 
 rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponibleSalida
-rectangle #CDEBA5 ":Grados Abierto" as GradosAbierto
 rectangle #CDEBA5 ":Collaboration CrearGrado" as CrearGrado
 rectangle #CDEBA5 ":Collaboration EditarGrado" as EditarGrado
 rectangle #CDEBA5 ":Collaboration EliminarGrado" as EliminarGrado
@@ -30,7 +29,6 @@ VerGradosView --> GradosController: filtrarGrados(criterio) : List<Grado>
 
 GradosController --> GradoRepository: buscarPorCriterio(criterio) : List<Grado>
 
-VerGradosView ..> GradosAbierto: verGrados()
 VerGradosView ..> SistemaDisponibleSalida: completarGestion()
 VerGradosView ..> CrearGrado: crearGrado()
 VerGradosView ..> EditarGrado: editarGrado()

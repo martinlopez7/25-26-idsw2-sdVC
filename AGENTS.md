@@ -77,7 +77,7 @@ Debes generar y guardar los siguientes artefactos en las rutas exactas indicadas
     * **Ubicación:** `modelosUML/analisis/{nombreDelCasoDeUso}/colaboracion.puml`
 3.  **`secuencia.puml`** (Diagrama de secuencia UML en PlantUML)
     * **Ubicación:** `modelosUML/analisis/{nombreDelCasoDeUso}/secuencia.puml`
-    * **Nota:** Este artefacto solo se generará **cuando sea necesario** o se requiera explícitamente para aclarar interacciones complejas.
+    * **Nota:** Este artefacto solo se generará **cuando sea necesario** o se requiera explícitamente para aclarar interacciones complejas. En el caso en el que se genere quiero que agregues al README.md una tabla como el apartado de "diagrama de colaboración" justo encima del apartado de "flujo de colaboración".
 
 ### Reglas Críticas
 * No inventes estructuras nuevas; la consistencia con los ejemplos es obligatoria.

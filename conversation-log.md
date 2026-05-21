@@ -16,4 +16,4 @@
 
 **Enlace:** [conversation-10:14-2026-05-21.md](conversations/session-ses_1bae.md)
 
-**Decisión:** 
+**Decisión:** El análisis que ha hecho del caso de uso verGrados() se ha aceptado. Lo único que se ha modificado es un pequeño error del diagrama de colaboración, concretamente las opciones de navegación disponibles.

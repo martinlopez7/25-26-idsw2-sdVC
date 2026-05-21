@@ -81,6 +81,16 @@ Análisis de colaboración del caso de uso `verGrados()` mediante el patrón MVC
 **Colaboraciones**:
 - **Repositorio**: Es gestionado por `GradoRepository`
 
+## diagrama de secuencia
+
+<div align=center>
+
+|![Análisis: verGrados()](/images/analisis/verGrados/secuencia.svg)|
+|-|
+|Código fuente: [secuencia.puml](/modelosUML/analisis/verGrados/secuencia.puml)|
+
+</div>
+
 ## flujo de colaboración
 
 ### secuencia de operaciones
