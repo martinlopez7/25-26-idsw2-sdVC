@@ -14,6 +14,20 @@
 
 **Resultado:** Se interiorizó el modelo de dominio y los casos de uso. Se explicaron los diagramas de contexto de Docente y Admin Institucional. Se explicó la relación de precedencia entre crearDocente e iniciarSesion (crearDocente produce las credenciales que iniciarSesion consume). Se identificó que los estados "contextuales" son aquellos que pertenecen a una asignatura específica (vs. globales). Se realizó el análisis MVC completo de verGrados() generando README.md, colaboracion.puml y secuencia.puml.
 
-**Enlace:** [conversation-10:14-2026-05-21.md](conversations/session-ses_1bae.md)
+**Enlace:** [session-ses_1bae.md](conversations/session-ses_1bae.md)
 
 **Decisión:** El análisis que ha hecho del caso de uso verGrados() se ha aceptado. Lo único que se ha modificado es un pequeño error del diagrama de colaboración, concretamente las opciones de navegación disponibles.
+
+## [21/05/2026][13:25] Análisis de verAsignaturas()
+
+**Prompt:** empezar → Analiza el caso de uso verAsignaturas
+
+**Resultado:** Se realizó el análisis MVC completo de verAsignaturas() generando los siguientes artefactos:
+- documents/analisis/verAsignaturas/README.md
+- modelosUML/analisis/verAsignaturas/colaboracion.puml
+
+El análisis identificó las clases de análisis (VerAsignaturasView, AsignaturasController, AsignaturaRepository, Asignatura, Grado), sus responsabilidades, colaboraciones y opciones de navegación siguiendo el patrón metodológico del proyecto.
+
+**Enlace:** [session-ses_1b5c.md](conversations/session-ses_1b5c.md)
+
+**Decisión:**

@@ -1,0 +1,37 @@
+@startuml verAsignaturas-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponible
+package verAsignaturas as "verAsignaturas()" {
+    rectangle #629EF9 VerAsignaturasView
+    rectangle #b5bd68 AsignaturasController
+    rectangle #F2AC4E AsignaturaRepository
+    rectangle #F2AC4E Asignatura
+    rectangle #F2AC4E Grado
+}
+
+rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponibleSalida
+rectangle #CDEBA5 ":Collaboration CrearAsignatura" as CrearAsignatura
+rectangle #CDEBA5 ":Collaboration EditarAsignatura" as EditarAsignatura
+rectangle #CDEBA5 ":Collaboration EliminarAsignatura" as EliminarAsignatura
+
+SistemaDisponible -r-> VerAsignaturasView: verAsignaturas()
+
+VerAsignaturasView -d-> AsignaturasController: listarAsignaturas() : List<Asignatura>
+
+AsignaturasController --> AsignaturaRepository: obtenerTodos() : List<Asignatura>
+
+AsignaturaRepository -- Asignatura
+
+Asignatura --> Grado: pertenece
+
+VerAsignaturasView --> AsignaturasController: filtrarAsignaturas(criterio) : List<Asignatura>
+
+AsignaturasController --> AsignaturaRepository: buscarPorCriterio(criterio) : List<Asignatura>
+
+VerAsignaturasView ..> SistemaDisponibleSalida: completarGestion()
+VerAsignaturasView ..> CrearAsignatura: crearAsignatura()
+VerAsignaturasView ..> EditarAsignatura: editarAsignatura()
+VerAsignaturasView ..> EliminarAsignatura: eliminarAsignatura()
+
+@enduml
