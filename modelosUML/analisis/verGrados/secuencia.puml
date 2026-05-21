@@ -1,0 +1,53 @@
+@startuml verGrados-secuencia
+skinparam linetype polyline
+
+participant ":Sistema Disponible" as Sistema
+participant ":VerGradosView" as View
+participant ":GradosController" as Controller
+participant ":GradoRepository" as Repository
+participant ":Grado" as Entity
+
+Sistema -> View: verGrados()
+activate View
+
+View -> Controller: listarGrados()
+activate Controller
+
+Controller -> Repository: obtenerTodos()
+activate Repository
+
+Repository -> Entity: crear instancia
+deactivate Repository
+
+Controller <- Repository: List<Grado>
+deactivate Controller
+
+View <- Controller: List<Grado>
+deactivate View
+
+note over View
+Presenta lista de grados:
+• Nombre, código, alumnos enlistados
+• Permite filtrar lista
+end note
+
+View -> Controller: filtrarGrados(criterio)
+activate Controller
+
+Controller -> Repository: buscarPorCriterio(criterio)
+activate Repository
+
+Repository -> Entity: crear instancia
+deactivate Repository
+
+Controller <- Repository: List<Grado>
+deactivate Controller
+
+View <- Controller: List<Grado>
+deactivate Controller
+
+note over View
+Presenta lista filtrada
+end note
+
+@enduml

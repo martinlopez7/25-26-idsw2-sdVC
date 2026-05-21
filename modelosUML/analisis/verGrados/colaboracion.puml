@@ -1,0 +1,40 @@
+@startuml verGrados-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponible
+rectangle #CDEBA5 ":Grado Abierto" as GradoAbierto
+package verGrados as "verGrados()" {
+    rectangle #629EF9 VerGradosView
+    rectangle #b5bd68 GradosController
+    rectangle #F2AC4E GradoRepository
+    rectangle #F2AC4E Grado
+}
+
+rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponibleSalida
+rectangle #CDEBA5 ":Grados Abierto" as GradosAbierto
+rectangle #CDEBA5 ":Collaboration CrearGrado" as CrearGrado
+rectangle #CDEBA5 ":Collaboration EditarGrado" as EditarGrado
+rectangle #CDEBA5 ":Collaboration EliminarGrado" as EliminarGrado
+rectangle #CDEBA5 ":Collaboration ImportarGrados" as ImportarGrados
+
+SistemaDisponible -r-> VerGradosView: verGrados()
+GradoAbierto -r-> VerGradosView: verGrados()
+
+VerGradosView -d-> GradosController: listarGrados() : List<Grado>
+
+GradosController --> GradoRepository: obtenerTodos() : List<Grado>
+
+GradoRepository -- Grado
+
+VerGradosView --> GradosController: filtrarGrados(criterio) : List<Grado>
+
+GradosController --> GradoRepository: buscarPorCriterio(criterio) : List<Grado>
+
+VerGradosView ..> GradosAbierto: verGrados()
+VerGradosView ..> SistemaDisponibleSalida: completarGestion()
+VerGradosView ..> CrearGrado: crearGrado()
+VerGradosView ..> EditarGrado: editarGrado()
+VerGradosView ..> EliminarGrado: eliminarGrado()
+VerGradosView ..> ImportarGrados: importarGrados()
+
+@enduml
