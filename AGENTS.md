@@ -6,8 +6,8 @@ Antes de iniciar cualquier conversación con el usuario, cuando escriba la palab
 
 1. `contexto/modelo-de-dominio/diagramas/diagramaEntidad/diagramaEntidad.puml` - Diagrama de entidades del modelo de dominio
 2. `contexto/modelo-de-dominio/diagramas/diagramaEntidad/diagramaEntidadConsideraciones.md` - Consideraciones y relaciones del modelo de dominio
-3. `contexto/disciplina-requisitos/encontrarActoresYCasosDeUso/actoresYCasosDeUso-docente.svg` - Diagrama de actores y casos de uso para el rol docente
-4. `contexto/disciplina-requisitos/encontrarActoresYCasosDeUso/actoresYCasosDeUso-administradorInstitucional.svg` - Diagrama de actores y casos de uso para el rol administrador institucional
+3. `contexto/disciplina-requisitos/encontrarActoresYCasosDeUso/actoresYCasosDeUso-docente.puml` - Diagrama de actores y casos de uso para el rol docente
+4. `contexto/disciplina-requisitos/encontrarActoresYCasosDeUso/actoresYCasosDeUso-administradorInstitucional.puml` - Diagrama de actores y casos de uso para el rol administrador institucional
 5. `contexto/disciplina-requisitos/diagramasDeContexto/diagramaDeContextoDocente/diagramaContexto.puml` - Diagrama de contexto para el docente
 6. `contexto/disciplina-requisitos/diagramasDeContexto/diagramaDeContextoAdministradorInstitucional/diagramaContexto.puml` - Diagrama de contexto para el administrador institucional
 7. `conversation-log.md` - Fichero en el que se registran las sesiones de conversacion con un agente de IA. La última conversación registrada será la que marque el estado actual del proyecto. No tienes que leer los archivos de las conversaciones completas de los enlaces, solo el resumen.
