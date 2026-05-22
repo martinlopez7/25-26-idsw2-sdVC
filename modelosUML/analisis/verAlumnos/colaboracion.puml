@@ -1,0 +1,39 @@
+@startuml verAlumnos-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponible
+package verAlumnos as "verAlumnos()" {
+    rectangle #629EF9 VerAlumnosView
+    rectangle #b5bd68 AlumnosController
+    rectangle #F2AC4E AlumnoRepository
+    rectangle #F2AC4E Alumno
+}
+
+rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponibleSalida
+rectangle #CDEBA5 ":Alumnos Abierto" as AlumnosAbierto
+rectangle #CDEBA5 ":Collaboration CrearAlumno" as CrearAlumno
+rectangle #CDEBA5 ":Collaboration EditarAlumno" as EditarAlumno
+rectangle #CDEBA5 ":Collaboration EliminarAlumno" as EliminarAlumno
+rectangle #CDEBA5 ":Collaboration ImportarAlumnos" as ImportarAlumnos
+
+SistemaDisponible -r-> VerAlumnosView: verAlumnos()
+AlumnosAbierto -r-> VerAlumnosView: verAlumnos()
+
+VerAlumnosView -d-> AlumnosController: listarAlumnos() : List<Alumno>
+
+AlumnosController --> AlumnoRepository: obtenerTodos() : List<Alumno>
+
+AlumnoRepository -- Alumno
+
+VerAlumnosView --> AlumnosController: filtrarAlumnos(criterio) : List<Alumno>
+
+AlumnosController --> AlumnoRepository: buscarPorCriterio(criterio) : List<Alumno>
+
+VerAlumnosView ..> SistemaDisponibleSalida: completarGestion()
+VerAlumnosView ..> AlumnosAbierto: verAlumnos()
+VerAlumnosView ..> CrearAlumno: crearAlumno()
+VerAlumnosView ..> EditarAlumno: editarAlumno()
+VerAlumnosView ..> EliminarAlumno: eliminarAlumno()
+VerAlumnosView ..> ImportarAlumnos: importarAlumnos()
+
+@enduml

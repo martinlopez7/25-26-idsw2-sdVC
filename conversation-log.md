@@ -59,3 +59,17 @@ El análisis siguió el patrón del ejemplo externo, incluyendo SesionRepository
 **Enlace:** [session-ses_1b12.md](conversations/session-ses_1b12.md)
 
 **Decisión:** El análisis que hizo la primera vez fue muy complejo pero al decirle en un segundo prompt que siguiese el patrón del ejemplo de cerrarSesion de sigHor lo hizo bien. La corrección que hice fue una simplificación del diagrama de colaboración.
+
+## [22/05/2026][11:49] Análisis de verAlumnos()
+
+**Prompt:** empezar → Analiza el caso de uso verAlumnos
+
+**Resultado:** Se realizó el análisis MVC de verAlumnos() generando:
+- documents/analisis/verAlumnos/README.md
+- modelosUML/analisis/verAlumnos/colaboracion.puml
+
+El análisis identificó las clases de análisis (VerAlumnosView, AlumnosController, AlumnoRepository, Alumno), sus responsabilidades, colaboraciones y opciones de navegación siguiendo el patrón metodológico del proyecto.
+
+**Enlace:** [session-ses_1b0f.md](conversations/session-ses_1b0f.md)
+
+**Decisión:** 
