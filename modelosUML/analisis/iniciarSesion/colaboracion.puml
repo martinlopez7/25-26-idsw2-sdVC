@@ -10,8 +10,11 @@ package iniciarSesion as "iniciarSesion()" {
     rectangle #F2AC4E Sesion
 }
 rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponible
+rectangle #CDEBA5 ":Sesión Cerrada" as SesionCerrada
 
-UsuarioNoRegistrado -r-> LoginView: iniciarSesion(usuario, contraseña)
+UsuarioNoRegistrado -r-> SesionCerrada: Docente/Administrador
+
+SesionCerrada -r-> LoginView: iniciarSesion(usuario, contraseña)
 
 LoginView -d-> IniciarSesionController: autenticar(usuario, contraseña) : Sesion
 

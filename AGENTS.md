@@ -59,9 +59,9 @@ Cuando se te asigne analizar un caso de uso concreto, tu objetivo es consultar s
 
 ### Fuentes de Referencia y Contexto
 * **Teoría Aplicable:** Lee y aplica estrictamente los conceptos y metodologías del archivo `contexto/ANALISIS-TEORIA.md`.
-* **Ejemplos de Referencia:** Para comprender el nivel de detalle, la estructura y el estilo técnico esperado, toma como modelo la carpeta `contexto/ejemplos-analisis/`. 
+* **Ejemplos de Referencia:** Para comprender el nivel de detalle, la estructura y el estilo técnico esperado, toma como modelo la carpeta `contexto/ejemplos-analisis/`, en donde encontrarás casos de uso ya analizados. 
   * *Nota importante:* Estos archivos pertenecen a un **proyecto de ejemplo externo**, pero sirven como plantilla.
-  * **Casos de Uso de Ejemplo:** Revisa los análisis de casos de uso ya resueltos en esa carpeta.
+  * **Casos de Uso de Ejemplo:** Revisa los análisis de casos de uso similares ya resueltos en esa carpeta.
   * **Diagrama de Contexto de Ejemplo:** Analiza el archivo `contexto/ejemplos-analisis/diagrama-contexto-administrador.puml` para entender el contexto de ese mismo proyecto de referencia para una mejor toma de decisiones.
 
 ### Artefactos a Entregar y Ubicación

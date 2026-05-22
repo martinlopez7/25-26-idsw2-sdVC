@@ -44,4 +44,4 @@ El análisis inicial fue demasiado detallado. Tras feedback, se simplificó sigu
 
 **Enlace:** [session-ses_1b14.md](conversations/session-ses_1b14.md)
 
-**Decisión:** 
+**Decisión:** El análisis que hizo la primera vez fue muy complejo pero al decirle en un segundo prompt que no se complicase tanto y que siguiese el patrón de los ejemplos dados lo modificó todo y lo hizo bien. El único error fue que en el diagrama de colaboración no especificó desde que estado se ejecutaba el caso de uso.
