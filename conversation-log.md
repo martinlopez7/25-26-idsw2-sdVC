@@ -31,3 +31,17 @@ El análisis identificó las clases de análisis (VerAsignaturasView, Asignatura
 **Enlace:** [session-ses_1b5c.md](conversations/session-ses_1b5c.md)
 
 **Decisión:** El análisis que ha hecho del caso de uso verAsiganuras() se ha aceptado. Lo único que se ha modificado son unos errores menores del diagrama de colaboración: se añadió una opción de navegación disponible (importarAsignatura) y se añadió un estado del sistema desde el que se recibe el caso de uso (Asignatura_Abierto). 
+
+## [22/05/2026][10:25] Análisis de iniciarSesion()
+
+**Prompt:** empezar → Analiza el caso de uso iniciarSesion → Lo has hecho muchisimo mas complicado de lo que realmente es. Fijate en el ejemplo ya hecho
+
+**Resultado:** Se realizó el análisis MVC de iniciarSesion() generando:
+- documents/analisis/iniciarSesion/README.md
+- modelosUML/analisis/iniciarSesion/colaboracion.puml
+
+El análisis inicial fue demasiado detallado. Tras feedback, se simplificó siguiendo el mismo patrón que verGrados(), con estructura más concisa y diagrama de colaboración más simple.
+
+**Enlace:** [session-ses_1b14.md](conversations/session-ses_1b14.md)
+
+**Decisión:** 
