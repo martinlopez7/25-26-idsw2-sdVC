@@ -55,14 +55,14 @@ Analiza en detalle los archivos ubicados en:
 ## Análisis de Casos de Uso
 
 ### Rol y Objetivo
-Cuando se te asigne analizar un caso de uso concreto, tu objetivo es consultar su detallado y localizarlo en el diagrama de contexto. Deberás de realizar el análisis técnico aplicando estrictamente la teoría y la metodología definidas en el proyecto.
+Cuando se te asigne analizar un caso de uso concreto, tu objetivo es consultar su detallado y tenerlo localizado en el diagrama de contexto. Deberás de realizar el análisis técnico aplicando estrictamente la teoría y la metodología definidas en el proyecto:
 
 ### Fuentes de Referencia y Contexto
 * **Teoría Aplicable:** Lee y aplica estrictamente los conceptos y metodologías del archivo `contexto/ANALISIS-TEORIA.md`.
 * **Ejemplos de Referencia:** Para comprender el nivel de detalle, la estructura y el estilo técnico esperado, toma como modelo la carpeta `contexto/ejemplos-analisis/`, en donde encontrarás casos de uso ya analizados. 
   * *Nota importante:* Estos archivos pertenecen a un **proyecto de ejemplo externo**, pero sirven como plantilla.
-  * **Casos de Uso de Ejemplo:** Revisa los análisis de casos de uso similares ya resueltos en esa carpeta.
-  * **Diagrama de Contexto de Ejemplo:** Analiza el archivo `contexto/ejemplos-analisis/diagrama-contexto-administrador.puml` para entender el contexto de ese mismo proyecto de referencia para una mejor toma de decisiones.
+  * **Casos de Uso de Ejemplo:** Revisa los análisis de casos de uso resueltos en esa carpeta, ya que algunos son muy similares a los que deberás de analizar.
+  * **Diagrama de Contexto de Ejemplo:** Analiza también el archivo `contexto/ejemplos-analisis/diagrama-contexto-administrador.puml` para entender el contexto de ese mismo proyecto de referencia para ver como se relaciona con los casos de uso ya analizados de ejemplo.
 
 ### Artefactos a Entregar y Ubicación
 Debes generar y guardar los siguientes artefactos en las rutas exactas indicadas:
