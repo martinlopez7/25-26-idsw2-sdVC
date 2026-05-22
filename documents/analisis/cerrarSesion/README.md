@@ -25,9 +25,7 @@ Análisis del caso de uso `cerrarSesion()` mediante diagrama de colaboración MV
 - **Transformador de actor**: Convierte Docente/Administrador en UsuarioNoRegistrado
 - **Punto de control**: Permite confirmación antes de cerrar para evitar cierre accidental
 
-**Invocación**: Este caso de uso es invocado desde:
-1. **`completarGestion()`** - Cuando el usuario selecciona la opción "Cerrar sesión"
-2. **Desde cualquier estado del sistema** - Como escape para cerrar sesión
+**Invocación**: Este caso de uso es invocado desde `SISTEMA_DISPONIBLE`
 
 **Resultado**: Termina la sesión activa y regresa al estado `SESION_CERRADA`, requiriendo nueva autenticación para acceder al sistema.
 
@@ -64,33 +62,30 @@ Análisis del caso de uso `cerrarSesion()` mediante diagrama de colaboración MV
 |Colaboración|Propósito|Invocación|
 |-|-|-|
 |**:Sistema Disponible**|Origen del caso cuando se cancela cierre|Tras cancelación|
+|**:Sesión Cerrada**|Destino del caso cuando se confirma el cierre|Tras cancelación|
 
 ## mensajes de colaboración
 
 ### flujo principal (cierre confirmado)
 |Origen|Destino|Mensaje|Intención|
 |-|-|-|-|
-|**:Sistema Disponible**|**CerrarSesionView**|`cerrarSesion()`|Invocación desde completarGestion()|
-|**CerrarSesionView**|**CerrarSesionController**|`solicitarCierre()`|Delegar proceso de cierre|
-|**CerrarSesionController**|**Sesion**|`getUsuario()`|Obtener información del usuario actual|
-|**CerrarSesionController**|**CerrarSesionView**|`mostrarConfirmacion(usuario)`|Presentar confirmación de cierre|
-|**CerrarSesionView**|**CerrarSesionController**|`confirmarCierre()`|Usuario confirma cierre de sesión|
-|**CerrarSesionController**|**SesionRepository**|`terminarSesion(sesion)`|Finalizar sesión activa|
-|**CerrarSesionController**|**Sesion**|`destruirSesion()`|Destruir objeto de sesión|
+|**:Sistema Disponible**|**CerrarSesionView**|`cerrarSesion(Usuario)`|Invocación con usuario autenticado|
+|**CerrarSesionView**|**CerrarSesionController**|`confirmarCierre(Usuario)`|Delegar proceso de cierre|
+|**CerrarSesionController**|**SesionRepository**|`terminarSesion(Usuario)`|Finalizar sesión activa|
+|**SesionRepository**|**Sesion**|`destruirSesion(Usuario)`|Destruir objeto de sesión|
 
 ### flujo alternativo (cierre cancelado)
 |Origen|Destino|Mensaje|Intención|
 |-|-|-|-|
-|**CerrarSesionView**|**CerrarSesionController**|`cancelarCierre()`|Usuario cancela cierre de sesión|
-|**CerrarSesionController**|**:Sistema Disponible**|`sistemaDisponible()`|Mantener sesión activa|
+|**CerrarSesionView**|**:Sistema Disponible**|`cancelarCierre()`|Retornar sin cerrar sesión|
+|**CerrarSesionView**|**:SESION_CERRADA**|`confirmarCierre()`|Transición tras cierre confirmado|
 
 ## enlaces de dependencia
 - **CerrarSesionView** conoce a **CerrarSesionController** (delegación)
 - **CerrarSesionView** conoce a **:Sistema Disponible** (retorno en cancelación)
+- **CerrarSesionView** conoce a **:SESION_CERRADA** (transición tras cierre)
 - **CerrarSesionController** conoce a **SesionRepository** (gestión sesión)
-- **CerrarSesionController** conoce a **Sesion** (acceso y destrucción)
-- **CerrarSesionController** conoce a **Usuario** (información usuario)
-- **SesionRepository** conoce a **Sesion** (gestión entidad)
+- **SesionRepository** conoce a **Sesion** (destrucción)
 - **Sesion** conoce a **Usuario** (asociación)
 
 ## trazabilidad con artefactos previos
@@ -117,9 +112,9 @@ Análisis del caso de uso `cerrarSesion()` mediante diagrama de colaboración MV
 
 ### relaciones conceptuales
 - **Delegación**: Vista delega lógica de negocio al controlador
-- **Gestión**: Controlador gestiona el ciclo de vida de la sesión
-- **Destrucción**: Controlador coordina la destrucción segura de la sesión
-- **Decisión**: Vista maneja la confirmación del usuario
+- **Gestión**: Controlador gestiona el ciclo de vida de la sesión a través del repositorio
+- **Destrucción**: SesionRepository coordina la destrucción segura de la sesión
+- **Decisión**: Vista maneja la navegación directa a estados
 
 ## naturaleza del flujo de control
 
@@ -133,4 +128,4 @@ Análisis del caso de uso `cerrarSesion()` mediante diagrama de colaboración MV
 - **Destrucción**: En caso de confirmación, elimina estado de sesión
 - **Transición**: Coordina cambio de actor y estado del sistema
 
-**Código fuente:** [colaboracion.puml](colaboracion.puml)
+**Código fuente:** [colaboracion.puml](/modelosUML/analisis/cerrarSesion/colaboracion.puml)

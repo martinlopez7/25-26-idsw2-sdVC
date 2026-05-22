@@ -12,15 +12,12 @@ package cerrarSesion as "cerrarSesion()" {
 
 rectangle #CDEBA5 ":SESION_CERRADA" as SESIONCERRADA
 
-SistemaDisponible -r-> CerrarSesionView: cerrarSesion()
+SistemaDisponible -r-> CerrarSesionView: cerrarSesion(Usuario)
 
-CerrarSesionView -d-> CerrarSesionController: solicitarCierre()
+CerrarSesionView -d-> CerrarSesionController: confirmarCierre(Usuario)
 
-CerrarSesionController --> Sesion: getUsuario() : Usuario
-CerrarSesionController --> CerrarSesionView: mostrarConfirmacion(usuario)
-CerrarSesionView -d-> CerrarSesionController: confirmarCierre()
-CerrarSesionController --> SesionRepository: terminarSesion(sesion)
-SesionRepository --> Sesion: destruirSesion()
+CerrarSesionController --> SesionRepository: terminarSesion(Usuario)
+SesionRepository --> Sesion: destruirSesion(Usuario)
 
 Sesion -d- Usuario
 

@@ -58,4 +58,4 @@ El análisis siguió el patrón del ejemplo externo, incluyendo SesionRepository
 
 **Enlace:** [session-ses_1b12.md](conversations/session-ses_1b12.md)
 
-**Decisión:**
+**Decisión:** El análisis que hizo la primera vez fue muy complejo pero al decirle en un segundo prompt que siguiese el patrón del ejemplo de cerrarSesion de sigHor lo hizo bien. La corrección que hice fue una simplificación del diagrama de colaboración.
