@@ -45,3 +45,17 @@ El análisis inicial fue demasiado detallado. Tras feedback, se simplificó sigu
 **Enlace:** [session-ses_1b14.md](conversations/session-ses_1b14.md)
 
 **Decisión:** El análisis que hizo la primera vez fue muy complejo pero al decirle en un segundo prompt que no se complicase tanto y que siguiese el patrón de los ejemplos dados lo modificó todo y lo hizo bien. El único error fue que en el diagrama de colaboración no especificó desde que estado se ejecutaba el caso de uso.
+
+## [22/05/2026][11:10] Análisis de cerrarSesion()
+
+**Prompt:** empezar → Analiza el caso de uso cerrarSesion → Fijate en el analisis de contexto\ejemplos-analisis\cerrarSesion\ y sigue ese mismo patrón
+
+**Resultado:** Se realizó el análisis MVC de cerrarSesion() generando:
+- documents/analisis/cerrarSesion/README.md
+- modelosUML/analisis/cerrarSesion/colaboracion.puml
+
+El análisis siguió el patrón del ejemplo externo, incluyendo SesionRepository como clase Model pura, con flujos principal (cierre confirmado) y alternativo (cierre cancelado). Se identificaron las clases: CerrarSesionView, CerrarSesionController, SesionRepository, Sesion y Usuario.
+
+**Enlace:** [session-ses_1b12.md](conversations/session-ses_1b12.md)
+
+**Decisión:**
