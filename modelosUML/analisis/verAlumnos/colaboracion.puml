@@ -10,14 +10,14 @@ package verAlumnos as "verAlumnos()" {
 }
 
 rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponibleSalida
-rectangle #CDEBA5 ":Alumnos Abierto" as AlumnosAbierto
+rectangle #CDEBA5 ":Alumno Abierto" as AlumnoAbierto
 rectangle #CDEBA5 ":Collaboration CrearAlumno" as CrearAlumno
 rectangle #CDEBA5 ":Collaboration EditarAlumno" as EditarAlumno
 rectangle #CDEBA5 ":Collaboration EliminarAlumno" as EliminarAlumno
 rectangle #CDEBA5 ":Collaboration ImportarAlumnos" as ImportarAlumnos
 
 SistemaDisponible -r-> VerAlumnosView: verAlumnos()
-AlumnosAbierto -r-> VerAlumnosView: verAlumnos()
+AlumnoAbierto -r-> VerAlumnosView: verAlumnos()
 
 VerAlumnosView -d-> AlumnosController: listarAlumnos() : List<Alumno>
 
@@ -30,7 +30,6 @@ VerAlumnosView --> AlumnosController: filtrarAlumnos(criterio) : List<Alumno>
 AlumnosController --> AlumnoRepository: buscarPorCriterio(criterio) : List<Alumno>
 
 VerAlumnosView ..> SistemaDisponibleSalida: completarGestion()
-VerAlumnosView ..> AlumnosAbierto: verAlumnos()
 VerAlumnosView ..> CrearAlumno: crearAlumno()
 VerAlumnosView ..> EditarAlumno: editarAlumno()
 VerAlumnosView ..> EliminarAlumno: eliminarAlumno()

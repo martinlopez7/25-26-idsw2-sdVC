@@ -72,4 +72,4 @@ El análisis identificó las clases de análisis (VerAlumnosView, AlumnosControl
 
 **Enlace:** [session-ses_1b0f.md](conversations/session-ses_1b0f.md)
 
-**Decisión:** 
+**Decisión:** El análisis que hizo a la primera fue prácticamente perfecto. Sin embargo tuve que arreglar un pequeño error de un estado previo (ALUMNOS_ABIERTO) desde el que no se puede ejecutar el caso de uso y remplazarlo por el estado previo (ALUMNO_ABIERTO) desde el que si que se puede ejecutar este caso de uso.
