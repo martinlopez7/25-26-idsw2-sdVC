@@ -6,15 +6,15 @@ Antes de iniciar cualquier conversación con el usuario, cuando escriba la palab
 
 1. `contexto/modelo-de-dominio/diagramas/diagramaEntidad/diagramaEntidad.puml` - Diagrama de entidades del modelo de dominio
 2. `contexto/modelo-de-dominio/diagramas/diagramaEntidad/diagramaEntidadConsideraciones.md` - Consideraciones y relaciones del modelo de dominio
-3. `contexto/disciplina-requisitos/encontrarActoresYCasosDeUso/actoresYCasosDeUso-docente.puml` - Diagrama de actores y casos de uso para el rol docente
-4. `contexto/disciplina-requisitos/encontrarActoresYCasosDeUso/actoresYCasosDeUso-administradorInstitucional.puml` - Diagrama de actores y casos de uso para el rol administrador institucional
-5. `contexto/disciplina-requisitos/diagramasDeContexto/diagramaDeContextoDocente/diagramaContexto.puml` - Diagrama de contexto para el docente
-6. `contexto/disciplina-requisitos/diagramasDeContexto/diagramaDeContextoAdministradorInstitucional/diagramaContexto.puml` - Diagrama de contexto para el administrador institucional
+3. `contexto/disciplina-requisitos/encontrarActoresYCasosDeUso/actoresYCasosDeUso-docente.puml` - Diagrama de actores y casos de uso para el actor docente
+4. `contexto/disciplina-requisitos/encontrarActoresYCasosDeUso/actoresYCasosDeUso-administradorInstitucional.puml` - Diagrama de actores y casos de uso para el actor administrador institucional
+5. `contexto/disciplina-requisitos/diagramasDeContexto/diagramaDeContextoDocente/diagramaContexto.puml` - Diagrama de contexto para el actor docente
+6. `contexto/disciplina-requisitos/diagramasDeContexto/diagramaDeContextoAdministradorInstitucional/diagramaContexto.puml` - Diagrama de contexto para el actor administrador institucional
 7. `conversation-log.md` - Fichero en el que se registran las sesiones de conversacion con un agente de IA. La última conversación registrada será la que marque el estado actual del proyecto. No tienes que leer los archivos de las conversaciones completas de los enlaces, solo el resumen.
 
 ## Dominio del Proyecto
 
-Este es un sistema de gestión de exámenes universitarios que involucra:
+Este es un sistema de generación de exámenes universitarios que involucra:
 
 - **Entidades principales**: Examen, Asignatura, Pregunta, BateríaDePreguntas, Grado, Profesor, Alumno, Respuesta
 - **Actores**: Docente, Administrador Institucional
@@ -33,7 +33,7 @@ Cuando escriba la palabra "adios" quiero que el agente poble el archivo `convers
 >
 > **Resultado:** lo que produjo
 >
-> **Enlace:** tienes que ejecutar el comando "/export" para exportar la conversacion y mover el archivo a la carpeta `conversations/` y añadir un link de tipo markdown a ese archivo en esta seccion
+> **Enlace:** tienes que añadir un link de tipo markdown a la carpeta `conversations/`, la conversación ya la exporto yo y la muevo a la carpeta conversatiosn manualmente y completo el link al archivo
 >
 > **Decisión:** no escribas nada aquí, dejalo en blanco, esto me encargo de escribirlo manualmente
 > ```
@@ -70,8 +70,8 @@ Debes generar y guardar los siguientes artefactos en las rutas exactas indicadas
 1.  **`README.md`**
     * **Ubicación:** `documents/analisis/{nombreDelCasoDeUso}/README.md`
     * **Formato:** Sigue estrictamente la estructura de los ejemplos proporcionados salvo lo siguiente: 
-    1. En la tabla del principio solo quiero que estén los apartados de la casa, detalle [aquí quiero que añadas un link que lleve al detallado de un repo externo del formato https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/{nombreCasoDeUso}/{nombreCasoDeUso}.svg], analisis y diseño
-    2. En la tabla que contiene el diagrama de colaboración quiero que la celda que contenga la imagen del diagrama sea del formato "/images/analisis/{nombreCasoDeUso}/colaboracion.svg". El archivo svg me encargo de añadirlo yo, no te preocupes por eso. Y la celda del link que te redirige al código de ese diagrama quiero que sea del formato "/modelosUML/analisis/{nombreCasoDeUso}/colaboracion.puml" 
+    1. En la tabla del principio solo quiero que estén los apartados de la casa (🏠️), detalle [aquí quiero que añadas un link que lleve al detallado de un repo externo del formato https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/{nombreCasoDeUso}/{nombreCasoDeUso}.svg], analisis y diseño
+    2. En la tabla que contiene el diagrama de colaboración quiero que la celda que contenga la imagen del diagrama sea del formato "/images/analisis/{nombreCasoDeUso}/colaboracion.svg". El archivo svg me encargo de añadirlo yo manualmente. Y la celda del link que te redirige al código de ese diagrama quiero que sea del formato "/modelosUML/analisis/{nombreCasoDeUso}/colaboracion.puml" 
     3. No quiero que implementes la última sección de referencias
 2.  **`colaboracion.puml`** (Diagrama de colaboración UML en PlantUML)
     * **Ubicación:** `modelosUML/analisis/{nombreDelCasoDeUso}/colaboracion.puml`
