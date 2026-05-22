@@ -30,4 +30,4 @@ El análisis identificó las clases de análisis (VerAsignaturasView, Asignatura
 
 **Enlace:** [session-ses_1b5c.md](conversations/session-ses_1b5c.md)
 
-**Decisión:**
+**Decisión:** El análisis que ha hecho del caso de uso verAsiganuras() se ha aceptado. Lo único que se ha modificado son unos errores menores del diagrama de colaboración: se añadió una opción de navegación disponible (importarAsignatura) y se añadió un estado del sistema desde el que se recibe el caso de uso (Asignatura_Abierto). 

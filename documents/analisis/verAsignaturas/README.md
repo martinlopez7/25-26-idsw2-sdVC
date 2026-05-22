@@ -40,7 +40,7 @@ Análisis de colaboración del caso de uso `verAsignaturas()` mediante el patró
 - Manejar la navegación de regreso al sistema y a operaciones CRUD
 
 **Colaboraciones**:
-- **Entrada**: Recibe `verAsignaturas()` desde `:Sistema Disponible`
+- **Entrada**: Recibe `verAsignaturas()` desde `:Sistema Disponible` o desde `:Asignatura Abierto`
 - **Control**: Se comunica con `AsignaturasController`
 - **Salida**: Navega a `:Sistema Disponible` o colaboraciones CRUD
 
@@ -104,6 +104,7 @@ Análisis de colaboración del caso de uso `verAsignaturas()` mediante el patró
 ### opciones de navegación disponibles
 
 - **completarGestion()** → `:Sistema Disponible`
+- **imortarAsigntura()** → `:Collaboration ImportarAsignatura`
 - **crearAsignatura()** → `:Collaboration CrearAsignatura`
 - **editarAsignatura()** → `:Collaboration EditarAsignatura`
 - **eliminarAsignatura()** → `:Collaboration EliminarAsignatura`
