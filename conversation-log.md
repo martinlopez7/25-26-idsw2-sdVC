@@ -130,4 +130,4 @@ El análisis identificó las clases de análisis (CompletarGestionView, Completa
 
 **Enlace:** [session-ses_1abe.md](conversations/session-ses_1abe.md)
 
-**Decisión:**
+**Decisión:** El análisis que ha hecho del caso de uso completarGestion() se modificó bastante. El error estuvo en que la IA interpretó que todos los casos de uso CRUD de las entidades del sistema eran colaboradores de completarGestion(), pero esto no es así, ya que solo lo son los casos de uso ver{Recurso}(), generarExamenes(), corregirExamenes(), importarConfiguracionGlobal(), exportarConfiguracionGlobal() y cerrarSesion(). Es decir, solo los casos de uso que se pueden ejecutar inmediatamente después de haber ejecutado completarGestion().

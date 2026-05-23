@@ -73,12 +73,9 @@ Análisis del caso de uso `completarGestion()` mediante diagrama de colaboració
 | **:Collaboration VerAsignaturas** | Permitir solicitar gestión de asignaturas | Según selección |
 | **:Collaboration VerAlumnos** | Permitir solicitar gestión de alumnos | Según selección |
 | **:Collaboration VerPreguntas** | Permitir solicitar gestión de preguntas | Según selección |
-| **:Collaboration CrearGrado** | Permitir crear nuevos grados | Según selección |
-| **:Collaboration CrearAsignatura** | Permitir crear nuevas asignaturas | Según selección |
-| **:Collaboration CrearAlumno** | Permitir crear nuevos alumnos | Según selección |
-| **:Collaboration CrearPregunta** | Permitir crear nuevas preguntas | Según selección |
+| **:Collaboration ImportarConfiguracionGlobal** | Permitir importar configuración global | Según selección |
+| **:Collaboration ExportarConfiguracionGlobal** | Permitir exportar configuración global | Según selección |
 | **:Collaboration GenerarExamenes** | Permitir generar exámenes | Según selección |
-| **:Collaboration AsignarExamenes** | Permitir asignar exámenes generados | Según selección |
 | **:Collaboration CorregirExamenes** | Permitir corregir exámenes | Según selección |
 | **:Collaboration CerrarSesion** | Permitir solicitar cierre de sesión | Según selección |
 
@@ -87,9 +84,6 @@ Análisis del caso de uso `completarGestion()` mediante diagrama de colaboració
 | Colaboración | Propósito | Invocación |
 |-|-|-|
 | **:Collaboration VerDocentes** | Permitir solicitar gestión de docentes | Según selección |
-| **:Collaboration CrearDocente** | Permitir crear nuevos docentes | Según selección |
-| **:Collaboration EditarDocente** | Permitir editar docentes existentes | Según selección |
-| **:Collaboration EliminarDocente** | Permitir eliminar docentes | Según selección |
 | **:Collaboration CerrarSesion** | Permitir solicitar cierre de sesión | Según selección |
 
 ## flujo de colaboración
@@ -112,24 +106,7 @@ Análisis del caso de uso `completarGestion()` mediante diagrama de colaboració
 - **verAsignaturas()** → `:Collaboration VerAsignaturas`
 - **verAlumnos()** → `:Collaboration VerAlumnos`
 - **verPreguntas()** → `:Collaboration VerPreguntas`
-- **crearGrado()** → `:Collaboration CrearGrado`
-- **crearAsignatura()** → `:Collaboration CrearAsignatura`
-- **crearAlumno()** → `:Collaboration CrearAlumno`
-- **crearPregunta()** → `:Collaboration CrearPregunta`
-- **editarGrado()** → `:Collaboration EditarGrado`
-- **editarAsignatura()** → `:Collaboration EditarAsignatura`
-- **editarAlumno()** → `:Collaboration EditarAlumno`
-- **editarPregunta()** → `:Collaboration EditarPregunta`
-- **eliminarGrado()** → `:Collaboration EliminarGrado`
-- **eliminarAsignatura()** → `:Collaboration EliminarAsignatura`
-- **eliminarAlumno()** → `:Collaboration EliminarAlumno`
-- **eliminarPregunta()** → `:Collaboration EliminarPregunta`
-- **importarGrados()** → `:Collaboration ImportarGrados`
-- **importarAsignaturas()** → `:Collaboration ImportarAsignaturas`
-- **importarAlumnos()** → `:Collaboration ImportarAlumnos`
-- **importarPreguntas()** → `:Collaboration ImportarPreguntas`
 - **generarExamenes()** → `:Collaboration GenerarExamenes`
-- **asignarExamenes()** → `:Collaboration AsignarExamenes`
 - **corregirExamenes()** → `:Collaboration CorregirExamenes`
 - **importarConfiguracionGlobal()** → `:Collaboration ImportarConfiguracionGlobal`
 - **exportarConfiguracionGlobal()** → `:Collaboration ExportarConfiguracionGlobal`
@@ -138,9 +115,6 @@ Análisis del caso de uso `completarGestion()` mediante diagrama de colaboració
 #### Para Actor Administrador Institucional
 
 - **verDocentes()** → `:Collaboration VerDocentes`
-- **crearDocente()** → `:Collaboration CrearDocente`
-- **editarDocente()** → `:Collaboration EditarDocente`
-- **eliminarDocente()** → `:Collaboration EliminarDocente`
 - **cerrarSesion()** → `:Collaboration CerrarSesion`
 
 ## correspondencia con requisitos
