@@ -1,0 +1,56 @@
+@startuml verPreguntas-secuencia
+skinparam linetype polyline
+
+participant ":Sistema Disponible" as Sistema
+participant ":VerPreguntasView" as View
+participant ":PreguntasController" as Controller
+participant ":PreguntaRepository" as Repository
+participant ":Pregunta" as Entity
+participant ":Respuesta" as Respuesta
+participant ":Asignatura" as Asignatura
+
+Sistema -> View: verPreguntas()
+activate View
+
+View -> Controller: listarPreguntas()
+activate Controller
+
+Controller -> Repository: obtenerTodos()
+activate Repository
+
+Repository -> Entity: crear instancia
+deactivate Repository
+
+Controller <- Repository: List<Pregunta>
+deactivate Controller
+
+View <- Controller: List<Pregunta>
+deactivate View
+
+note over View
+Presenta lista de preguntas:
+• Enunciado, asignatura, tema, dificultad
+• Opciones de respuesta
+• Permite filtrar lista
+end note
+
+View -> Controller: filtrarPreguntas(criterio)
+activate Controller
+
+Controller -> Repository: buscarPorCriterio(criterio)
+activate Repository
+
+Repository -> Entity: crear instancia
+deactivate Repository
+
+Controller <- Repository: List<Pregunta>
+deactivate Controller
+
+View <- Controller: List<Pregunta>
+deactivate Controller
+
+note over View
+Presenta lista filtrada
+end note
+
+@enduml

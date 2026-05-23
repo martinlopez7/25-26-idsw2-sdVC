@@ -87,3 +87,18 @@ El análisis identificó las clases de análisis (VerDocentesView, DocentesContr
 **Enlace:** [session-ses_1ac2.md](conversations/session-ses_1ac2.md)
 
 **Decisión:** El análisis que ha hecho del caso de uso verDocentes() se ha aceptado. Lo único que se ha modificado es un error menor del diagrama de colaboración: se añadió un estado del sistema desde el que se ejecuta el caso de uso (Docente_Abierto). 
+
+## [23/05/2026][10:26] Análisis de verPreguntas()
+
+**Prompt:** empezar → Analiza el caso de uso verPreguntas → Añademe el diagrama de secuencia al README, tal y como esta especificado en @AGENTS.md
+
+**Resultado:** Se realizó el análisis MVC de verPreguntas() generando:
+- documents/analisis/verPreguntas/README.md
+- modelosUML/analisis/verPreguntas/colaboracion.puml
+- modelosUML/analisis/verPreguntas/secuencia.puml
+
+El análisis identificó las clases de análisis (VerPreguntasView, PreguntasController, PreguntaRepository, Pregunta, Respuesta, Asignatura), sus responsabilidades, colaboraciones y opciones de navegación siguiendo el patrón metodológico del proyecto. También se añadió la sección de diagrama de secuencia al README.md siguiendo el formato especificado en AGENTS.md.
+
+**Enlace:** [session-ses_1ac1.md](conversations/session-ses_1ac1.md)
+
+**Decisión:** 

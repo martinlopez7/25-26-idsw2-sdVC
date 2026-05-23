@@ -1,0 +1,46 @@
+@startuml verPreguntas-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponible
+rectangle #CDEBA5 ":Asignatura Abierto" as AsignaturaAbierto
+rectangle #CDEBA5 ":Pregunta Abierto" as PreguntaAbierto
+rectangle #CDEBA5 ":Pregunta Contextual Abierto" as PreguntaContextualAbierto
+package verPreguntas as "verPreguntas()" {
+    rectangle #629EF9 VerPreguntasView
+    rectangle #b5bd68 PreguntasController
+    rectangle #F2AC4E PreguntaRepository
+    rectangle #F2AC4E Pregunta
+    rectangle #F2AC4E Respuesta
+    rectangle #F2AC4E Asignatura
+}
+
+rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponibleSalida
+rectangle #CDEBA5 ":Collaboration CrearPregunta" as CrearPregunta
+rectangle #CDEBA5 ":Collaboration EditarPregunta" as EditarPregunta
+rectangle #CDEBA5 ":Collaboration EliminarPregunta" as EliminarPregunta
+rectangle #CDEBA5 ":Collaboration ImportarPreguntas" as ImportarPreguntas
+
+SistemaDisponible -r-> VerPreguntasView: verPreguntas()
+AsignaturaAbierto -r-> VerPreguntasView: verPreguntas()
+PreguntaAbierto -r-> VerPreguntasView: verPreguntas()
+PreguntaContextualAbierto -r-> VerPreguntasView: verPreguntas()
+
+VerPreguntasView -d-> PreguntasController: listarPreguntas() : List<Pregunta>
+
+PreguntasController --> PreguntaRepository: obtenerTodos() : List<Pregunta>
+
+PreguntaRepository -- Pregunta
+Pregunta -- Respuesta
+Pregunta -- Asignatura
+
+VerPreguntasView --> PreguntasController: filtrarPreguntas(criterio) : List<Pregunta>
+
+PreguntasController --> PreguntaRepository: buscarPorCriterio(criterio) : List<Pregunta>
+
+VerPreguntasView ..> SistemaDisponibleSalida: completarGestion()
+VerPreguntasView ..> CrearPregunta: crearPregunta()
+VerPreguntasView ..> EditarPregunta: editarPregunta()
+VerPreguntasView ..> EliminarPregunta: eliminarPregunta()
+VerPreguntasView ..> ImportarPreguntas: importarPreguntas()
+
+@enduml
