@@ -73,3 +73,17 @@ El análisis identificó las clases de análisis (VerAlumnosView, AlumnosControl
 **Enlace:** [session-ses_1b0f.md](conversations/session-ses_1b0f.md)
 
 **Decisión:** El análisis que hizo a la primera fue prácticamente perfecto. Sin embargo tuve que arreglar un pequeño error de un estado previo (ALUMNOS_ABIERTO) desde el que no se puede ejecutar el caso de uso y remplazarlo por el estado previo (ALUMNO_ABIERTO) desde el que si que se puede ejecutar este caso de uso.
+
+## [23/05/2026][10:08] Análisis de verDocentes()
+
+**Prompt:** empezar → Analiza el caso de uso verDocentes
+
+**Resultado:** Se realizó el análisis MVC de verDocentes() generando:
+- documents/analisis/verDocentes/README.md
+- modelosUML/analisis/verDocentes/colaboracion.puml
+
+El análisis identificó las clases de análisis (VerDocentesView, DocentesController, DocenteRepository, Docente), sus responsabilidades, colaboraciones y opciones de navegación siguiendo el patrón metodológico del proyecto.
+
+**Enlace:** [session-ses_1ac2.md](conversations/session-ses_1ac2.md)
+
+**Decisión:**

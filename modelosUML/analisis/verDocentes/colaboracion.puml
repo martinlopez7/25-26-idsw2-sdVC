@@ -1,0 +1,34 @@
+@startuml verDocentes-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponible
+package verDocentes as "verDocentes()" {
+    rectangle #629EF9 VerDocentesView
+    rectangle #b5bd68 DocentesController
+    rectangle #F2AC4E DocenteRepository
+    rectangle #F2AC4E Docente
+}
+
+rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponibleSalida
+rectangle #CDEBA5 ":Collaboration CrearDocente" as CrearDocente
+rectangle #CDEBA5 ":Collaboration EditarDocente" as EditarDocente
+rectangle #CDEBA5 ":Collaboration EliminarDocente" as EliminarDocente
+
+SistemaDisponible -r-> VerDocentesView: verDocentes()
+
+VerDocentesView -d-> DocentesController: listarDocentes() : List<Docente>
+
+DocentesController --> DocenteRepository: obtenerTodos() : List<Docente>
+
+DocenteRepository -- Docente
+
+VerDocentesView --> DocentesController: filtrarDocentes(criterio) : List<Docente>
+
+DocentesController --> DocenteRepository: buscarPorCriterio(criterio) : List<Docente>
+
+VerDocentesView ..> SistemaDisponibleSalida: completarGestion()
+VerDocentesView ..> CrearDocente: crearDocente()
+VerDocentesView ..> EditarDocente: editarDocente()
+VerDocentesView ..> EliminarDocente: eliminarDocente()
+
+@enduml
