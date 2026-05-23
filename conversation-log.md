@@ -116,4 +116,4 @@ El análisis identificó las clases de análisis (VerRespuestasView, RespuestasC
 
 **Enlace:** [session-ses_1ac0.md](conversations/session-ses_1ac0.md)
 
-**Decisión:** 
+**Decisión:** El análisis que ha hecho del caso de uso verRespuestas() se ha aceptado. Lo único que se ha modificado es un error menor del diagrama de colaboración: se eliminó la opción de navegación disponible completarGestion (la cual te dirigía al estado SISTEMA_DISPONIBLE) porque esto no está especificado en el diagrama de contexto del sistema.

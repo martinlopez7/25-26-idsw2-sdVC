@@ -114,7 +114,6 @@ Análisis de colaboración del caso de uso `verRespuestas()` mediante el patrón
 
 ### opciones de navegación disponibles
 
-- **completarGestion()** → `:Sistema Disponible`
 - **crearRespuesta()** → `:Collaboration CrearRespuesta`
 - **editarRespuesta()** → `:Collaboration EditarRespuesta`
 - **eliminarRespuesta()** → `:Collaboration EliminarRespuesta`
