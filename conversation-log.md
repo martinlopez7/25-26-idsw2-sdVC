@@ -86,4 +86,4 @@ El análisis identificó las clases de análisis (VerDocentesView, DocentesContr
 
 **Enlace:** [session-ses_1ac2.md](conversations/session-ses_1ac2.md)
 
-**Decisión:**
+**Decisión:** El análisis que ha hecho del caso de uso verDocentes() se ha aceptado. Lo único que se ha modificado es un error menor del diagrama de colaboración: se añadió un estado del sistema desde el que se ejecuta el caso de uso (Docente_Abierto). 

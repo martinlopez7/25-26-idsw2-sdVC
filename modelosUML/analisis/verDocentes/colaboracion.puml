@@ -2,6 +2,7 @@
 skinparam linetype polyline
 
 rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponible
+rectangle #CDEBA5 ":Docente Abierto" as DocenteAbierto
 package verDocentes as "verDocentes()" {
     rectangle #629EF9 VerDocentesView
     rectangle #b5bd68 DocentesController
@@ -15,6 +16,7 @@ rectangle #CDEBA5 ":Collaboration EditarDocente" as EditarDocente
 rectangle #CDEBA5 ":Collaboration EliminarDocente" as EliminarDocente
 
 SistemaDisponible -r-> VerDocentesView: verDocentes()
+DocenteAbierto -r-> VerDocentesView: verDocentes()
 
 VerDocentesView -d-> DocentesController: listarDocentes() : List<Docente>
 
