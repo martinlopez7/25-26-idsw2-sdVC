@@ -128,6 +128,7 @@ Análisis de colaboración del caso de uso `verPreguntas()` mediante el patrón 
 - **editarPregunta()** → `:Collaboration EditarPregunta`
 - **eliminarPregunta()** → `:Collaboration EliminarPregunta`
 - **importarPreguntas()** → `:Collaboration ImportarPreguntas`
+- **editarAsignatura()** → `:Collaboration EditarAsignatura` (En el caso en el que el sistema se encuentre en el estado PREGUNTAS_CONTEXTUALES_ABIERTO)
 
 ## correspondencia con requisitos
 

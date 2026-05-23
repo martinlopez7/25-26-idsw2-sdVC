@@ -19,6 +19,7 @@ rectangle #CDEBA5 ":Collaboration CrearPregunta" as CrearPregunta
 rectangle #CDEBA5 ":Collaboration EditarPregunta" as EditarPregunta
 rectangle #CDEBA5 ":Collaboration EliminarPregunta" as EliminarPregunta
 rectangle #CDEBA5 ":Collaboration ImportarPreguntas" as ImportarPreguntas
+rectangle #CDEBA5 ":Collaboration EditarAsignatura" as EditarAsignatura
 
 SistemaDisponible -r-> VerPreguntasView: verPreguntas()
 AsignaturaAbierto -r-> VerPreguntasView: verPreguntas()
@@ -42,5 +43,6 @@ VerPreguntasView ..> CrearPregunta: crearPregunta()
 VerPreguntasView ..> EditarPregunta: editarPregunta()
 VerPreguntasView ..> EliminarPregunta: eliminarPregunta()
 VerPreguntasView ..> ImportarPreguntas: importarPreguntas()
+VerPreguntasView ..> EditarAsignatura: editarAsignatura()
 
 @enduml

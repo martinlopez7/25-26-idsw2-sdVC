@@ -101,4 +101,4 @@ El análisis identificó las clases de análisis (VerPreguntasView, PreguntasCon
 
 **Enlace:** [session-ses_1ac1.md](conversations/session-ses_1ac1.md)
 
-**Decisión:** 
+**Decisión:** El análisis que ha hecho del caso de uso verPreguntas() se ha aceptado. Lo único que se ha modificado es un error menor del diagrama de colaboración: se añadió la opción de navegación disponible editarAsignatura(), la cual se puede ejecutar cuando el sistema se encuentra en el estado "PREGUNTAS_CONTEXTUALES_ABIERTO". 
