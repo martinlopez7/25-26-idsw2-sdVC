@@ -1,0 +1,44 @@
+@startuml verRespuestas-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":Pregunta Abierto" as PreguntaAbierto
+rectangle #CDEBA5 ":Respuesta Abierto" as RespuestaAbierto
+rectangle #CDEBA5 ":Pregunta Contextual Abierto" as PreguntaContextualAbierto
+rectangle #CDEBA5 ":Respuesta Contextual Abierto" as RespuestaContextualAbierto
+package verRespuestas as "verRespuestas()" {
+    rectangle #629EF9 VerRespuestasView
+    rectangle #b5bd68 RespuestasController
+    rectangle #F2AC4E RespuestaRepository
+    rectangle #F2AC4E Respuesta
+    rectangle #F2AC4E Pregunta
+}
+
+rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponibleSalida
+rectangle #CDEBA5 ":Collaboration CrearRespuesta" as CrearRespuesta
+rectangle #CDEBA5 ":Collaboration EditarRespuesta" as EditarRespuesta
+rectangle #CDEBA5 ":Collaboration EliminarRespuesta" as EliminarRespuesta
+rectangle #CDEBA5 ":Collaboration EditarPregunta" as EditarPregunta
+
+PreguntaAbierto -r-> VerRespuestasView: verRespuestas()
+RespuestaAbierto -r-> VerRespuestasView: verRespuestas()
+PreguntaContextualAbierto -r-> VerRespuestasView: verRespuestas()
+RespuestaContextualAbierto -r-> VerRespuestasView: verRespuestas()
+
+VerRespuestasView -d-> RespuestasController: listarRespuestas() : List<Respuesta>
+
+RespuestasController --> RespuestaRepository: obtenerTodos() : List<Respuesta>
+
+RespuestaRepository -- Respuesta
+Respuesta -- Pregunta
+
+VerRespuestasView --> RespuestasController: filtrarRespuestas(criterio) : List<Respuesta>
+
+RespuestasController --> RespuestaRepository: buscarPorCriterio(criterio) : List<Respuesta>
+
+VerRespuestasView ..> SistemaDisponibleSalida: completarGestion()
+VerRespuestasView ..> CrearRespuesta: crearRespuesta()
+VerRespuestasView ..> EditarRespuesta: editarRespuesta()
+VerRespuestasView ..> EliminarRespuesta: eliminarRespuesta()
+VerRespuestasView ..> EditarPregunta: editarPregunta()
+
+@enduml

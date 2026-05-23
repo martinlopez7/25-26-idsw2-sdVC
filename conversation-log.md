@@ -102,3 +102,18 @@ El análisis identificó las clases de análisis (VerPreguntasView, PreguntasCon
 **Enlace:** [session-ses_1ac1.md](conversations/session-ses_1ac1.md)
 
 **Decisión:** El análisis que ha hecho del caso de uso verPreguntas() se ha aceptado. Lo único que se ha modificado es un error menor del diagrama de colaboración: se añadió la opción de navegación disponible editarAsignatura(), la cual se puede ejecutar cuando el sistema se encuentra en el estado "PREGUNTAS_CONTEXTUALES_ABIERTO". 
+
+## [23/05/2026][10:50] Análisis de verRespuestas()
+
+**Prompt:** empezar → Analiza el caso de uso verRespuestas
+
+**Resultado:** Se realizó el análisis MVC de verRespuestas() generando:
+- documents/analisis/verRespuestas/README.md
+- modelosUML/analisis/verRespuestas/colaboracion.puml
+- modelosUML/analisis/verRespuestas/secuencia.puml
+
+El análisis identificó las clases de análisis (VerRespuestasView, RespuestasController, RespuestaRepository, Respuesta, Pregunta), sus responsabilidades, colaboraciones y opciones de navegación siguiendo el patrón metodológico del proyecto. También se añadió la sección de diagrama de secuencia al README.md siguiendo el formato especificado en AGENTS.md.
+
+**Enlace:** [session-ses_1ac0.md](conversations/session-ses_1ac0.md)
+
+**Decisión:** 

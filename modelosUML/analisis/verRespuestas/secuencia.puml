@@ -1,0 +1,54 @@
+@startuml verRespuestas-secuencia
+skinparam linetype polyline
+
+participant ":Pregunta Abierto" as PreguntaState
+participant ":VerRespuestasView" as View
+participant ":RespuestasController" as Controller
+participant ":RespuestaRepository" as Repository
+participant ":Respuesta" as Entity
+participant ":Pregunta" as Pregunta
+
+PreguntaState -> View: verRespuestas()
+activate View
+
+View -> Controller: listarRespuestas()
+activate Controller
+
+Controller -> Repository: obtenerTodos()
+activate Repository
+
+Repository -> Entity: crear instancia
+deactivate Repository
+
+Controller <- Repository: List<Respuesta>
+deactivate Controller
+
+View <- Controller: List<Respuesta>
+deactivate View
+
+note over View
+Presenta lista de respuestas:
+• Opción, correctness
+• Permite filtrar lista
+end note
+
+View -> Controller: filtrarRespuestas(criterio)
+activate Controller
+
+Controller -> Repository: buscarPorCriterio(criterio)
+activate Repository
+
+Repository -> Entity: crear instancia
+deactivate Repository
+
+Controller <- Repository: List<Respuesta>
+deactivate Controller
+
+View <- Controller: List<Respuesta>
+deactivate Controller
+
+note over View
+Presenta lista filtrada
+end note
+
+@enduml
