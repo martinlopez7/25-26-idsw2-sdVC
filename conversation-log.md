@@ -117,3 +117,17 @@ El análisis identificó las clases de análisis (VerRespuestasView, RespuestasC
 **Enlace:** [session-ses_1ac0.md](conversations/session-ses_1ac0.md)
 
 **Decisión:** El análisis que ha hecho del caso de uso verRespuestas() se ha aceptado. Lo único que se ha modificado es un error menor del diagrama de colaboración: se eliminó la opción de navegación disponible completarGestion (la cual te dirigía al estado SISTEMA_DISPONIBLE) porque esto no está especificado en el diagrama de contexto del sistema.
+
+## [23/05/2026][11:15] Análisis de completarGestion()
+
+**Prompt:** empezar → Analiza el caso de uso completarGestion, ten en cuenta que este caso de uso esta presente en ambos actores
+
+**Resultado:** Se realizó el análisis MVC de completarGestion() generando:
+- documents/analisis/completarGestion/README.md
+- modelosUML/analisis/completarGestion/colaboracion.puml
+
+El análisis identificó las clases de análisis (CompletarGestionView, CompletarGestionController, Sesion, OpcionesMenu, PermisosRepository), sus responsabilidades, colaboraciones y opciones de navegación siguiendo el patrón metodológico del proyecto. Se identificó que es el único caso de uso compartido por ambos actores (Docente y Administrador Institucional), con un diagrama de colaboración que muestra todas las opciones disponibles para cada actor.
+
+**Enlace:** [session-ses_1abe.md](conversations/session-ses_1abe.md)
+
+**Decisión:**
