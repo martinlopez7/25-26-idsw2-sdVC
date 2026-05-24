@@ -145,3 +145,17 @@ El análisis siguió el patrón "el delgado" (creación rápida con filosofía C
 **Enlace:** [session-ses_1a6d.md](conversations/session-ses_1a6d.md)
 
 **Decisión:** El análisis que ha hecho del caso de uso crearDocente() se aceptó al completo.
+
+## [24/05/2026][11:07] Análisis de editarDocente()
+
+**Prompt:** empezar → Analiza el caso de uso editarDocente
+
+**Resultado:** Se realizó el análisis MVC de editarDocente() generando:
+- documents/analisis/editarDocente/README.md
+- modelosUML/analisis/editarDocente/colaboracion.puml
+
+El análisis siguió el patrón "el gordo" (edición continua con múltiples ciclos), identificando las clases: EditarDocenteView, DocentesController, DocenteRepository, Docente. El flujo incluye carga de datos del docente, presentación para edición continua, guardado incremental y navegación flexible mediante <<include>> verDocentes().
+
+**Enlace:** [session-ses_1a6c.md](conversations/session-ses_1a6c.md)
+
+**Decisión:**

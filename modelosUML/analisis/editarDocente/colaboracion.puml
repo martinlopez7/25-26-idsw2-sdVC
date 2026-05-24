@@ -1,0 +1,30 @@
+@startuml editarDocente-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":Docentes Abierto" as DocentesAbierto
+rectangle #CDEBA5 ":Docente Abierto" as DocenteAbierto
+rectangle #CDEBA5 ":Collaboration verDocentes" as VerDocentes
+
+package editarDocente as "editarDocente()" {
+    rectangle #629EF9 EditarDocenteView
+    rectangle #b5bd68 DocentesController
+    rectangle #F2AC4E DocenteRepository
+    rectangle #F2AC4E Docente
+}
+
+DocentesAbierto --> EditarDocenteView: editarDocente(docenteId)
+DocenteAbierto --> EditarDocenteView: editarDocente(docenteId)
+
+EditarDocenteView -d-> DocentesController: cargarDocenteParaEdición(docenteId) : Docente
+
+DocentesController --> DocenteRepository: obtenerPorId(docenteId) : Docente
+
+EditarDocenteView --> DocentesController: modificarCampos(docenteId, cambios) : boolean
+
+DocentesController --> DocenteRepository: actualizar(docente) : boolean
+
+DocenteRepository -- Docente
+
+EditarDocenteView ..> VerDocentes: <<include>> verDocentes()
+
+@enduml
