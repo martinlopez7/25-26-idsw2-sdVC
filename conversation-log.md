@@ -200,4 +200,4 @@ El análisis siguió la misma estructura que exportarConfiguracionGlobal(), pero
 
 **Enlace:** [session-ses_1a66.md](conversations/session-ses_1a66.md)
 
-**Decisión:**
+**Decisión:** El análisis que ha hecho del caso de uso importarConfiguracionGlobal() se aceptó pero tuvo un pequeño error: así como para exportar tenia que "obtener" los datos de los repositorios, para importar tendrá que añadir los datos a los repositorios y devolver void, cosa que no cambió respecto al caso de uso exportarConfiguracionGlobal().

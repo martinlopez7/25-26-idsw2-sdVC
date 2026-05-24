@@ -68,7 +68,7 @@ Análisis del caso de uso `importarConfiguracionGlobal()` mediante diagrama de c
 4. **Validación**: `ImportarConfiguracionGlobalController` valida el archivo (formato, estructura)
 5. **Presentación**: `ImportarConfiguracionGlobalView` presenta mensaje de confirmación de importación global (todos los elementos: grados, asignaturas, alumnos, preguntas) y opciones de confirmar/cancelar/salir
 6. **Confirmación**: Usuario confirma la importación
-7. **Importación secuencial**: `ImportarConfiguracionGlobalController` → `GradoRepository`, `AsignaturaRepository`, `AlumnoRepository`, `PreguntaRepository` importa todos los datos en orden (para mantener integridad referencial)
+7. **Importación secuencial**: `ImportarConfiguracionGlobalController` → `AlumnoRepository`, `GradoRepository`, `AsignaturaRepository`,  `PreguntaRepository` importa todos los datos en orden (para mantener integridad referencial)
 8. **Resultado**: Si éxito → retornar al `:Sistema Disponible`; si error → mostrar mensaje de error y volver a opciones
 
 ### opciones de navegación disponibles

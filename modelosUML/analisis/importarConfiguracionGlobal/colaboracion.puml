@@ -16,14 +16,14 @@ rectangle #CDEBA5 ":Collaboration ImportarAsignaturas" as ImportarAsignaturas
 rectangle #CDEBA5 ":Collaboration ImportarAlumnos" as ImportarAlumnos
 rectangle #CDEBA5 ":Collaboration ImportarPreguntas" as ImportarPreguntas
 
-SistemaDisponible -r-> ImportarConfiguracionGlobalView : importarConfiguracionGlobal()
+SistemaDisponible -r-> ImportarConfiguracionGlobalView : importarConfiguracionGlobal(config)
 
-ImportarConfiguracionGlobalView -d-> ImportarConfiguracionGlobalController: iniciarImportacion()
+ImportarConfiguracionGlobalView -d-> ImportarConfiguracionGlobalController: iniciarImportacion(config)
 
-ImportarConfiguracionGlobalController --> GradoRepository: obtenerGrados() : List<Grado>
-ImportarConfiguracionGlobalController --> AsignaturaRepository: obtenerAsignaturas() : List<Asignatura>
-ImportarConfiguracionGlobalController --> AlumnoRepository: obtenerAlumnos() : List<Alumno>
-ImportarConfiguracionGlobalController --> PreguntaRepository: obtenerPreguntas() : List<Pregunta>
+ImportarConfiguracionGlobalController --> AlumnoRepository: añadirAlumnos(alumnos) : void
+ImportarConfiguracionGlobalController --> GradoRepository: añadirGrados(grados) : void
+ImportarConfiguracionGlobalController --> AsignaturaRepository: añadirAsignaturas(asignaturas) :void
+ImportarConfiguracionGlobalController --> PreguntaRepository: añadirPreguntas(preguntas) : void
 
 ImportarConfiguracionGlobalView ..> ImportarGrados: importarGrados()
 ImportarConfiguracionGlobalView ..> ImportarAsignaturas: importarAsignaturas()
