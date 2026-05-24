@@ -1,0 +1,24 @@
+@startuml crearGrado-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":Grados Abierto" as GradosAbierto
+rectangle #CDEBA5 ":Collaboration EditarGrado" as EditarGrado
+
+package crearGrado as "crearGrado()" {
+    rectangle #629EF9 CrearGradoView
+    rectangle #b5bd68 GradosController
+    rectangle #F2AC4E GradoRepository
+    rectangle #F2AC4E Grado
+}
+
+GradosAbierto --> CrearGradoView: crearGrado()
+
+CrearGradoView -d-> GradosController: crearGradoMinimo(nombre, codigo) : Grado
+
+GradosController --> GradoRepository: crear(nombre, codigo) : Grado
+
+GradoRepository -- Grado
+
+CrearGradoView ..> EditarGrado: editarGrado(gradoNuevo)
+
+@enduml

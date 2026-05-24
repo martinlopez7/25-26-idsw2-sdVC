@@ -201,3 +201,17 @@ El análisis siguió la misma estructura que exportarConfiguracionGlobal(), pero
 **Enlace:** [session-ses_1a66.md](conversations/session-ses_1a66.md)
 
 **Decisión:** El análisis que ha hecho del caso de uso importarConfiguracionGlobal() se aceptó pero tuvo un pequeño error: así como para exportar tenia que "obtener" los datos de los repositorios, para importar tendrá que añadir los datos a los repositorios y devolver void, cosa que no cambió respecto al caso de uso exportarConfiguracionGlobal().
+
+## [24/05/2026][13:18] Análisis de crearGrado()
+
+**Prompt:** empezar → Analiza el caso de uso crearGrado
+
+**Resultado:** Se realizó el análisis MVC de crearGrado() generando:
+- documents/analisis/crearGrado/README.md
+- modelosUML/analisis/crearGrado/colaboracion.puml
+
+El análisis siguió el patrón "el delgado" (creación rápida con filosofía C→U), identificando las clases: CrearGradoView, GradosController, GradoRepository, Grado. El flujo incluye creación mínima con datos mínimos (título, código) y transferencia automática a edición mediante <<include>> editarGrado().
+
+**Enlace:** [session-ses_1a64.md](conversations/session-ses_1a64.md)
+
+**Decisión:**
