@@ -1,0 +1,35 @@
+@startuml importarConfiguracionGlobal-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponible
+package importarConfiguracionGlobal as "importarConfiguracionGlobal()" {
+    rectangle #629EF9 ImportarConfiguracionGlobalView
+    rectangle #b5bd68 ImportarConfiguracionGlobalController
+    rectangle #F2AC4E GradoRepository
+    rectangle #F2AC4E AsignaturaRepository
+    rectangle #F2AC4E AlumnoRepository
+    rectangle #F2AC4E PreguntaRepository
+}
+
+rectangle #CDEBA5 ":Collaboration ImportarGrados" as ImportarGrados
+rectangle #CDEBA5 ":Collaboration ImportarAsignaturas" as ImportarAsignaturas
+rectangle #CDEBA5 ":Collaboration ImportarAlumnos" as ImportarAlumnos
+rectangle #CDEBA5 ":Collaboration ImportarPreguntas" as ImportarPreguntas
+
+SistemaDisponible -r-> ImportarConfiguracionGlobalView : importarConfiguracionGlobal()
+
+ImportarConfiguracionGlobalView -d-> ImportarConfiguracionGlobalController: iniciarImportacion()
+
+ImportarConfiguracionGlobalController --> GradoRepository: obtenerGrados() : List<Grado>
+ImportarConfiguracionGlobalController --> AsignaturaRepository: obtenerAsignaturas() : List<Asignatura>
+ImportarConfiguracionGlobalController --> AlumnoRepository: obtenerAlumnos() : List<Alumno>
+ImportarConfiguracionGlobalController --> PreguntaRepository: obtenerPreguntas() : List<Pregunta>
+
+ImportarConfiguracionGlobalView ..> ImportarGrados: importarGrados()
+ImportarConfiguracionGlobalView ..> ImportarAsignaturas: importarAsignaturas()
+ImportarConfiguracionGlobalView ..> ImportarAlumnos: importarAlumnos()
+ImportarConfiguracionGlobalView ..> ImportarPreguntas: importarPreguntas()
+
+ImportarConfiguracionGlobalView -u-> SistemaDisponible: cancelarImportacion() / salir()
+
+@enduml

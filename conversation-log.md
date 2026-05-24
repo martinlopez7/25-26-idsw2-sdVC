@@ -187,3 +187,17 @@ El análisis identificó las clases de análisis (ExportarConfiguracionGlobalVie
 **Enlace:** [session-ses_1a6a.md](conversations/session-ses_1a6a.md)
 
 **Decisión:** El análisis inicial tenía un error conceptual: se creó un repositorio genérico (ConfiguracionGlobalRepository) cuando lo correcto era usar los repositorios específicos de cada entidad (AlumnoRepository, GradoRepository, etc.) que ya existen en el sistema. Esto se corrigió. Además, se modificó el análisis para indicar que la exportación es global y obligatoria (todos los elementos juntos), no selectiva, debido a las restricciones de integridad referencial entre entidades.
+
+## [24/05/2026][12:55] Análisis de importarConfiguracionGlobal()
+
+**Prompt:** empezar → Analiza el caso de uso importarConfiguracionGlobal, basandote en el previamente hecho "exportarConfiguracionGlobal"
+
+**Resultado:** Se realizó el análisis MVC de importarConfiguracionGlobal() generando:
+- documents/analisis/importarConfiguracionGlobal/README.md
+- modelosUML/analisis/importarConfiguracionGlobal/colaboracion.puml
+
+El análisis siguió la misma estructura que exportarConfiguracionGlobal(), pero con las adaptaciones necesarias para la importación: sentido de flujo inverso, orden secuencial de importación (alumnos → grados → asiganturas → preguntas) para mantener integridad referencial.
+
+**Enlace:** [session-ses_1a66.md](conversations/session-ses_1a66.md)
+
+**Decisión:**
