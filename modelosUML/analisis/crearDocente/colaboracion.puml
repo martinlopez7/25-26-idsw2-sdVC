@@ -1,0 +1,28 @@
+@startuml crearDocente-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":Docentes Abierto" as DocentesAbierto
+rectangle #CDEBA5 ":Collaboration EditarDocente" as EditarDocente
+
+package crearDocente as "crearDocente()" {
+    rectangle #629EF9 CrearDocenteView
+    rectangle #b5bd68 DocentesController
+    rectangle #F2AC4E DocenteRepository
+    rectangle #F2AC4E Docente
+}
+
+DocentesAbierto -r-> CrearDocenteView: crearDocente()
+
+CrearDocenteView -d-> DocentesController: validarDatosMínimos(nombre, apellidos, DNI, usuario, email, password) : boolean
+
+DocentesController --> DocenteRepository: verificarUnicidad(DNI, usuario, email) : boolean
+
+CrearDocenteView --> DocentesController: crearDocente(datosMinimos) : Docente
+
+DocentesController --> DocenteRepository: crear(docente) : Docente
+
+DocenteRepository -- Docente
+
+CrearDocenteView ..> EditarDocente: <<include>> editarDocente(docenteNuevo)
+
+@enduml

@@ -131,3 +131,17 @@ El análisis identificó las clases de análisis (CompletarGestionView, Completa
 **Enlace:** [session-ses_1abe.md](conversations/session-ses_1abe.md)
 
 **Decisión:** El análisis que ha hecho del caso de uso completarGestion() se modificó bastante. El error estuvo en que la IA interpretó que todos los casos de uso CRUD de las entidades del sistema eran colaboradores de completarGestion(), pero esto no es así, ya que solo lo son los casos de uso ver{Recurso}(), generarExamenes(), corregirExamenes(), importarConfiguracionGlobal(), exportarConfiguracionGlobal() y cerrarSesion(). Es decir, solo los casos de uso que se pueden ejecutar inmediatamente después de haber ejecutado completarGestion().
+
+## [24/05/2026][10:57] Análisis de crearDocente()
+
+**Prompt:** empezar → Analiza el caso de uso crearDocente
+
+**Resultado:** Se realizó el análisis MVC de crearDocente() generando:
+- documents/analisis/crearDocente/README.md
+- modelosUML/analisis/crearDocente/colaboracion.puml
+
+El análisis siguió el patrón "el delgado" (creación rápida con filosofía C→U), identificando las clases: CrearDocenteView, DocentesController, DocenteRepository, Docente. El flujo incluye creación mínima con transferencia automática a edición mediante <<include>> editarDocente().
+
+**Enlace:** [session-ses_1a6d.md](conversations/session-ses_1a6d.md)
+
+**Decisión:**
