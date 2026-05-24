@@ -158,4 +158,4 @@ El análisis siguió el patrón "el gordo" (edición continua con múltiples cic
 
 **Enlace:** [session-ses_1a6c.md](conversations/session-ses_1a6c.md)
 
-**Decisión:**
+**Decisión:** El análisis que ha hecho del caso de uso editarDocente() se ha aceptado. Lo único que se ha modificado es un error menor del diagrama de colaboración:  se añadió la opción de navegación disponible eliminarDocente(), la cual se puede ejecutar cuando el sistema se encuentra en el estado "DOCENTE_ABIERTO". También se añadió el caso de uso colaborador `crearDocente()` como entrada a editarDocente().

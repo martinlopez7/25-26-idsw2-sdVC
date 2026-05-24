@@ -43,7 +43,7 @@ Análisis de colaboración del caso de uso `editarDocente()` mediante el patrón
 **Colaboraciones**:
 - **Entrada**: Recibe `editarDocente(docenteId)` desde `:Docentes Abierto` o `:Docente Abierto`
 - **Control**: Se comunica con `DocentesController`
-- **Salida**: **<<include>>** `:Collaboration verDocentes` para mostrar lista actualizada o mantiene `:Docente Abierto`
+- **Salida**: **<<include>>** `:Collaboration verDocentes` para mostrar lista actualizada o mantiene `:Docente Abierto`, o `:Collaboration eliminarDocente` para eliminar el docente.
 
 ### clases de control
 
@@ -101,7 +101,7 @@ Análisis de colaboración del caso de uso `editarDocente()` mediante el patrón
 7. **Persistencia**: `DocentesController` → `DocenteRepository.actualizar(docente)`
 8. **Continuación**: 
    - **Edición continua**: Permanece en `EditarDocenteView` para más modificaciones
-   - **Finalización**: `EditarDocenteView` → **<<include>>** `:Collaboration verDocentes.verDocentes()`
+   - **Finalización**: `EditarDocenteView` → **<<include>>** `:Collaboration verDocentes.verDocentes()` o `EditarDocenteView` → **<<include>>** o`:Collaboration eliminarDocente.eliminarDocente(docenteId)`
 
 ## patrón de edición completa para docentes - "el gordo"
 
@@ -200,4 +200,5 @@ El diseño permite que `DocentesController` sea reutilizado:
 ## opciones de navegación disponibles
 
 - **<<include>>** `verDocentes()` → `:Docentes Abierto`
+- **<<include>>** `eliminarDocente(docenteId)` → `:Docentes Abierto`
 - **cancelar** → `:Docentes Abierto`

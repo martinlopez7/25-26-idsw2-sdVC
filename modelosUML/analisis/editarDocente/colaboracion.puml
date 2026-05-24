@@ -3,7 +3,9 @@ skinparam linetype polyline
 
 rectangle #CDEBA5 ":Docentes Abierto" as DocentesAbierto
 rectangle #CDEBA5 ":Docente Abierto" as DocenteAbierto
+rectangle #CDEBA5 ":Collaboration CrearDocente" as CrearDocente
 rectangle #CDEBA5 ":Collaboration verDocentes" as VerDocentes
+rectangle #CDEBA5 ":Collaboration eliminarDocente" as EliminarDocente
 
 package editarDocente as "editarDocente()" {
     rectangle #629EF9 EditarDocenteView
@@ -12,6 +14,7 @@ package editarDocente as "editarDocente()" {
     rectangle #F2AC4E Docente
 }
 
+CrearDocente --> EditarDocenteView: editarDocente(docenteId)
 DocentesAbierto --> EditarDocenteView: editarDocente(docenteId)
 DocenteAbierto --> EditarDocenteView: editarDocente(docenteId)
 
@@ -26,5 +29,6 @@ DocentesController --> DocenteRepository: actualizar(docente) : boolean
 DocenteRepository -- Docente
 
 EditarDocenteView ..> VerDocentes: <<include>> verDocentes()
+EditarDocenteView ..> EliminarDocente: <<include>> eliminarDocente()
 
 @enduml
