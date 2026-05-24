@@ -13,12 +13,14 @@ package crearGrado as "crearGrado()" {
 
 GradosAbierto --> CrearGradoView: crearGrado()
 
-CrearGradoView -d-> GradosController: crearGradoMinimo(nombre, codigo) : Grado
+CrearGradoView -d-> GradosController: validarDatosMinimos(nombre, codigo) : Grado
+CrearGradoView -d-> GradosController: crearGrado(datosMinimos) : Grado
 
 GradosController --> GradoRepository: crear(nombre, codigo) : Grado
+GradosController --> GradoRepository: verificarUnicidad(nombre, codigo) : Grado
 
 GradoRepository -- Grado
 
-CrearGradoView ..> EditarGrado: editarGrado(gradoNuevo)
+CrearGradoView ..> EditarGrado: <<include>> editarGrado(gradoNuevo)
 
 @enduml

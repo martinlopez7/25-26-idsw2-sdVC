@@ -214,4 +214,4 @@ El análisis siguió el patrón "el delgado" (creación rápida con filosofía C
 
 **Enlace:** [session-ses_1a64.md](conversations/session-ses_1a64.md)
 
-**Decisión:**
+**Decisión:** El análisis que hizo del caso de uso crearGrado() tuvo algunos errores. En el diagrama de colaboración no siguió bien el formato deseado y lo tuve que modificar manualmente.
