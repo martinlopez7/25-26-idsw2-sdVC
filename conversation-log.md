@@ -173,3 +173,17 @@ El análisis siguió el patrón de eliminación segura con confirmación previa,
 **Enlace:** [session-ses_1a6b.md](conversations/session-ses_1a6b.md)
 
 **Decisión:** El análisis que ha hecho del caso de uso eliminarDocente() se aceptó al completo. Lo único que se ha eliminado es una tabla del README sobre las opciones de navegación que sobraba ya que solo añadía ruido.
+
+## [24/05/2026][12:41] Análisis de exportarConfiguracionGlobal()
+
+**Prompt:** empezar → Analiza el caso de uso exportarConfiguracionGlobal
+
+**Resultado:** Se realizó el análisis MVC de exportarConfiguracionGlobal() generando:
+- documents/analisis/exportarConfiguracionGlobal/README.md
+- modelosUML/analisis/exportarConfiguracionGlobal/colaboracion.puml
+
+El análisis identificó las clases de análisis (ExportarConfiguracionGlobalView, ExportarConfiguracionGlobalController, AlumnoRepository, GradoRepository, AsignaturaRepository, PreguntaRepository), sus responsabilidades, colaboraciones y opciones de navegación. El usuario solicitó dos correcciones: (1) cambiar el repositorio genérico ConfiguracionGlobalRepository por los repositorios específicos de cada entidad, y (2) modificar el flujo para que la exportación sea global (todos los elementos) en lugar de selectiva, debido a las dependencias entre entidades (preguntas→asignaturas, asignaturas→grados).
+
+**Enlace:** [session-ses_1a6a.md](conversations/session-ses_1a6a.md)
+
+**Decisión:**

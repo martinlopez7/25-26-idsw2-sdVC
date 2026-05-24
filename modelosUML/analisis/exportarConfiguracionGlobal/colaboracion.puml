@@ -1,0 +1,35 @@
+@startuml exportarConfiguracionGlobal-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponible
+package exportarConfiguracionGlobal as "exportarConfiguracionGlobal()" {
+    rectangle #629EF9 ExportarConfiguracionGlobalView
+    rectangle #b5bd68 ExportarConfiguracionGlobalController
+    rectangle #F2AC4E AlumnoRepository
+    rectangle #F2AC4E GradoRepository
+    rectangle #F2AC4E AsignaturaRepository
+    rectangle #F2AC4E PreguntaRepository
+}
+
+rectangle #CDEBA5 ":Collaboration ExportarAlumnos" as ExportarAlumnos
+rectangle #CDEBA5 ":Collaboration ExportarGrados" as ExportarGrados
+rectangle #CDEBA5 ":Collaboration ExportarAsignaturas" as ExportarAsignaturas
+rectangle #CDEBA5 ":Collaboration ExportarPreguntas" as ExportarPreguntas
+
+SistemaDisponible -r-> ExportarConfiguracionGlobalView : exportarConfiguracionGlobal()
+
+ExportarConfiguracionGlobalView -d-> ExportarConfiguracionGlobalController: iniciarExportacion()
+
+ExportarConfiguracionGlobalController --> AlumnoRepository: obtenerAlumnos() : List<Alumno>
+ExportarConfiguracionGlobalController --> GradoRepository: obtenerGrados() : List<Grado>
+ExportarConfiguracionGlobalController --> AsignaturaRepository: obtenerAsignaturas() : List<Asignatura>
+ExportarConfiguracionGlobalController --> PreguntaRepository: obtenerPreguntas() : List<Pregunta>
+
+ExportarConfiguracionGlobalView ..> ExportarAlumnos: exportarAlumnos()
+ExportarConfiguracionGlobalView ..> ExportarGrados: exportarGrados()
+ExportarConfiguracionGlobalView ..> ExportarAsignaturas: exportarAsignaturas()
+ExportarConfiguracionGlobalView ..> ExportarPreguntas: exportarPreguntas()
+
+ExportarConfiguracionGlobalView -u-> SistemaDisponible: cancelarExportacion() / salir()
+
+@enduml
