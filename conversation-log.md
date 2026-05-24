@@ -159,3 +159,17 @@ El análisis siguió el patrón "el gordo" (edición continua con múltiples cic
 **Enlace:** [session-ses_1a6c.md](conversations/session-ses_1a6c.md)
 
 **Decisión:** El análisis que ha hecho del caso de uso editarDocente() se ha aceptado. Lo único que se ha modificado es un error menor del diagrama de colaboración:  se añadió la opción de navegación disponible eliminarDocente(), la cual se puede ejecutar cuando el sistema se encuentra en el estado "DOCENTE_ABIERTO". También se añadió el caso de uso colaborador `crearDocente()` como entrada a editarDocente().
+
+## [24/05/2026][11:33] Análisis de eliminarDocente()
+
+**Prompt:** empezar → Analiza el caso de uso eliminarDocente
+
+**Resultado:** Se realizó el análisis MVC de eliminarDocente() generando:
+- documents/analisis/eliminarDocente/README.md
+- modelosUML/analisis/eliminarDocente/colaboracion.puml
+
+El análisis siguió el patrón de eliminación segura con confirmación previa, identificando las clases: EliminarDocenteView, DocentesController, DocenteRepository, Docente. El flujo incluye carga de datos del docente, presentación de información con advertencia de eliminación irreversible, confirmación/cancelación por parte del administrador, y navegación mediante <<include>> verDocentes(). Doble entrada desde DOCENTES_ABIERTO o DOCENTE_ABIERTO.
+
+**Enlace:** [session-ses_1a6b.md](conversations/session-ses_1a6b.md)
+
+**Decisión:**

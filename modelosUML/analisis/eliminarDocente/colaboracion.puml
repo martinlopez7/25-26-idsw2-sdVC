@@ -1,0 +1,30 @@
+@startuml eliminarDocente-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":DOCENTES_ABIERTO" as DocentesAbierto
+rectangle #CDEBA5 ":DOCENTE_ABIERTO" as DocenteAbierto
+rectangle #CDEBA5 ":Collaboration verDocentes" as VerDocentes
+
+package eliminarDocente as "eliminarDocente()" {
+    rectangle #629EF9 EliminarDocenteView
+    rectangle #b5bd68 DocentesController
+    rectangle #F2AC4E DocenteRepository
+    rectangle #F2AC4E Docente
+}
+
+DocentesAbierto --> EliminarDocenteView: eliminarDocente(docenteId)
+DocenteAbierto --> EliminarDocenteView: eliminarDocente(docenteId)
+
+EliminarDocenteView -d-> DocentesController: cargarDocenteParaEliminacion(docenteId) : Docente
+
+DocentesController --> DocenteRepository: obtenerPorId(docenteId) : Docente
+
+DocenteRepository -- Docente
+
+EliminarDocenteView --> DocentesController: eliminarDocente(docenteId) : void
+
+DocentesController --> DocenteRepository: eliminar(docenteId) : void
+
+EliminarDocenteView ..> VerDocentes: <<include>> verDocentes()
+
+@enduml
