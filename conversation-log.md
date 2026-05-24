@@ -144,4 +144,4 @@ El análisis siguió el patrón "el delgado" (creación rápida con filosofía C
 
 **Enlace:** [session-ses_1a6d.md](conversations/session-ses_1a6d.md)
 
-**Decisión:**
+**Decisión:** El análisis que ha hecho del caso de uso crearDocente() se aceptó al completo.
