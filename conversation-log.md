@@ -186,4 +186,4 @@ El análisis identificó las clases de análisis (ExportarConfiguracionGlobalVie
 
 **Enlace:** [session-ses_1a6a.md](conversations/session-ses_1a6a.md)
 
-**Decisión:**
+**Decisión:** El análisis inicial tenía un error conceptual: se creó un repositorio genérico (ConfiguracionGlobalRepository) cuando lo correcto era usar los repositorios específicos de cada entidad (AlumnoRepository, GradoRepository, etc.) que ya existen en el sistema. Esto se corrigió. Además, se modificó el análisis para indicar que la exportación es global y obligatoria (todos los elementos juntos), no selectiva, debido a las restricciones de integridad referencial entre entidades.
