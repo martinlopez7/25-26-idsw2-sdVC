@@ -110,15 +110,6 @@ Este análisis implementa eliminación con confirmación que:
 - **Verifica existencia**: Docente existe y es válido
 - **Procesa eliminación**: Solo tras confirmación explícita
 
-## opciones de navegación
-
-| Estado previo | Caso de uso | Estado resultante |
-|:--------------|:-----------:|:------------------|
-| DOCENTES_ABIERTO | eliminarDocente() | DOCENTES_ABIERTO (lista actualizada) |
-| DOCENTE_ABIERTO | eliminarDocente() | DOCENTES_ABIERTO (lista actualizada) |
-| DOCENTES_ABIERTO | cancelar | DOCENTES_ABIERTO |
-| DOCENTE_ABIERTO | cancelar | DOCENTE_ABIERTO |
-
 ## patrones arquitectónicos aplicados
 
 ### patrón MVC para eliminación de docentes

@@ -172,4 +172,4 @@ El análisis siguió el patrón de eliminación segura con confirmación previa,
 
 **Enlace:** [session-ses_1a6b.md](conversations/session-ses_1a6b.md)
 
-**Decisión:**
+**Decisión:** El análisis que ha hecho del caso de uso eliminarDocente() se aceptó al completo. Lo único que se ha eliminado es una tabla del README sobre las opciones de navegación que sobraba ya que solo añadía ruido.
