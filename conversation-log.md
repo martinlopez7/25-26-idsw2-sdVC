@@ -285,3 +285,18 @@ El análisis siguió el patrón de eliminación segura con confirmación previa,
 **Enlace:** [session-ses_1a19.md](conversations/session-ses_1a19.md)
 
 **Decisión:** El análisis que hizo del caso de uso eliminarAlumno se aceptó.
+
+## [25/05/2026][12:45] Análisis de crearAsignatura()
+
+**Prompt:** analiza el caso de uso crearAsignatura
+
+**Resultado:** Se realizó el análisis MVC de crearAsignatura() generando:
+- documents/analisis/crearAsignatura/README.md
+- modelosUML/analisis/crearAsignatura/colaboracion.puml
+- modelosUML/analisis/crearAsignatura/secuencia.puml
+
+El análisis siguió el patrón "el delgado" (filosofía C→U), identificando las clases: CrearAsignaturaView, AsignaturaController, AsignaturaRepository, Asignatura, BateriaDePreguntas, Grado, GradoRepository. El flujo incluye creación mínima con datos esenciales (título, código, curso académico), creación automática de la BateríaDePreguntas asociada y transferencia automática a edición mediante <<include>> editarAsignatura().
+
+**Enlace:** [session-ses_1a14.md](conversations/session-ses_1a14.md)
+
+**Decisión:** 
