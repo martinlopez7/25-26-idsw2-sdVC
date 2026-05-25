@@ -215,3 +215,17 @@ El análisis siguió el patrón "el delgado" (creación rápida con filosofía C
 **Enlace:** [session-ses_1a64.md](conversations/session-ses_1a64.md)
 
 **Decisión:** El análisis que hizo del caso de uso crearGrado() tuvo algunos errores. En el diagrama de colaboración no siguió bien el formato deseado y lo tuve que modificar manualmente.
+
+## [25/05/2026][11:30] Análisis de editarGrado()
+
+**Prompt:** empezar → Analiza el caso de uso editarGrado
+
+**Resultado:** Se realizó el análisis MVC de editarGrado() generando:
+- documents/analisis/editarGrado/README.md
+- modelosUML/analisis/editarGrado/colaboracion.puml
+
+El análisis siguió el patrón "el gordo" (edición continua con múltiples ciclos), identificando las clases: EditarGradoView, GradosController, GradoRepository, Grado. El flujo incluye carga de datos del grado, presentación para edición continua (nombre, código, lista de alumnos), guardado incremental y navegación flexible mediante <<include>> verGrados() y <<include>> eliminarGrado().
+
+**Enlace:** [session-ses_1a18.md](conversations/session-ses_1a18.md)
+
+**Decisión:** 

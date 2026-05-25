@@ -1,0 +1,34 @@
+@startuml editarGrado-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":Grados Abierto" as GradosAbierto
+rectangle #CDEBA5 ":Grado Abierto" as GradoAbierto
+rectangle #CDEBA5 ":Collaboration CrearGrado" as CrearGrado
+rectangle #CDEBA5 ":Collaboration verGrados" as VerGrados
+rectangle #CDEBA5 ":Collaboration eliminarGrado" as EliminarGrado
+
+package editarGrado as "editarGrado()" {
+    rectangle #629EF9 EditarGradoView
+    rectangle #b5bd68 GradosController
+    rectangle #F2AC4E GradoRepository
+    rectangle #F2AC4E Grado
+}
+
+CrearGrado --> EditarGradoView: editarGrado(gradoId)
+GradosAbierto --> EditarGradoView: editarGrado(gradoId)
+GradoAbierto --> EditarGradoView: editarGrado(gradoId)
+
+EditarGradoView -d-> GradosController: cargarGradoParaEdición(gradoId) : Grado
+
+GradosController --> GradoRepository: obtenerPorId(gradoId) : Grado
+
+EditarGradoView --> GradosController: modificarCampos(gradoId, cambios) : boolean
+
+GradosController --> GradoRepository: actualizar(grado) : boolean
+
+GradoRepository -- Grado
+
+EditarGradoView ..> VerGrados: <<include>> verGrados()
+EditarGradoView ..> EliminarGrado: <<include>> eliminarGrado()
+
+@enduml
