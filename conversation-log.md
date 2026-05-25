@@ -270,4 +270,4 @@ El análisis siguió el patrón "el gordo" (edición continua con múltiples cic
 
 **Enlace:** [session-ses_1a15.md](conversations/session-ses_1a15.md)
 
-**Decisión:** 
+**Decisión:** El análisis que hizo del caso de uso editarAlumno se aceptó.
