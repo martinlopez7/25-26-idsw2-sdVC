@@ -243,3 +243,17 @@ El análisis identificó las clases de análisis (EliminarGradoView, GradosContr
 **Enlace:** [session-ses_1a17.md](conversations/session-ses_1a17.md)
 
 **Decisión:** El análisis que hizo del caso de uso eliminarGrado se aceptó.
+
+## [25/05/2026][12:10] Análisis de crearAlumno()
+
+**Prompt:** analiza el caso de uso crearAlumno
+
+**Resultado:** Se realizó el análisis MVC de crearAlumno() generando:
+- documents/analisis/crearAlumno/README.md
+- modelosUML/analisis/crearAlumno/colaboracion.puml
+
+El análisis siguió el patrón "el delgado" (creación rápida con filosofía C→U), identificando las clases: CrearAlumnoView, AlumnosController, AlumnoRepository, Alumno. El flujo incluye creación mínima con datos esenciales (nombre, apellidos, DNI) y transferencia automática a edición mediante <<include>> editarAlumno().
+
+**Enlace:** [session-export.md](conversations/session-ses_1a16.md)
+
+**Decisión:** 
