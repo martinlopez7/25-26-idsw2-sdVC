@@ -256,4 +256,4 @@ El análisis siguió el patrón "el delgado" (creación rápida con filosofía C
 
 **Enlace:** [session-export.md](conversations/session-ses_1a16.md)
 
-**Decisión:** 
+**Decisión:** El análisis que hizo del caso de uso crearAlumno se aceptó.
