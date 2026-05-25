@@ -257,3 +257,17 @@ El análisis siguió el patrón "el delgado" (creación rápida con filosofía C
 **Enlace:** [session-export.md](conversations/session-ses_1a16.md)
 
 **Decisión:** El análisis que hizo del caso de uso crearAlumno se aceptó.
+
+## [25/05/2026][12:25] Análisis de editarAlumno()
+
+**Prompt:** analiza el caso de uso editarAlumno
+
+**Resultado:** Se realizó el análisis MVC de editarAlumno() generando:
+- documents/analisis/editarAlumno/README.md
+- modelosUML/analisis/editarAlumno/colaboracion.puml
+
+El análisis siguió el patrón "el gordo" (edición continua con múltiples ciclos), identificando las clases: EditarAlumnoView, AlumnosController, AlumnoRepository, Alumno. El flujo incluye carga de datos del alumno, presentación para edición continua (DNI, nombre, apellidos), guardado incremental y navegación flexible mediante <<include>> verAlumnos() y <<include>> eliminarAlumno(). Triple entrada desde ALUMNOS_ABIERTO, ALUMNO_ABIERTO o desde crearAlumno().
+
+**Enlace:** [session-ses_1a15.md](conversations/session-ses_1a15.md)
+
+**Decisión:** 
