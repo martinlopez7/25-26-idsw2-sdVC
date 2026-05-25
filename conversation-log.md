@@ -271,3 +271,17 @@ El análisis siguió el patrón "el gordo" (edición continua con múltiples cic
 **Enlace:** [session-ses_1a15.md](conversations/session-ses_1a15.md)
 
 **Decisión:** El análisis que hizo del caso de uso editarAlumno se aceptó.
+
+## [25/05/2026][12:31] Análisis de eliminarAlumno()
+
+**Prompt:** analiza el caso de uso eliminarAlumno
+
+**Resultado:** Se realizó el análisis MVC de eliminarAlumno() generando:
+- documents/analisis/eliminarAlumno/README.md
+- modelosUML/analisis/eliminarAlumno/colaboracion.puml
+
+El análisis siguió el patrón de eliminación segura con confirmación previa, identificando las clases: EliminarAlumnoView, AlumnosController, AlumnoRepository, Alumno. El flujo incluye carga de datos del alumno, presentación de información con advertencia de eliminación irreversible, confirmación/cancelación por parte del docente, y navegación mediante <<include>> verAlumnos(). Doble entrada desde ALUMNOS_ABIERTO o ALUMNO_ABIERTO.
+
+**Enlace:** [session-ses_1a19.md](conversations/session-ses_1a19.md)
+
+**Decisión:**
