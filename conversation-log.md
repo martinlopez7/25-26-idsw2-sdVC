@@ -229,3 +229,17 @@ El análisis siguió el patrón "el gordo" (edición continua con múltiples cic
 **Enlace:** [session-ses_1a18.md](conversations/session-ses_1a18.md)
 
 **Decisión:** El análisis que hizo del caso de uso editarGrado() se aceptó pero tuvo un pequeño error. En el diagrama de colaboración he añadido la relación Grado → Alumno, ya que un grado esta compuesto de alumnos, por lo que al editar un grado la entidad `Alumno` debe de estar presente.
+
+## [25/05/2026][11:52] Análisis de eliminarGrado()
+
+**Prompt:** analiza el caso de uso eliminarGrado
+
+**Resultado:** Se realizó el análisis MVC de eliminarGrado() generando:
+- documents/analisis/eliminarGrado/README.md
+- modelosUML/analisis/eliminarGrado/colaboracion.puml
+
+El análisis identificó las clases de análisis (EliminarGradoView, GradosController, GradoRepository, Grado, Alumno), sus responsabilidades, colaboraciones y opciones de navegación siguiendo el patrón de eliminación segura con confirmación previa. Doble entrada desde GRADOS_ABIERTO o GRADO_ABIERTO.
+
+**Enlace:** [session-ses_1a17.md](conversations/session-ses_1a17.md)
+
+**Decisión:** 

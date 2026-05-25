@@ -1,0 +1,32 @@
+@startuml eliminarGrado-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":GRADOS_ABIERTO" as GradosAbierto
+rectangle #CDEBA5 ":GRADO_ABIERTO" as GradoAbierto
+rectangle #CDEBA5 ":Collaboration verGrados" as VerGrados
+
+package eliminarGrado as "eliminarGrado()" {
+    rectangle #629EF9 EliminarGradoView
+    rectangle #b5bd68 GradosController
+    rectangle #F2AC4E GradoRepository
+    rectangle #F2AC4E Grado
+    rectangle #F2AC4E Alumno
+}
+
+GradosAbierto --> EliminarGradoView: eliminarGrado(gradoId)
+GradoAbierto --> EliminarGradoView: eliminarGrado(gradoId)
+
+EliminarGradoView -d-> GradosController: cargarGradoParaEliminacion(gradoId) : Grado
+
+GradosController --> GradoRepository: obtenerPorId(gradoId) : Grado
+
+GradoRepository -- Grado
+Grado -- Alumno
+
+EliminarGradoView --> GradosController: eliminarGrado(gradoId) : void
+
+GradosController --> GradoRepository: eliminar(gradoId) : void
+
+EliminarGradoView ..> VerGrados: <<include>> verGrados()
+
+@enduml
