@@ -242,4 +242,4 @@ El análisis identificó las clases de análisis (EliminarGradoView, GradosContr
 
 **Enlace:** [session-ses_1a17.md](conversations/session-ses_1a17.md)
 
-**Decisión:** 
+**Decisión:** El análisis que hizo del caso de uso eliminarGrado se aceptó.
