@@ -12,6 +12,7 @@ package editarGrado as "editarGrado()" {
     rectangle #b5bd68 GradosController
     rectangle #F2AC4E GradoRepository
     rectangle #F2AC4E Grado
+    rectangle #F2AC4E Alumno
 }
 
 CrearGrado --> EditarGradoView: editarGrado(gradoId)
@@ -27,6 +28,7 @@ EditarGradoView --> GradosController: modificarCampos(gradoId, cambios) : boolea
 GradosController --> GradoRepository: actualizar(grado) : boolean
 
 GradoRepository -- Grado
+Grado -- Alumno
 
 EditarGradoView ..> VerGrados: <<include>> verGrados()
 EditarGradoView ..> EliminarGrado: <<include>> eliminarGrado()

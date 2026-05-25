@@ -228,4 +228,4 @@ El análisis siguió el patrón "el gordo" (edición continua con múltiples cic
 
 **Enlace:** [session-ses_1a18.md](conversations/session-ses_1a18.md)
 
-**Decisión:** 
+**Decisión:** El análisis que hizo del caso de uso editarGrado() se aceptó pero tuvo un pequeño error. En el diagrama de colaboración he añadido la relación Grado → Alumno, ya que un grado esta compuesto de alumnos, por lo que al editar un grado la entidad `Alumno` debe de estar presente.

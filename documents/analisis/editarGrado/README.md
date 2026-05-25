@@ -87,6 +87,17 @@ Análisis de colaboración del caso de uso `editarGrado()` mediante el patrón M
 
 **Colaboraciones**:
 - **Repositorio**: Es gestionado por `GradoRepository`
+- **Entidad**: Se relaciona con `Alumno` (un grado tiene muchos alumnos inscritos)
+
+#### Alumno
+**Estereotipo**: Entidad  
+**Responsabilidades**:
+- Representar los alumnos matriculados en el grado
+- Encapsular atributos: nombre, apellidos, DNI
+- Mantener la relación de pertenencia al grado durante la edición
+
+**Colaboraciones**:
+- **Entidad**: Se relaciona con `Grado` (muchos alumnos se cursan en un grado)
 
 ## flujo de colaboración principal
 
@@ -133,7 +144,7 @@ Este análisis implementa edición completa que:
 
 ### patrón MVC para edición de grados
 
-- **Model**: `Grado` + `GradoRepository` (datos del grado y persistencia)
+- **Model**: `Grado` + `Alumno` + `GradoRepository` (datos del grado, alumnos asociados y persistencia)
 - **View**: `EditarGradoView` (edición continua e interacción)
 - **Controller**: `GradosController` (coordinación y validación de edición)
 
