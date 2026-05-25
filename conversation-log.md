@@ -299,4 +299,4 @@ El análisis siguió el patrón "el delgado" (filosofía C→U), identificando l
 
 **Enlace:** [session-ses_1a14.md](conversations/session-ses_1a14.md)
 
-**Decisión:** 
+**Decisión:** El análisis que hizo del caso de uso crearAsignatura se modificó. En el diagrama de colaboración dio a entender que cuando se crea una asignatura se le asigna un solo grado, pero esto no es así, una asignatura puede tener asociada mas de un grado. Además, esta asociación no se hace en la creación, si no en la edición, que se ejecuta inmediatamente después de proporcionar los datos mínimos de la asignatura.

@@ -14,7 +14,6 @@ control "AsignaturaController" as Controlador <<control>>
 
 ' Clases de análisis - Entidad (Entity)
 entity "AsignaturaRepository" as Repositorio <<entity>>
-entity "GradoRepository" as GradoRepo <<entity>>
 entity "Asignatura" as AsignaturaEntity <<entity>>
 entity "BateriaDePreguntas" as BateriaEntity <<entity>>
 
@@ -31,43 +30,30 @@ note right
 • Título (obligatorio)
 • Código (obligatorio)
 • Curso académico (obligatorio)
-• Alumnos matriculados
-• Grados asociados
 
 **Sistema permite solicitar:**
 • crear asignatura
 • cancelar creación
 end note
 
-Vista -> Controlador : 3: cargarGrados()
+Vista -> Controlador : 3: validarDatosMínimos(título, código, cursoAcadémico)
 activate Controlador
 
-Controlador -> GradoRepo : 4: listarGrados()
-activate GradoRepo
-GradoRepo --> Controlador : 5: listaGrados : List<Grado>
-deactivate GradoRepo
-
-Controlador --> Vista : 6: listaGrados : List<Grado>
-deactivate Controlador
-
-Vista -> Controlador : 7: validarDatosMínimos(título, código, cursoAcadémico)
-activate Controlador
-
-Controlador -> Repositorio : 8: verificarUnicidad(código)
+Controlador -> Repositorio : 4: verificarUnicidad(código)
 activate Repositorio
-Repositorio --> Controlador : 9: esÚnico : boolean
+Repositorio --> Controlador : 5: esÚnico : boolean
 deactivate Repositorio
 
-Controlador --> Vista : 10: validaciónCorrecta : boolean
+Controlador --> Vista : 6: validaciónCorrecta : boolean
 deactivate Controlador
 
-Vista -> Controlador : 11: crearAsignatura(título, código, cursoAcadémico, id_grado)
+Vista -> Controlador : 7: crearAsignatura(título, código, cursoAcadémico)
 activate Controlador
 
-Controlador -> Repositorio : 12: crear(título, código, cursoAcadémico, id_grado) : Asignatura
+Controlador -> Repositorio : 8: crear(título, código, cursoAcadémico) : Asignatura
 activate Repositorio
 
-Repositorio -> AsignaturaEntity : 13: new Asignatura(título, código, cursoAcadémico)
+Repositorio -> AsignaturaEntity : 9: new Asignatura(título, código, cursoAcadémico)
 activate AsignaturaEntity
 note right
 **Asignatura creada con datos mínimos:**
@@ -78,10 +64,10 @@ note right
 • ID: generado automáticamente
 end note
 
-AsignaturaEntity --> Repositorio : 14: asignaturaNueva : Asignatura
+AsignaturaEntity --> Repositorio : 10: asignaturaNueva : Asignatura
 deactivate AsignaturaEntity
 
-Repositorio -> BateriaEntity : 15: new BateriaDePreguntas(asignaturaNueva)
+Repositorio -> BateriaEntity : 11: new BateriaDePreguntas(asignaturaNueva)
 activate BateriaEntity
 note right
 **Batería de preguntas creada automáticamente:**
@@ -89,17 +75,17 @@ note right
 • Preguntas: vacía (inicial)
 end note
 
-BateriaEntity --> Repositorio : 16: bateriaNueva : BateriaDePreguntas
+BateriaEntity --> Repositorio : 12: bateriaNueva : BateriaDePreguntas
 deactivate BateriaEntity
 
-Repositorio -> Repositorio : 17: persistir(asignaturaNueva, bateriaNueva)
-Repositorio --> Controlador : 18: asignaturaCreada : Asignatura
+Repositorio -> Repositorio : 13: persistir(asignaturaNueva, bateriaNueva)
+Repositorio --> Controlador : 14: asignaturaCreada : Asignatura
 deactivate Repositorio
 
-Controlador --> Vista : 19: asignaturaCreada : Asignatura
+Controlador --> Vista : 15: asignaturaCreada : Asignatura
 deactivate Controlador
 
-Vista -> EditarAsignatura : 20: <<include>> editarAsignatura(asignaturaNueva)
+Vista -> EditarAsignatura : 16: <<include>> editarAsignatura(asignaturaNueva)
 note right
 **Transferencia automática C→U**
 • Asignatura básica creada

@@ -8,29 +8,23 @@ package crearAsignatura as "crearAsignatura()" {
     rectangle #629EF9 CrearAsignaturaView
     rectangle #b5bd68 AsignaturaController
     rectangle #F2AC4E AsignaturaRepository
-    rectangle #F2AC4E GradoRepository
     rectangle #F2AC4E Asignatura
     rectangle #F2AC4E BateriaDePreguntas
-    rectangle #F2AC4E Grado
 }
 
 AsignaturasAbierto --> CrearAsignaturaView: crearAsignatura()
 
-CrearAsignaturaView -d-> AsignaturaController: cargarGrados() : List<Grado>
-
-AsignaturaController --> GradoRepository: listarGrados() : List<Grado>
 
 CrearAsignaturaView -d-> AsignaturaController: validarDatosMínimos(título, código, cursoAcadémico) : boolean
 
 AsignaturaController --> AsignaturaRepository: verificarUnicidad(código) : boolean
 
-CrearAsignaturaView --> AsignaturaController: crearAsignatura(título, código, cursoAcadémico, id_grado) : Asignatura
+CrearAsignaturaView --> AsignaturaController: crearAsignatura(título, código, cursoAcadémico) : Asignatura
 
-AsignaturaController --> AsignaturaRepository: crear(título, código, cursoAcadémico, id_grado) : Asignatura
+AsignaturaController --> AsignaturaRepository: crear(título, código, cursoAcadémico) : Asignatura
 
 AsignaturaRepository -- Asignatura
 AsignaturaRepository -- BateriaDePreguntas
-GradoRepository -- Grado
 
 CrearAsignaturaView ..> EditarAsignatura: <<include>> editarAsignatura(asignaturaNueva)
 
