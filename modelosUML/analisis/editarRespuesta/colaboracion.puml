@@ -1,0 +1,40 @@
+@startuml editarRespuesta-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":RESPUESTAS_ABIERTO" as RespuestasAbierto
+rectangle #CDEBA5 ":RESPUESTA_ABIERTO" as RespuestaAbierto
+rectangle #CDEBA5 ":RESPUESTAS_CONTEXTUALES_ABIERTO" as RespuestasContextualesAbierto
+rectangle #CDEBA5 ":RESPUESTA_CONTEXTUAL_ABIERTO" as RespuestaContextualAbierto
+rectangle #CDEBA5 ":Collaboration crearRespuesta" as CrearRespuesta
+rectangle #CDEBA5 ":Collaboration verRespuestas" as VerRespuestas
+rectangle #CDEBA5 ":Collaboration eliminarRespuesta" as EliminarRespuesta
+
+package editarRespuesta as "editarRespuesta()" {
+    rectangle #629EF9 EditarRespuestaView
+    rectangle #b5bd68 RespuestasController
+    rectangle #F2AC4E RespuestaRepository
+    rectangle #F2AC4E Respuesta
+    rectangle #F2AC4E Pregunta
+}
+
+RespuestasAbierto --> EditarRespuestaView: editarRespuesta(respuestaId)
+RespuestaAbierto --> EditarRespuestaView: editarRespuesta(respuestaId)
+RespuestasContextualesAbierto --> EditarRespuestaView: editarRespuesta(respuestaId)
+RespuestaContextualAbierto --> EditarRespuestaView: editarRespuesta(respuestaId)
+CrearRespuesta --> EditarRespuestaView: editarRespuesta(respuestaNueva)
+
+EditarRespuestaView -d-> RespuestasController: cargarRespuestaParaEdicion(respuestaId) : Respuesta
+
+RespuestasController --> RespuestaRepository: obtenerPorId(respuestaId) : Respuesta
+
+RespuestaRepository -- Respuesta
+Respuesta --> Pregunta
+
+EditarRespuestaView --> RespuestasController: modificarCampos(respuestaId, cambios) : boolean
+
+RespuestasController --> RespuestaRepository: actualizar(respuesta) : boolean
+
+EditarRespuestaView ..> VerRespuestas: <<include>> verRespuestas(preguntaId)
+EditarRespuestaView ..> EliminarRespuesta: <<include>> eliminarRespuesta(respuestaId)
+
+@enduml
