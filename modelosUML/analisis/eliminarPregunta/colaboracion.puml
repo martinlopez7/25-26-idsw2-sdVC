@@ -12,6 +12,7 @@ package eliminarPregunta as "eliminarPregunta()" {
     rectangle #b5bd68 PreguntasController
     rectangle #F2AC4E PreguntaRepository
     rectangle #F2AC4E Pregunta
+    rectangle #F2AC4E Respuesta
 }
 
 PreguntasAbierto --> EliminarPreguntaView: eliminarPregunta(preguntaId)
@@ -30,5 +31,7 @@ EliminarPreguntaView --> PreguntasController: eliminarPregunta(preguntaId) : voi
 PreguntasController --> PreguntaRepository: eliminar(preguntaId) : void
 
 EliminarPreguntaView ..> VerPreguntas: <<include>> verPreguntas()
+
+Pregunta -- Respuesta
 
 @enduml

@@ -369,4 +369,4 @@ El análisis siguió el patrón de eliminación segura con confirmación previa,
 
 **Enlace:** [session-ses_19c8.md](conversations/session-ses_19c8.md)
 
-**Decisión:**
+**Decisión:** El análisis que hizo del caso de uso eliminarPregunta no fue del todo correcto. Se olvidó de que las entidades Pregunta y Respuesta tienen una relación de composición, es decir, cuando la pregunta muere la respuesta también, por lo que tuve que modificarlo.

@@ -33,7 +33,7 @@ Análisis de colaboración del caso de uso `eliminarPregunta()` mediante el patr
 **Responsabilidades**:
 - Recibir la solicitud de eliminación de pregunta
 - Presentar información completa de la pregunta a eliminar
-- Mostrar enunciado, tema y dificultad de la pregunta
+- Mostrar enunciado, tema, dificultad y respuestas de la pregunta
 - Mostrar advertencia de eliminación irreversible
 - Permitir confirmación o cancelación de eliminación
 
@@ -80,12 +80,21 @@ Análisis de colaboración del caso de uso `eliminarPregunta()` mediante el patr
 **Colaboraciones**:
 - **Repositorio**: Es gestionado por `PreguntaRepository`
 
+#### Respuesta
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Representar la información de las respuestas que se van a eliminar
+- Encapsular atributos: texto de respuesta, esCorrecta
+
+**Colaboraciones**:
+- **Repositorio**: Es gestionado por `Pregunta`
+
 ## flujo de colaboración principal
 
 1. **Inicio**: `:PREGUNTAS_ABIERTO`, `:PREGUNTAS_CONTEXTUALES_ABIERTO`, `:PREGUNTA_ABIERTO` o `:PREGUNTA_CONTEXTUAL_ABIERTO` → `EliminarPreguntaView.eliminarPregunta(preguntaId)`
 2. **Carga**: `EliminarPreguntaView` → `PreguntasController.cargarPreguntaParaEliminacion(preguntaId)`
 3. **Obtención**: `PreguntasController` → `PreguntaRepository.obtenerPorId(preguntaId) : Pregunta`
-4. **Presentación**: `EliminarPreguntaView` presenta información de la `Pregunta` (enunciado, tema, dificultad) con advertencia
+4. **Presentación**: `EliminarPreguntaView` presenta información de la `Pregunta` (enunciado, tema, dificultad y respuestas) con advertencia
 5. **Confirmación**: Docente confirma o cancela en `EliminarPreguntaView`
 6. **Eliminación**: `EliminarPreguntaView` → `PreguntasController.eliminarPregunta(preguntaId)`
 7. **Persistencia**: `PreguntasController` → `PreguntaRepository.eliminar(preguntaId)`
@@ -96,7 +105,7 @@ Análisis de colaboración del caso de uso `eliminarPregunta()` mediante el patr
 ### confirmación obligatoria
 
 Este análisis implementa eliminación con confirmación que:
-- **Muestra información completa**: Enunciado, tema y dificultad de la pregunta
+- **Muestra información completa**: Enunciado, tema, dificultad y respuestas de la pregunta
 - **Advierte sobre irreversibilidad**: Mensaje claro de advertencia
 - **Requiere confirmación explícita**: No permite eliminación accidental
 
@@ -115,7 +124,7 @@ Este análisis implementa eliminación con confirmación que:
 
 ### patrón MVC para eliminación de preguntas
 
-- **Model**: `Pregunta` + `PreguntaRepository` (datos de la pregunta y eliminación)
+- **Model**: `Pregunta` + `PreguntaRepository` + `Respuesta` (datos de la pregunta, respuesta y eliminación)
 - **View**: `EliminarPreguntaView` (confirmación e interacción)
 - **Controller**: `PreguntasController` (coordinación y validación)
 
