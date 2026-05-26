@@ -398,3 +398,17 @@ El análisis siguió el patrón "el gordo" (edición continua con múltiples cic
 **Enlace:** [session-ses_19c9.md](conversations/session-ses_19c9.md)
 
 **Decisión:** El análisis que hizo del caso de uso editarRespuesta fue correcto. Sin embargo, en el README se definió que solo una respuesta de cada pregunta puede ser correcta, lo cual he modificado porque cabe la posibilidad de que haya mas de una respuesta correcta.
+
+## [26/05/2026][11:55] Análisis de eliminarRespuesta()
+
+**Prompt:** analiza el caso de uso eliminarRespuesta
+
+**Resultado:** Se realizó el análisis MVC de eliminarRespuesta() generando:
+- documents/analisis/eliminarRespuesta/README.md
+- modelosUML/analisis/eliminarRespuesta/colaboracion.puml
+
+El análisis siguió el patrón de eliminación segura con confirmación previa, identificando las clases: EliminarRespuestaView, RespuestasController, RespuestaRepository, Respuesta, Pregunta. El flujo incluye carga de datos de la respuesta, presentación de información con advertencia de eliminación irreversible (contenido, correcta/incorrecta), confirmación/cancelación por parte del docente, y navegación mediante <<include>> verRespuestas(). Doble entrada desde RESPUESTAS_ABIERTO o RESPUESTAS_CONTEXTUALES_ABIERTO.
+
+**Enlace:** [session-ses_19c4.md](conversations/session-ses_19c4.md)
+
+**Decisión:** 

@@ -1,0 +1,33 @@
+@startuml eliminarRespuesta-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":RESPUESTAS_ABIERTO" as RespuestasAbierto
+rectangle #CDEBA5 ":RESPUESTAS_CONTEXTUALES_ABIERTO" as RespuestasContextualesAbierto
+rectangle #CDEBA5 ":Collaboration verRespuestas" as VerRespuestas
+
+package eliminarRespuesta as "eliminarRespuesta()" {
+    rectangle #629EF9 EliminarRespuestaView
+    rectangle #b5bd68 RespuestasController
+    rectangle #F2AC4E RespuestaRepository
+    rectangle #F2AC4E Respuesta
+    rectangle #F2AC4E Pregunta
+}
+
+RespuestasAbierto --> EliminarRespuestaView: eliminarRespuesta(respuestaId)
+RespuestasContextualesAbierto --> EliminarRespuestaView: eliminarRespuesta(respuestaId)
+
+EliminarRespuestaView -d-> RespuestasController: cargarRespuestaParaEliminacion(respuestaId) : Respuesta
+
+RespuestasController --> RespuestaRepository: obtenerPorId(respuestaId) : Respuesta
+
+RespuestaRepository -- Respuesta
+
+EliminarRespuestaView --> RespuestasController: eliminarRespuesta(respuestaId) : void
+
+RespuestasController --> RespuestaRepository: eliminar(respuestaId) : void
+
+EliminarRespuestaView ..> VerRespuestas: <<include>> verRespuestas()
+
+Pregunta -- Respuesta
+
+@enduml
