@@ -38,12 +38,12 @@ Análisis de colaboración del caso de uso `editarAsignatura()` mediante el patr
 - Presentar formulario de edición con todos los campos disponibles
 - Capturar modificaciones del docente
 - Mantener sesión de edición activa para modificaciones continuas
-- Manejar las acciones de guardar, cancelar, ver preguntas, generar examen y eliminar
+- Manejar las acciones de ver preguntas, generar examen, eliminar y cancelar
 
 **Colaboraciones**:
 - **Entrada**: Recibe `editarAsignatura(asignaturaId)` desde `:Asignaturas Abierto`, `:Asignatura Abierto`, `:Preguntas Contextuales Abierto`, `:Examenes Asignados Contextuales` o desde `:Collaboration CrearAsignatura`
 - **Control**: Se comunica con `AsignaturaController`
-- **Salida**: **&lt;&lt;include&gt;&gt;** `:Collaboration verAsignaturas()` para regresar a lista, `:Asignatura Abierto` tras guardar, o navegación contextual a preguntas/exámenes
+- **Salida**: **&lt;&lt;include&gt;&gt;** `:Collaboration verAsignaturas()`, `:Collaboration verPreguntas()`, `:Collaboration generarExamenes()`, `:Collaboration eliminarAsignatura()`
 
 ### clases de control
 
@@ -59,7 +59,7 @@ Análisis de colaboración del caso de uso `editarAsignatura()` mediante el patr
 
 **Colaboraciones**:
 - **Vista**: Responde a solicitudes de `EditarAsignaturaView`
-- **Repositorio**: Delega operaciones de datos a `AsignaturaRepository`, `GradoRepository` y `PreguntaRepository`
+- **Repositorio**: Delega operaciones de datos a `AsignaturaRepository`
 
 ### clases de entidad (entity)
 
@@ -76,28 +76,6 @@ Análisis de colaboración del caso de uso `editarAsignatura()` mediante el patr
 - **Control**: Responde a `AsignaturaController`
 - **Entidad**: Gestiona instancias de `Asignatura` y `BateriaDePreguntas`
 
-#### GradoRepository
-**Estereotipo**: Entidad  
-**Responsabilidades**:
-- Abstraer el acceso a datos de grados académicos
-- Proporcionar método para listar todos los grados disponibles
-- Gestionar asociación entre asignatura y grados
-
-**Colaboraciones**:
-- **Control**: Responde a `AsignaturaController`
-- **Entidad**: Gestiona instancias de `Grado`
-
-#### PreguntaRepository
-**Estereotipo**: Entidad  
-**Responsabilidades**:
-- Abstraer el acceso a datos de preguntas
-- Proporcionar método para contar preguntas de una asignatura
-- Gestionar preguntas asociadas a la batería de preguntas
-
-**Colaboraciones**:
-- **Control**: Responde a `AsignaturaController`
-- **Entidad**: Gestiona instancias de `Pregunta`
-
 #### Asignatura
 **Estereotipo**: Entidad  
 **Responsabilidades**:
@@ -110,6 +88,15 @@ Análisis de colaboración del caso de uso `editarAsignatura()` mediante el patr
 **Colaboraciones**:
 - **Repositorio**: Es gestionada por `AsignaturaRepository`
 
+#### Grado
+**Estereotipo**: Entidad  
+**Responsabilidades**:
+- Representar la información de un grado académico
+- Mantener asociación con asignaturas
+
+**Colaboraciones**:
+- **Entidad**: Se muestra en el formulario de edición de asignatura
+
 #### BateriaDePreguntas
 **Estereotipo**: Entidad  
 **Responsabilidades**:
@@ -120,24 +107,6 @@ Análisis de colaboración del caso de uso `editarAsignatura()` mediante el patr
 **Colaboraciones**:
 - **Repositorio**: Es gestionada junto con `AsignaturaRepository`
 
-#### Grado
-**Estereotipo**: Entidad  
-**Responsabilidades**:
-- Representar la información de un grado académico
-- Mantener asociación con asignaturas
-
-**Colaboraciones**:
-- **Repositorio**: Es gestionado por `GradoRepository`
-
-#### Pregunta
-**Estereotipo**: Entidad  
-**Responsabilidades**:
-- Representar la información de una pregunta
-- Pertenecer a una batería de preguntas
-
-**Colaboraciones**:
-- **Repositorio**: Es gestionado por `PreguntaRepository`
-
 ## flujo de colaboración principal
 
 ### secuencia: editar asignatura
@@ -145,19 +114,15 @@ Análisis de colaboración del caso de uso `editarAsignatura()` mediante el patr
 1. **Inicio**: `:Asignaturas Abierto`, `:Asignatura Abierto`, `:Preguntas Contextuales Abierto`, `:Examenes Asignados Contextuales` o `:CrearAsignatura` → `EditarAsignaturaView.editarAsignatura(asignaturaId)`
 2. **Carga**: `EditarAsignaturaView` → `AsignaturaController.cargarAsignaturaParaEdición(asignaturaId)`
 3. **Obtención**: `AsignaturaController` → `AsignaturaRepository.obtenerPorId(asignaturaId) : Asignatura`
-4. **Listado**: `AsignaturaController` → `GradoRepository.listarGrados() : List<Grado>`
-5. **Conteo**: `AsignaturaController` → `PreguntaRepository.contarPreguntas(asignaturaId) : int`
-6. **Presentación**: `EditarAsignaturaView` presenta formulario con datos completos de la `Asignatura`, lista de `Grado` disponibles y número de preguntas
-7. **Modificación**: Docente modifica campos en `EditarAsignaturaView`
-8. **Actualización**: `EditarAsignaturaView` → `AsignaturaController.modificarCampos(asignaturaId, cambios)`
-9. **Persistencia**: `AsignaturaController` → `AsignaturaRepository.actualizar(asignatura)`
-10. **Opciones**:
-    - **Guardar y continuar**: Permanece en `EditarAsignaturaView`
-    - **Guardar y salir**: `EditarAsignaturaView` → **&lt;&lt;include&gt;&gt;** `:Asignatura Abierto`
-    - **Ver preguntas**: `EditarAsignaturaView` → **&lt;&lt;include&gt;&gt;** `:Preguntas Contextuales Abierto`
-    - **Generar examen**: `EditarAsignaturaView` → **&lt;&lt;include&gt;&gt;** `:Examenes Generados Contextuales`
-    - **Eliminar**: `EditarAsignaturaView` → **&lt;&lt;include&gt;&gt;** `:Asignaturas Abierto` (con confirmación)
-    - **Cancelar**: `EditarAsignaturaView` → **&lt;&lt;include&gt;&gt;** `:Asignaturas Abierto`
+4. **Presentación**: `EditarAsignaturaView` presenta formulario con datos completos de la `Asignatura`
+5. **Modificación**: Docente modifica campos en `EditarAsignaturaView`
+6. **Actualización**: `EditarAsignaturaView` → `AsignaturaController.modificarCampos(asignaturaId, cambios)`
+7. **Persistencia**: `AsignaturaController` → `AsignaturaRepository.actualizar(asignatura)`
+8. **Opciones**:
+    - **Ver preguntas**: `EditarAsignaturaView` → **&lt;&lt;include&gt;&gt;** `:Collaboration verPreguntas(asignaturaId)`
+    - **Generar examen**: `EditarAsignaturaView` → **&lt;&lt;include&gt;&gt;** `:Collaboration generarExamenes(asignaturaId)`
+    - **Eliminar**: `EditarAsignaturaView` → **&lt;&lt;include&gt;&gt;** `:Collaboration eliminarAsignatura(asignaturaId)`
+    - **Cancelar**: `EditarAsignaturaView` → **&lt;&lt;include&gt;&gt;** `:Collaboration verAsignaturas()`
 
 ## patrón de edición completa para asignaturas
 
@@ -168,7 +133,6 @@ Este análisis implementa edición integral que:
 - **Edición continua**: Permite múltiples modificaciones en sesión sin perder datos
 - **Persistencia flexible**: Guarda cuando docente solicita
 - **Navegación flexible**: Múltiples opciones de salida según contexto de entrada
-- **Información contextual**: Muestra conteo de preguntas y grados disponibles
 
 ### responsabilidades de edición completa
 
@@ -176,10 +140,10 @@ Este análisis implementa edición integral que:
 - **Presenta datos completos**: Información integral de la asignatura
 - **Permite modificaciones**: Campos editables de forma interactiva
 - **Mantiene sesión**: Edición continua sin perder cambios
-- **Controla salida**: Guardar, continuar, ver preguntas, generar examen, eliminar o cancelar
+- **Controla salida**: Ver preguntas, generar examen, eliminar o cancelar
 
 **AsignaturaController** coordina modificaciones:
-- **Carga completa**: Obtiene asignatura, lista de grados y conteo de preguntas
+- **Carga completa**: Obtiene asignatura del repositorio
 - **Valida cambios**: Verifica integridad de datos
 - **Procesa actualizaciones**: Actualiza asignatura según cambios
 - **Facilita continuidad**: Mantiene sesión de edición activa
@@ -220,19 +184,18 @@ El diseño permite entrada desde múltiples contextos:
 ### patrón include para navegación
 
 - **Separación de responsabilidades**: editarAsignatura() se enfoca en editar
-- **Reutilización**: **&lt;&lt;include&gt;&gt;** verAsignaturas(), verPreguntas(), generarExamenes() evita duplicar funcionalidad
+- **Reutilización**: **&lt;&lt;include&gt;&gt;** verAsignaturas(), verPreguntas(), generarExamenes(), eliminarAsignatura() evita duplicar funcionalidad
 - **Navegación contextual**: Regresa al contexto apropiado según la acción del usuario
-- **Flexibilidad**: Puede permanecer en edición, guardar y permanecer, o guardar y salir
 
 ### gestión de grados
 
 - **Asociación múltiple**: Una asignatura puede tener varios grados asociados
-- **Selección dinámica**: Se muestran todos los grados disponibles para asociación
-- **Persistent**: Los cambios en grados se guardan con la asignatura
+- **Presentación**: Los grados asociados se muestran en el formulario de edición
+- **Persistencia**: Los cambios en grados se guardan con la asignatura
 
 ### experiencia de usuario académica
 
-- **Información completa**: Muestra todos los datos de la asignatura incluyendo número de preguntas
+- **Información completa**: Muestra todos los datos de la asignatura
 - **Modificación flexible**: Permite editar cualquier campo disponible
 - **Sesión continua**: No pierde trabajo durante modificaciones múltiples
 - **Control total**: Usuario decide cuándo guardar y qué acción realizar al salir

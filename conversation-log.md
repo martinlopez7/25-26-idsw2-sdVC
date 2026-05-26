@@ -313,4 +313,4 @@ El análisis siguió el patrón "el gordo" (edición continua con múltiples cic
 
 **Enlace:** [session-ses_19ce.md](conversations/session-ses_19ce.md)
 
-**Decisión:** 
+**Decisión:** El análisis que hizo del caso de uso editarAsignatura se modificó bastante. Las relaciones entre clases de tipo entity se modificaron porque no eran muy claras. Además las salidas disponibles del caso de uso estaban mal, por lo que las tuve que poner manualmente.

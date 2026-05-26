@@ -6,12 +6,15 @@ rectangle #CDEBA5 ":Asignatura Abierto" as AsignaturaAbierto
 rectangle #CDEBA5 ":Preguntas Contextuales Abierto" as PreguntasContextualesAbierto
 rectangle #CDEBA5 ":Examenes Asignados Contextuales" as ExamenesAsignadosContextuales
 rectangle #CDEBA5 ":Collaboration CrearAsignatura" as CrearAsignatura
+rectangle #CDEBA5 ":Collaboration verAsignaturas" as VerAsignaturas
+rectangle #CDEBA5 ":Collaboration verPreguntas" as VerPreguntas
+rectangle #CDEBA5 ":Collaboration eliminarAsignatura" as EliminarAsignatura
+rectangle #CDEBA5 ":Collaboration generarExamenes" as GenerarExamenes
 
 package editarAsignatura as "editarAsignatura()" {
     rectangle #629EF9 EditarAsignaturaView
     rectangle #b5bd68 AsignaturaController
     rectangle #F2AC4E AsignaturaRepository
-    rectangle #F2AC4E GradoRepository
     rectangle #F2AC4E Asignatura
     rectangle #F2AC4E Grado
     rectangle #F2AC4E BateriaDePreguntas
@@ -26,23 +29,19 @@ CrearAsignatura --> EditarAsignaturaView: editarAsignatura(asignaturaNueva)
 EditarAsignaturaView -d-> AsignaturaController: cargarAsignaturaParaEdición(asignaturaId) : Asignatura
 
 AsignaturaController --> AsignaturaRepository: obtenerPorId(asignaturaId) : Asignatura
-AsignaturaController --> GradoRepository: listarGrados() : List<Grado>
 
 EditarAsignaturaView --> AsignaturaController: modificarCampos(asignaturaId, cambios) : boolean
 
 AsignaturaController --> AsignaturaRepository: actualizar(asignatura) : boolean
 
 AsignaturaRepository -- Asignatura
-AsignaturaRepository -- BateriaDePreguntas
-GradoRepository -- Grado
 
 Asignatura --> BateriaDePreguntas : tiene
 Asignatura --> Grado : asociada
 
-EditarAsignaturaView ..> AsignaturasAbierto: <<include>> verAsignaturas()
-EditarAsignaturaView ..> AsignaturaAbierto: guardar()
-EditarAsignaturaView ..> PreguntasContextualesAbierto: <<include>> verPreguntas()
-EditarAsignaturaView ..> ExamenesGeneradosContextuales: <<include>> generarExamenes()
-EditarAsignaturaView ..> AsignaturasAbierto: <<include>> eliminarAsignatura()
+EditarAsignaturaView ..> VerAsignaturas: <<include>> verAsignaturas()
+EditarAsignaturaView ..> VerPreguntas: <<include>> verPreguntas(asignaturaId)
+EditarAsignaturaView ..> GenerarExamenes: <<include>> generarExamenes(asignaturaId)
+EditarAsignaturaView ..> EliminarAsignatura: <<include>> eliminarAsignatura(asiganturaId)
 
 @enduml
