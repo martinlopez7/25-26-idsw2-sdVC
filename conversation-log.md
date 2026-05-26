@@ -356,3 +356,17 @@ El análisis siguió el patrón "el gordo" (edición continua con múltiples cic
 **Enlace:** [session-ses_19ca.md](conversations/session-ses_19ca.md)
 
 **Decisión:** El análisis que hizo del caso de uso editarPregunta se aceptó mayoritariamente. El único error que hubo fue que en el diagrama de colaboración añadió mas casos de uso colaborativos para ejecutar después de editarPregunta() de los que realmente hay.
+
+## [26/05/2026][10:45] Análisis de eliminarPregunta()
+
+**Prompt:** empezar → Analiza el caso de uso eliminarPregunta
+
+**Resultado:** Se realizó el análisis MVC de eliminarPregunta() generando:
+- documents/analisis/eliminarPregunta/README.md
+- modelosUML/analisis/eliminarPregunta/colaboracion.puml
+
+El análisis siguió el patrón de eliminación segura con confirmación previa, identificando las clases: EliminarPreguntaView, PreguntasController, PreguntaRepository, Pregunta. El flujo incluye carga de datos de la pregunta, presentación de información con advertencia de eliminación irreversible (enunciado, tema, dificultad), confirmación/cancelación por parte del docente, y navegación mediante <<include>> verPreguntas(). Cuádruple entrada desde PREGUNTAS_ABIERTO, PREGUNTAS_CONTEXTUALES_ABIERTO, PREGUNTA_ABIERTO o PREGUNTA_CONTEXTUAL_ABIERTO.
+
+**Enlace:** [session-ses_19c8.md](conversations/session-ses_19c8.md)
+
+**Decisión:**

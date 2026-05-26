@@ -1,0 +1,34 @@
+@startuml eliminarPregunta-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":PREGUNTAS_ABIERTO" as PreguntasAbierto
+rectangle #CDEBA5 ":PREGUNTAS_CONTEXTUALES_ABIERTO" as PreguntasContextualesAbierto
+rectangle #CDEBA5 ":PREGUNTA_ABIERTO" as PreguntaAbierto
+rectangle #CDEBA5 ":PREGUNTA_CONTEXTUAL_ABIERTO" as PreguntaContextualAbierto
+rectangle #CDEBA5 ":Collaboration verPreguntas" as VerPreguntas
+
+package eliminarPregunta as "eliminarPregunta()" {
+    rectangle #629EF9 EliminarPreguntaView
+    rectangle #b5bd68 PreguntasController
+    rectangle #F2AC4E PreguntaRepository
+    rectangle #F2AC4E Pregunta
+}
+
+PreguntasAbierto --> EliminarPreguntaView: eliminarPregunta(preguntaId)
+PreguntasContextualesAbierto --> EliminarPreguntaView: eliminarPregunta(preguntaId)
+PreguntaAbierto --> EliminarPreguntaView: eliminarPregunta(preguntaId)
+PreguntaContextualAbierto --> EliminarPreguntaView: eliminarPregunta(preguntaId)
+
+EliminarPreguntaView -d-> PreguntasController: cargarPreguntaParaEliminacion(preguntaId) : Pregunta
+
+PreguntasController --> PreguntaRepository: obtenerPorId(preguntaId) : Pregunta
+
+PreguntaRepository -- Pregunta
+
+EliminarPreguntaView --> PreguntasController: eliminarPregunta(preguntaId) : void
+
+PreguntasController --> PreguntaRepository: eliminar(preguntaId) : void
+
+EliminarPreguntaView ..> VerPreguntas: <<include>> verPreguntas()
+
+@enduml
