@@ -370,3 +370,17 @@ El análisis siguió el patrón de eliminación segura con confirmación previa,
 **Enlace:** [session-ses_19c8.md](conversations/session-ses_19c8.md)
 
 **Decisión:** El análisis que hizo del caso de uso eliminarPregunta no fue del todo correcto. Se olvidó de que las entidades Pregunta y Respuesta tienen una relación de composición, es decir, cuando la pregunta muere la respuesta también, por lo que tuve que modificarlo.
+
+## [26/05/2026][11:07] Análisis de crearRespuesta()
+
+**Prompt:** empezar → Analiza el caso de uso crearRespuesta
+
+**Resultado:** Se realizó el análisis MVC de crearRespuesta() generando:
+- documents/analisis/crearRespuesta/README.md
+- modelosUML/analisis/crearRespuesta/colaboracion.puml
+
+El análisis siguió el patrón "el delgado" (filosofía C→U), identificando las clases: CrearRespuestaView, RespuestasController, RespuestaRepository, Respuesta, Pregunta. La entidad Pregunta se incluyó por la relación de composición (1 *-- many) que existe entre Pregunta y Respuesta. El flujo incluye creación mínima con datos esenciales (contenido, esCorrecta) y transferencia automática a edición mediante <<include>> editarRespuesta(). Doble entrada desde RESPUESTAS_ABIERTO o RESPUESTAS_CONTEXTUALES_ABIERTO.
+
+**Enlace:** [session-ses_19c7.md](conversations/session-ses_19c7.md)
+
+**Decisión:**
