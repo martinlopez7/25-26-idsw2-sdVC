@@ -314,3 +314,17 @@ El análisis siguió el patrón "el gordo" (edición continua con múltiples cic
 **Enlace:** [session-ses_19ce.md](conversations/session-ses_19ce.md)
 
 **Decisión:** El análisis que hizo del caso de uso editarAsignatura se modificó bastante. Las relaciones entre clases de tipo entity se modificaron porque no eran muy claras. Además las salidas disponibles del caso de uso estaban mal, por lo que las tuve que poner manualmente.
+
+## [26/05/2026][09:49] Análisis de eliminarAsignatura()
+
+**Prompt:** empezar → Analiza el caso de uso eliminarAsignatura
+
+**Resultado:** Se realizó el análisis MVC de eliminarAsignatura() generando:
+- documents/analisis/eliminarAsignatura/README.md
+- modelosUML/analisis/eliminarAsignatura/colaboracion.puml
+
+El análisis siguió el patrón de eliminación segura con confirmación previa, identificando las clases: EliminarAsignaturaView, AsignaturasController, AsignaturaRepository, Asignatura. El flujo incluye carga de datos de la asignatura, presentación de información con advertencia de eliminación irreversible (título, código, curso académico, batería de preguntas), confirmación/cancelación por parte del docente, y navegación mediante <<include>> verAsignaturas(). Doble entrada desde ASIGNATURAS_ABIERTO o ASIGNATURA_ABIERTO.
+
+**Enlace:** [session-ses_19cc.md](conversations/session-ses_19cc.md)
+
+**Decisión:**
