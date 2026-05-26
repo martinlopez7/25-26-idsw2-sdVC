@@ -3,8 +3,6 @@ skinparam linetype polyline
 
 rectangle #CDEBA5 ":PREGUNTAS_ABIERTO" as PreguntasAbierto
 rectangle #CDEBA5 ":PREGUNTAS_CONTEXTUALES_ABIERTO" as PreguntasContextualesAbierto
-rectangle #CDEBA5 ":PREGUNTA_ABIERTO" as PreguntaAbierto
-rectangle #CDEBA5 ":PREGUNTA_CONTEXTUAL_ABIERTO" as PreguntaContextualAbierto
 rectangle #CDEBA5 ":Collaboration EditarPregunta" as EditarPregunta
 
 package crearPregunta as "crearPregunta()" {
@@ -16,7 +14,7 @@ package crearPregunta as "crearPregunta()" {
 }
 
 PreguntasAbierto --> CrearPreguntaView: crearPregunta()
-PreguntasContextualesAbierto --> CrearPreguntaView: crearPregunta()
+PreguntasContextualesAbierto --> CrearPreguntaView: crearPregunta(asignaturaId)
 
 CrearPreguntaView -d-> PreguntasController: validarDatosMinimos(asignatura, enunciado, tema, dificultad) : boolean
 CrearPreguntaView -d-> PreguntasController: crearPregunta(datosMinimos) : Pregunta
@@ -28,8 +26,5 @@ PreguntaRepository -- Pregunta
 Pregunta --> Asignatura
 
 CrearPreguntaView ..> EditarPregunta: <<include>> editarPregunta(nuevaPregunta)
-
-PreguntaAbierto <-- CrearPreguntaView: editarPregunta(nuevaPregunta)
-PreguntaContextualAbierto <-- CrearPreguntaView: editarPregunta(nuevaPregunta)
 
 @enduml

@@ -341,4 +341,4 @@ El análisis siguió el patrón "el delgado" (filosofía C→U), identificando l
 
 **Enlace:** [session-ses_19cb.md](conversations/session-ses_19cb.md)
 
-**Decisión:**
+**Decisión:** El análisis que hizo del caso de uso crearPregunta se aceptó mayoritariamente. El único error que se corrigió fueron unas salidas del caso de uso que no tenían mucho sentido ya que ya estaban especificadas con la transferencia inmediata a edición. Además se añadio el parámetro `asigantuiraId` cuando el caso de uso se ejecuta desde las preguntas contextuales de una asignatura.
