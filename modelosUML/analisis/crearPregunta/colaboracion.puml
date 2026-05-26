@@ -1,0 +1,35 @@
+@startuml crearPregunta-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":PREGUNTAS_ABIERTO" as PreguntasAbierto
+rectangle #CDEBA5 ":PREGUNTAS_CONTEXTUALES_ABIERTO" as PreguntasContextualesAbierto
+rectangle #CDEBA5 ":PREGUNTA_ABIERTO" as PreguntaAbierto
+rectangle #CDEBA5 ":PREGUNTA_CONTEXTUAL_ABIERTO" as PreguntaContextualAbierto
+rectangle #CDEBA5 ":Collaboration EditarPregunta" as EditarPregunta
+
+package crearPregunta as "crearPregunta()" {
+    rectangle #629EF9 CrearPreguntaView
+    rectangle #b5bd68 PreguntasController
+    rectangle #F2AC4E PreguntaRepository
+    rectangle #F2AC4E Pregunta
+    rectangle #F2AC4E Asignatura
+}
+
+PreguntasAbierto --> CrearPreguntaView: crearPregunta()
+PreguntasContextualesAbierto --> CrearPreguntaView: crearPregunta()
+
+CrearPreguntaView -d-> PreguntasController: validarDatosMinimos(asignatura, enunciado, tema, dificultad) : boolean
+CrearPreguntaView -d-> PreguntasController: crearPregunta(datosMinimos) : Pregunta
+
+PreguntasController --> PreguntaRepository: crear(datosMinimos) : Pregunta
+PreguntasController --> PreguntaRepository: verificarUnicidadEnunciado(enunciado) : boolean
+
+PreguntaRepository -- Pregunta
+Pregunta --> Asignatura
+
+CrearPreguntaView ..> EditarPregunta: <<include>> editarPregunta(nuevaPregunta)
+
+PreguntaAbierto <-- CrearPreguntaView: editarPregunta(nuevaPregunta)
+PreguntaContextualAbierto <-- CrearPreguntaView: editarPregunta(nuevaPregunta)
+
+@enduml

@@ -328,3 +328,17 @@ El análisis siguió el patrón de eliminación segura con confirmación previa,
 **Enlace:** [session-ses_19cc.md](conversations/session-ses_19cc.md)
 
 **Decisión:** El análisis que hizo del caso de uso eliminarAsignatura se aceptó.
+
+## [26/05/2026][09:58] Análisis de crearPregunta()
+
+**Prompt:** empezar → Analiza el caso de uso crearPregunta
+
+**Resultado:** Se realizó el análisis MVC de crearPregunta() generando:
+- documents/analisis/crearPregunta/README.md
+- modelosUML/analisis/crearPregunta/colaboracion.puml
+
+El análisis siguió el patrón "el delgado" (filosofía C→U), identificando las clases: CrearPreguntaView, PreguntasController, PreguntaRepository, Pregunta, Asignatura. El flujo incluye creación mínima con datos esenciales (asignatura, enunciado, tema, dificultad), verificación de unicidad del enunciado y transferencia automática a edición mediante <<include>> editarPregunta(). Doble entrada desde PREGUNTAS_ABIERTO o PREGUNTAS_CONTEXTUALES_ABIERTO.
+
+**Enlace:** [session-ses_19cb.md](conversations/session-ses_19cb.md)
+
+**Decisión:**
