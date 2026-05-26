@@ -38,7 +38,7 @@ Análisis de colaboración del caso de uso `eliminarRespuesta()` mediante el pat
 - Permitir confirmación o cancelación de eliminación
 
 **Colaboraciones**:
-- **Entrada**: Recibe `eliminarRespuesta(respuestaId)` desde `:RESPUESTAS_ABIERTO` o `:RESPUESTAS_CONTEXTUALES_ABIERTO`
+- **Entrada**: Recibe `eliminarRespuesta(respuestaId)` desde `:RESPUESTAS_ABIERTO`, `:RESPUESTAS_CONTEXTUALES_ABIERTO`, `RESPUESTA_ABIERTO` o `RESPUESTA_CONTEXTUAL_ABIERTO`
 - **Control**: Se comunica con `RespuestasController`
 - **Salida**: **<<include>>** `:Collaboration verRespuestas()` tras eliminación o cancelación
 

@@ -411,4 +411,4 @@ El análisis siguió el patrón de eliminación segura con confirmación previa,
 
 **Enlace:** [session-ses_19c4.md](conversations/session-ses_19c4.md)
 
-**Decisión:** 
+**Decisión:** El análisis que hizo del caso de uso eliminarRespuesta se aceptó. El único error fue que en el diagrama de colaboración faltaban dos estados previos del sistema desde los que se pueden ejecutar el caso de uso, por lo que se añadieron manualmente.

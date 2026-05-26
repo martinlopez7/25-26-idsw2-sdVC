@@ -2,7 +2,9 @@
 skinparam linetype polyline
 
 rectangle #CDEBA5 ":RESPUESTAS_ABIERTO" as RespuestasAbierto
+rectangle #CDEBA5 ":RESPUESTA_ABIERTO" as RespuestaAbierto
 rectangle #CDEBA5 ":RESPUESTAS_CONTEXTUALES_ABIERTO" as RespuestasContextualesAbierto
+rectangle #CDEBA5 ":RESPUESTA_CONTEXTUAL_ABIERTO" as RespuestaContextualAbierto
 rectangle #CDEBA5 ":Collaboration verRespuestas" as VerRespuestas
 
 package eliminarRespuesta as "eliminarRespuesta()" {
@@ -14,7 +16,9 @@ package eliminarRespuesta as "eliminarRespuesta()" {
 }
 
 RespuestasAbierto --> EliminarRespuestaView: eliminarRespuesta(respuestaId)
+RespuestaAbierto --> EliminarRespuestaView: eliminarRespuesta(respuestaId)
 RespuestasContextualesAbierto --> EliminarRespuestaView: eliminarRespuesta(respuestaId)
+RespuestaContextualAbierto --> EliminarRespuestaView: eliminarRespuesta(respuestaId)
 
 EliminarRespuestaView -d-> RespuestasController: cargarRespuestaParaEliminacion(respuestaId) : Respuesta
 
