@@ -342,3 +342,17 @@ El análisis siguió el patrón "el delgado" (filosofía C→U), identificando l
 **Enlace:** [session-ses_19cb.md](conversations/session-ses_19cb.md)
 
 **Decisión:** El análisis que hizo del caso de uso crearPregunta se aceptó mayoritariamente. El único error que se corrigió fueron unas salidas del caso de uso que no tenían mucho sentido ya que ya estaban especificadas con la transferencia inmediata a edición. Además se añadio el parámetro `asigantuiraId` cuando el caso de uso se ejecuta desde las preguntas contextuales de una asignatura.
+
+## [26/05/2026][10:16] Análisis de editarPregunta()
+
+**Prompt:** empezar → Analiza el caso de uso editarPregunta
+
+**Resultado:** Se realizó el análisis MVC de editarPregunta() generando:
+- documents/analisis/editarPregunta/README.md
+- modelosUML/analisis/editarPregunta/colaboracion.puml
+
+El análisis siguió el patrón "el gordo" (edición continua con múltiples ciclos), identificando las clases: EditarPreguntaView, PreguntasController, PreguntaRepository, Pregunta, Respuesta. El flujo incluye carga de datos completos de la pregunta (asignatura, enunciado, tema, dificultad, respuestas, habilitada), presentación para edición continua, guardado incremental y navegación flexible. Múltiples puntos de entrada: desde PREGUNTAS_ABIERTO, PREGUNTAS_CONTEXTUALES_ABIERTO, PREGUNTA_ABIERTO, PREGUNTA_CONTEXTUAL_ABIERTO, RESPUESTAS_ABIERTO, RESPUESTAS_CONTEXTUALES_ABIERTO, o desde crearPregunta() mediante C→U.
+
+**Enlace:** [session-ses_19ca.md](conversations/session-ses_19ca.md)
+
+**Decisión:** 
