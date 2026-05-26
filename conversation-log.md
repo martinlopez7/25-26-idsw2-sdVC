@@ -300,3 +300,17 @@ El análisis siguió el patrón "el delgado" (filosofía C→U), identificando l
 **Enlace:** [session-ses_1a14.md](conversations/session-ses_1a14.md)
 
 **Decisión:** El análisis que hizo del caso de uso crearAsignatura se modificó. En el diagrama de colaboración dio a entender que cuando se crea una asignatura se le asigna un solo grado, pero esto no es así, una asignatura puede tener asociada mas de un grado. Además, esta asociación no se hace en la creación, si no en la edición, que se ejecuta inmediatamente después de proporcionar los datos mínimos de la asignatura.
+
+## [26/05/2026][09:17] Análisis de editarAsignatura()
+
+**Prompt:** empezar → Analiza el caso de uso editarAsignatura
+
+**Resultado:** Se realizó el análisis MVC de editarAsignatura() generando:
+- documents/analisis/editarAsignatura/README.md
+- modelosUML/analisis/editarAsignatura/colaboracion.puml
+
+El análisis siguió el patrón "el gordo" (edición continua con múltiples ciclos), identificando las clases: EditarAsignaturaView, AsignaturaController, AsignaturaRepository, GradoRepository, Asignatura, Grado, BateriaDePreguntas. El flujo incluye carga de datos completos de la asignatura, presentación del formulario de edición con todos los campos (título, código, curso académico, grados asociados, número de preguntas), edición continua con guardado incremental y navegación flexible (guardar, ver preguntas, generar examen, eliminar, cancelar). Múltiples puntos de entrada: desde ASIGNATURAS_ABIERTO, ASIGNATURA_ABIERTO, PREGUNTAS_CONTEXTUALES_ABIERTO, EXAMENES_ASIGNADOS_CONTEXTUALES, o desde crearAsignatura() mediante C→U.
+
+**Enlace:** [session-ses_19ce.md](conversations/session-ses_19ce.md)
+
+**Decisión:** 
