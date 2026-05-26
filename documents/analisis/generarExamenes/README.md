@@ -26,15 +26,7 @@ Análisis de colaboración del caso de uso `generarExamenes()` mediante el patr�
 
 </div>
 
-## diagrama de secuencia
 
-<div align=center>
-
-|![Secuencia: generarExamenes()](/images/analisis/generarExamenes/secuencia.svg)|
-|-|
-|Código fuente: [secuencia.puml](/modelosUML/analisis/generarExamenes/secuencia.puml)|
-
-</div>
 
 ## clases de análisis identificadas
 
@@ -190,6 +182,16 @@ Análisis de colaboración del caso de uso `generarExamenes()` mediante el patr�
 9. **Generación**: `ExamenesController` → `ExamenGenerator.generar(datos)` : List<Examen>
 10. **Persistencia**: `ExamenGenerator` → `ExamenRepository.guardarExamenes(examenes)` : boolean
 11. **Transferencia**: `GenerarExamenesView` → **<<include>>** `:Collaboration AsignarExamenes.asignarExamenes(examenesGenerados)`
+
+## diagrama de secuencia
+
+<div align=center>
+
+|![Secuencia: generarExamenes()](/images/analisis/generarExamenes/secuencia.svg)|
+|-|
+|Código fuente: [secuencia.puml](/modelosUML/analisis/generarExamenes/secuencia.puml)|
+
+</div>
 
 ## patrón de proceso de generación
 

@@ -426,4 +426,4 @@ El análisis inicial no interpretó correctamente la dinámica del caso de uso. 
 
 **Enlace:** [session-ses_19c3.md](conversations/session-ses_19c3.md)
 
-**Decisión:**
+**Decisión:** El análisis que hizo del caso de uso generarExamenes tuvo errores por lo que se le planteó el contexto de que algunos de los parámetros de configuración son diferentes por grado.
