@@ -34,7 +34,7 @@ EditarRespuestaView --> RespuestasController: modificarCampos(respuestaId, cambi
 
 RespuestasController --> RespuestaRepository: actualizar(respuesta) : boolean
 
-EditarRespuestaView ..> VerRespuestas: <<include>> verRespuestas(preguntaId)
+EditarRespuestaView ..> VerRespuestas: <<include>> verRespuestas()
 EditarRespuestaView ..> EliminarRespuesta: <<include>> eliminarRespuesta(respuestaId)
 
 @enduml

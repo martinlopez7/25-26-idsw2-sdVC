@@ -198,7 +198,6 @@ El diseno permite que `RespuestasController` sea reutilizado:
 **RespuestasController** debe verificar durante cada modificacion:
 - **Contenido no vacio**: El texto de la respuesta no puede estar vacio
 - **esCorrecta definido**: Debe indicarse si la respuesta es correcta o no
-- **Unicidad de correctas**: Solo una respuesta de la pregunta puede ser correcta si es tipo test
 
 ### manejo de errores en edicion continua
 

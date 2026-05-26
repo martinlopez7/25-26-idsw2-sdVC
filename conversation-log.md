@@ -397,4 +397,4 @@ El análisis siguió el patrón "el gordo" (edición continua con múltiples cic
 
 **Enlace:** [session-ses_19c9.md](conversations/session-ses_19c9.md)
 
-**Decisión:**
+**Decisión:** El análisis que hizo del caso de uso editarRespuesta fue correcto. Sin embargo, en el README se definió que solo una respuesta de cada pregunta puede ser correcta, lo cual he modificado porque cabe la posibilidad de que haya mas de una respuesta correcta.
