@@ -412,3 +412,18 @@ El análisis siguió el patrón de eliminación segura con confirmación previa,
 **Enlace:** [session-ses_19c4.md](conversations/session-ses_19c4.md)
 
 **Decisión:** El análisis que hizo del caso de uso eliminarRespuesta se aceptó. El único error fue que en el diagrama de colaboración faltaban dos estados previos del sistema desde los que se pueden ejecutar el caso de uso, por lo que se añadieron manualmente.
+
+## [26/05/2026][12:51] Análisis de generarExamenes()
+
+**Prompt:** empezar → Analiza el caso de uso generarExamenes, en este caso si que quiero que hagas un diagrama de secuencia → Corrección: la dinámica es que la configuración es por grado y depende de los alumnos matriculados de cada grado en la asignatura
+
+**Resultado:** Se realizó el análisis MVC de generarExamenes() generando:
+- documents/analisis/generarExamenes/README.md
+- modelosUML/analisis/generarExamenes/colaboracion.puml
+- modelosUML/analisis/generarExamenes/secuencia.puml
+
+El análisis inicial no interpretó correctamente la dinámica del caso de uso. Tras corrección del usuario, se entendió que: (1) al seleccionar asignatura, el sistema obtiene los grados asociados y cuántos alumnos de cada grado hay matriculados; (2) la configuración de exámenes es por grado, no global; (3) los límites de exámenes y tipos de examen dependen del número de alumnos matriculados de cada grado en la asignatura. Se corrigieron los tres artefactos añadiendo la entidad Alumno, la llamada obtenerAlumnosPorGrado() y la validación de límites por grado.
+
+**Enlace:** [session-ses_19c3.md](conversations/session-ses_19c3.md)
+
+**Decisión:**
