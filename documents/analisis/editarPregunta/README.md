@@ -43,7 +43,7 @@ Análisis de colaboración del caso de uso `editarPregunta()` mediante el patró
 **Colaboraciones**:
 - **Entrada**: Recibe `editarPregunta(preguntaId)` desde múltiples estados (`:Preguntas Abierto`, `:Preguntas Contextuales Abierto`, `:Pregunta Abierto`, `:Pregunta Contextual Abierto`, `:Respuestas Abierto`, `:Respuestas Contextual Abierto`) o desde `:Collaboration crearPregunta`
 - **Control**: Se comunica con `PreguntasController`
-- **Salida**: **<<include>>** `:Collaboration verRespuestas`, `:Collaboration verRespuestasContextual`, `:Collaboration eliminarPregunta`, `:Collaboration verPreguntas`
+- **Salida**: **<<include>>** `:Collaboration verRespuestas`, `:Collaboration eliminarPregunta`, `:Collaboration verPreguntas`
 
 ### clases de control
 
@@ -209,11 +209,3 @@ El diseño permite que `PreguntasController` sea reutilizado:
 - **Validación por campo**: Errores específicos para cada campo modificado
 - **Preservación de cambios**: Mantener modificaciones válidas aunque otras fallen
 - **Continuidad**: Permitir continuar editando después de corregir errores
-
-## opciones de navegación disponibles
-
-- **<<include>>** `verRespuestas(preguntaId)` → `:Respuestas Abierto` o `:Respuestas Contextual Abierto`
-- **<<include>>** `verRespuestas(preguntaId)` → `:Respuestas Contextual Abierto`
-- **<<include>>** `eliminarPregunta(preguntaId)` → `:Preguntas Abierto` o `:Preguntas Contextuales Abierto`
-- **<<include>>** `verPreguntas()` → `:Preguntas Abierto`
-- **cancelar** → `:Preguntas Abierto` o `:Preguntas Contextuales Abierto`

@@ -9,7 +9,6 @@ rectangle #CDEBA5 ":Respuestas Abierto" as RespuestasAbierto
 rectangle #CDEBA5 ":Respuestas Contextual Abierto" as RespuestasContextualAbierto
 rectangle #CDEBA5 ":Collaboration crearPregunta" as CrearPregunta
 rectangle #CDEBA5 ":Collaboration verRespuestas" as VerRespuestas
-rectangle #CDEBA5 ":Collaboration verRespuestasContextual" as VerRespuestasContextual
 rectangle #CDEBA5 ":Collaboration eliminarPregunta" as EliminarPregunta
 rectangle #CDEBA5 ":Collaboration verPreguntas" as VerPreguntas
 
@@ -41,9 +40,7 @@ EditarPreguntaView --> PreguntasController: modificarCampos(preguntaId, cambios)
 PreguntasController --> PreguntaRepository: actualizar(pregunta) : boolean
 
 EditarPreguntaView ..> VerRespuestas: <<include>> verRespuestas(preguntaId)
-EditarPreguntaView ..> VerRespuestasContextual: <<include>> verRespuestas(preguntaId)
 EditarPreguntaView ..> EliminarPregunta: <<include>> eliminarPregunta(preguntaId)
 EditarPreguntaView ..> VerPreguntas: <<include>> verPreguntas()
-EditarPreguntaView ..> VerRespuestas: <<include>> verRespuestas()
 
 @enduml

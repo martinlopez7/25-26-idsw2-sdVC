@@ -355,4 +355,4 @@ El análisis siguió el patrón "el gordo" (edición continua con múltiples cic
 
 **Enlace:** [session-ses_19ca.md](conversations/session-ses_19ca.md)
 
-**Decisión:** 
+**Decisión:** El análisis que hizo del caso de uso editarPregunta se aceptó mayoritariamente. El único error que hubo fue que en el diagrama de colaboración añadió mas casos de uso colaborativos para ejecutar después de editarPregunta() de los que realmente hay.
