@@ -327,4 +327,4 @@ El análisis siguió el patrón de eliminación segura con confirmación previa,
 
 **Enlace:** [session-ses_19cc.md](conversations/session-ses_19cc.md)
 
-**Decisión:**
+**Decisión:** El análisis que hizo del caso de uso eliminarAsignatura se aceptó.
