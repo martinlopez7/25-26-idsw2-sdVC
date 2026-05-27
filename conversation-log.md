@@ -525,3 +525,17 @@ El diseño siguió el stack tecnológico del proyecto (Spring Boot + React + Pos
 **Enlace:** [session-ses_1971.md](conversations/session-ses_1971.md)
 
 **Decisión:** Se aceptó el diseño del caso de uso verDocentes.
+
+## [27/05/2026][12:15] Diseño de editarDocente()
+
+**Prompt:** empezar → Diseña el caso de uso editarDocente
+
+**Resultado:** Se realizó el diseño MVC de editarDocente() generando:
+- documents/diseño/editarDocente/README.md
+- modelosUML/diseño/editarDocente/secuencia.puml
+
+El diseño siguió el patrón "el gordo" (edición continua con múltiples ciclos de guardado). Participantes: Frontend (React) con UsuarioFormComponent en modo edición, DocentesController con endpoints GET/PUT /api/docentes/{id}, UsuarioService con lógica de validación y actualización, UsuarioRepository y Base de Datos (PostgreSQL). Validación de datos únicos (DNI, username, email) y manejo de errores con 400 y 404.
+
+**Enlace:** [session-ses_1970.md](conversations/session-ses_1970.md)
+
+**Decisión:**

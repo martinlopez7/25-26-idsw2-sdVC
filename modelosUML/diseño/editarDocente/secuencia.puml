@@ -1,0 +1,82 @@
+@startuml
+title Diagrama de Secuencia - Editar Docente (Spring Boot + React)
+
+actor "Administrador Institucional" as Admin
+participant "Frontend (React)" as FE
+participant "DocentesController" as Controller
+participant "UsuarioService" as Service
+participant "UsuarioRepository" as Repo
+database "Base de Datos (PostgreSQL)" as DB
+
+Admin -> FE: Clic en "Editar" (docenteId)
+activate FE
+FE -> Controller: GET /api/docentes/{docenteId}\n(Header: Authorization: Bearer <token>)
+activate Controller
+Controller -> Service: obtenerDocentePorId(docenteId)
+activate Service
+Service -> Repo: findById(docenteId)
+activate Repo
+Repo -> DB: SELECT * FROM usuarios WHERE id = ? AND tipo = 'DOCENTE'
+activate DB
+DB --> Repo: Usuario
+deactivate DB
+Repo --> Service: Usuario
+deactivate Repo
+Service --> Controller: UsuarioDTO
+deactivate Service
+Controller --> FE: 200 OK (UsuarioDTO JSON)
+deactivate Controller
+FE --> Admin: Mostrar Formulario de Edición\n(datos actuales del docente)
+
+loop Edición continua
+    Admin -> FE: Modifica campos\n(nombre, apellidos, DNI, username, email, password)
+    FE -> FE: Validar formulario (client-side)
+    Admin -> FE: Clic en "Guardar cambios"
+    FE -> Controller: PUT /api/docentes/{docenteId}\n(UsuarioUpdateDTO JSON)\n(Header: Authorization: Bearer <token>)
+    activate Controller
+    Controller -> Service: actualizarDocente(docenteId, usuarioUpdateDTO)
+    activate Service
+    Service -> Service: Validar datos únicos (DNI, username, email)
+    Service -> Repo: findById(docenteId)
+    activate Repo
+    Repo -> DB: SELECT * FROM usuarios WHERE id = ?
+    activate DB
+    DB --> Repo: Usuario
+    deactivate DB
+    Repo --> Service: Usuario
+    deactivate Repo
+    Service -> Service: Actualizar campos del docente
+    Service -> Repo: save(usuario)
+    activate Repo
+    Repo -> DB: UPDATE usuarios SET nombre=?, apellidos=?, dni=?, username=?, email=?, password_hash=? WHERE id = ?
+    activate DB
+    DB --> Repo: Usuario (actualizado)
+    deactivate DB
+    Repo --> Service: Usuario
+    deactivate Repo
+    Service --> Controller: UsuarioDTO
+    deactivate Service
+    Controller --> FE: 200 OK (UsuarioDTO JSON)
+    deactivate Controller
+    FE -> FE: Mostrar Toast "Docente actualizado correctamente"
+    FE --> Admin: Mantener Formulario de Edición\npara más modificaciones
+    deactivate FE
+end
+
+Admin -> FE: Clic en "Volver a lista"
+FE --> Admin: Redirigir a verDocentes()
+deactivate FE
+
+alt Datos Inválidos
+    Controller --> FE: 400 Bad Request (validation errors)
+    deactivate Controller
+    FE --> Admin: Mostrar errores de validación
+end
+
+alt Docente No Encontrado
+    Controller --> FE: 404 Not Found
+    deactivate Controller
+    FE --> Admin: Mostrar mensaje de error
+end
+
+@enduml
