@@ -82,3 +82,30 @@ Debes generar y guardar los siguientes artefactos en las rutas exactas indicadas
 ### Reglas Críticas
 * No inventes estructuras nuevas; la consistencia con los ejemplos es obligatoria.
 * Asegúrate de crear los directorios correspondientes si aún no existen antes de escribir los archivos.
+
+## Diseño de Casos de Uso
+
+### Rol y Objetivo
+Cuando se te asigne diseñar un caso de uso concreto, tu objetivo es consultar su detallado, su análisis y tenerlo localizado en el diagrama de contexto. Deberás de realizar el diseño técnico aplicando estrictamente la metodología definidas en el proyecto:
+
+### Fuentes de Referencia y Contexto
+* **Stack tecnológico:** El stack tecnológico que se va a utilizar está explicado en `documents/diseño/README.md`
+* **Ejemplos de Referencia:** Para comprender el nivel de detalle, la estructura y el estilo técnico esperado, toma como modelo la carpeta `contexto/ejemplos-diseño/casos-uso/`, en donde encontrarás algunos casos de uso ya diseñados. 
+  * *Nota importante:* Estos archivos pertenecen a un **proyecto de ejemplo externo**, pero sirven como plantilla.
+  * **Casos de Uso de Ejemplo:** Revisa los ejemplos de diseños de casos de uso resueltos en esa carpeta y los ya diseñados previamente, ya que algunos son muy similares a los que deberás de analizar.
+  * **Diagrama de Contexto de Ejemplo:** Analiza también el archivo `contexto/ejemplos-analisis/diagrama-contexto-administrador.puml` para entender el contexto de ese mismo proyecto de referencia para ver como se relaciona con los casos de uso ya diseñados de ejemplo.
+
+  ### Artefactos a Entregar y Ubicación
+Debes generar y guardar los siguientes artefactos en las rutas exactas indicadas:
+
+1.  **`README.md`**
+    * **Ubicación:** `documents/diseño/{nombreDelCasoDeUso}/README.md`
+    * **Formato:** Sigue estrictamente la estructura de los ejemplos proporcionados salvo lo siguiente: 
+    1. En la tabla del principio solo quiero que estén los apartados de la casa (🏠️), detalle [aquí quiero que añadas un link que lleve al detallado de un repo externo del formato https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/{nombreCasoDeUso}/{nombreCasoDeUso}.svg], analisis [aquí quiero que añadas un link que lleve al README del analisis de este mismo repositorio] y diseño
+    2. En la parte que contiene la imagen del diagrama de secuancia quiero que el link sea del formato "/images/diseño/{nombreCasoDeUso}/secuencia.svg". El archivo svg me encargo de añadirlo yo manualmente. Y el link que te redirige al código de ese diagrama quiero que sea del formato "/modelosUML/diseño/{nombreCasoDeUso}/secuencia.puml" 
+2.  **`secuencia.puml`** (Diagrama de secuencia UML en PlantUML)
+    * **Ubicación:** `modelosUML/diseño/{nombreDelCasoDeUso}/secuencia.puml`
+
+### Reglas Críticas
+* No inventes estructuras nuevas; la consistencia con los ejemplos es obligatoria.
+* Asegúrate de crear los directorios correspondientes si aún no existen antes de escribir los archivos.
