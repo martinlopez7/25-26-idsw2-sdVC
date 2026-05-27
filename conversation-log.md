@@ -483,3 +483,17 @@ El diseño siguió el stack tecnológico del proyecto (Spring Boot + React + Pos
 **Enlace:** [session-ses_1975.md](conversations/session-ses_1975.md)
 
 **Decisión:** Se aceptó el diseño de iniciarSesion
+
+## [27/05/2026][11:20] Diseño de cerrarSesion()
+
+**Prompt:** empezar → Diseña el caso de uso cerrarSesion
+
+**Resultado:** Se realizó el diseño MVC de cerrarSesion() generando:
+- documents/diseño/cerrarSesion/README.md
+- modelosUML/diseño/cerrarSesion/secuencia.puml
+
+El diseño siguió el stack tecnológico del proyecto (Spring Boot + React + PostgreSQL), detallando la interacción entre Frontend (React), AuthController, AuthService, JwtTokenProvider y SecurityContextLogoutHandler para invalidar el token JWT y cerrar la sesión del usuario.
+
+**Enlace:** [session-ses_1974.md](conversations/session-ses_1974.md)
+
+**Decisión:**

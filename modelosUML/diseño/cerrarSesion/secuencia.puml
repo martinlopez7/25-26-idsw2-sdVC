@@ -1,0 +1,38 @@
+@startuml
+title Diagrama de Secuencia - Cerrar Sesión (Spring Boot + React)
+
+actor "Usuario (Docente/Admin)" as User
+participant "Frontend (React)" as FE
+participant "AuthController" as Controller
+participant "AuthService" as Service
+participant "JwtTokenProvider" as JWT
+participant "SecurityContextLogoutHandler" as LogoutHandler
+participant "Base de Datos (PostgreSQL)" as DB
+
+User -> FE: Click en "Cerrar Sesión"
+activate FE
+FE -> Controller: POST /api/auth/logout
+activate Controller
+Controller -> Service: logout(token)
+activate Service
+Service -> JWT: invalidateToken(token)
+activate JWT
+JWT --> Service: Token invalidado
+deactivate JWT
+Service -> LogoutHandler: logout(request, securityContext)
+activate LogoutHandler
+LogoutHandler -> DB: Eliminar sesión activa (opcional)
+activate DB
+DB --> LogoutHandler: Sesión eliminada
+deactivate DB
+LogoutHandler --> Service: logout completado
+deactivate LogoutHandler
+Service --> Controller: void
+deactivate Service
+Controller --> FE: 200 OK
+deactivate Controller
+FE -> FE: Eliminar Token (LocalStorage)
+FE --> User: Redirigir a Login
+deactivate FE
+
+@enduml
