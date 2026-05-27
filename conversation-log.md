@@ -496,4 +496,4 @@ El diseño siguió el stack tecnológico del proyecto (Spring Boot + React + Pos
 
 **Enlace:** [session-ses_1974.md](conversations/session-ses_1974.md)
 
-**Decisión:**
+**Decisión:** Se aceptó el diseño de cerrarSesion. Sin embargo he añadido al diagrama de secuencia la alternativa de que el usuario cancele la acción de cerrarSesion.

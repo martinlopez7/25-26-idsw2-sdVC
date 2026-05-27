@@ -23,7 +23,7 @@ Detallar la interacción entre los componentes del sistema (Frontend React, Auth
 [Código PlantUML](/modelosUML/diseño/cerrarSesion/secuencia.puml)
 
 ## Participantes
-*   **Frontend (React)**: Gestiona el botón de logout, elimina el token del almacenamiento y redirige a la pantalla de login.
+*   **Frontend (React)**: Gestiona el botón de logout, solicita confirmación, elimina el token del almacenamiento y redirige a la pantalla de login.
 *   **AuthController**: Endpoint REST `/api/auth/logout` que recibe la petición de cierre.
 *   **AuthService**: Lógica de negocio para invalidar la sesión del usuario.
 *   **JwtTokenProvider**: Componente de utilidad para invalidar yblacklistear el token JWT.

@@ -11,6 +11,8 @@ participant "Base de Datos (PostgreSQL)" as DB
 
 User -> FE: Click en "Cerrar Sesión"
 activate FE
+FE -> User: Solicita confirmación
+
 FE -> Controller: POST /api/auth/logout
 activate Controller
 Controller -> Service: logout(token)
