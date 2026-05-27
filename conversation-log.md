@@ -469,3 +469,17 @@ El análisis identificó las clases de análisis (CorregirExamenesView, Examenes
 **Enlace:** [session-ses_1978.md](conversations/session-ses_1978.md)
 
 **Decisión:** El análisis que hizo del caso de uso corregirExamenes se aceptó.
+
+## [27/05/2026][11:12] Diseño de iniciarSesion()
+
+**Prompt:** empezar → Diseña el caso de uso iniciarSesion
+
+**Resultado:** Se realizó el diseño MVC de iniciarSesion() generando:
+- documents/diseño/iniciarSesion/README.md
+- modelosUML/diseño/iniciarSesion/secuencia.puml
+
+El diseño siguió el stack tecnológico del proyecto (Spring Boot + React + PostgreSQL), utilizando JWT para autenticación stateless y BCrypt para hashing de contraseñas. Se identificaron los participantes: Frontend (React), AuthController, AuthService, UsuarioRepository, JwtTokenProvider y Base de Datos (PostgreSQL). El token JWT incluye el tipo de actor (Docente o Administrador Institucional) para gestión de permisos en frontend.
+
+**Enlace:** [session-ses_1975.md](conversations/session-ses_1975.md)
+
+**Decisión:** Se aceptó el diseño de iniciarSesion
