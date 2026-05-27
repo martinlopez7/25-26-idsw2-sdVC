@@ -468,4 +468,4 @@ El análisis identificó las clases de análisis (CorregirExamenesView, Examenes
 
 **Enlace:** [session-ses_1978.md](conversations/session-ses_1978.md)
 
-**Decisión:**
+**Decisión:** El análisis que hizo del caso de uso corregirExamenes se aceptó.
