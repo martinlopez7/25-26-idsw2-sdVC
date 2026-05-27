@@ -1,0 +1,38 @@
+@startuml asignarExamenes-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":EXAMENES_GENERADOS" as ExamGenerados
+rectangle #CDEBA5 ":EXAMENES_GENERADOS_CONTEXTUALES" as ExamGeneradosContext
+rectangle #CDEBA5 ":EXAMENES_ASIGNADOS" as ExamAsignados
+rectangle #CDEBA5 ":EXAMENES_ASIGNADOS_CONTEXTUALES" as ExamAsignadosContext
+
+package asignarExamenes as "asignarExamenes()" {
+    rectangle #629EF9 AsignarExamenesView
+    rectangle #b5bd68 ExamenesController
+    rectangle #F2AC4E ExamenRepository
+    rectangle #F2AC4E Examen
+    rectangle #F2AC4E Alumno
+    rectangle #F2AC4E Grado
+}
+
+ExamGenerados --> AsignarExamenesView: asignarExamenes(examenesGenerados)
+ExamGeneradosContext --> AsignarExamenesView: asignarExamenes(examenesGenerados)
+
+AsignarExamenesView -d-> ExamenesController: obtenerAlumnosPorGrado(asignaturaId) : Map<Grado, List<Alumno>>
+ExamenesController --> ExamenRepository: obtenerAlumnosMatriculados(asignaturaId) : Map<Grado, List<Alumno>>
+ExamenRepository -- Alumno
+ExamenRepository -- Grado
+
+AsignarExamenesView --> ExamenesController: asignarExamenes(examenes, asignaciones) : boolean
+ExamenesController --> ExamenRepository: asignarAlumnos(examenes, asignaciones) : boolean
+ExamenRepository -- Examen
+
+ExamAsignados <-- AsignarExamenesView: completarGestion() [confirmado global]
+ExamAsignadosContext <-- AsignarExamenesView: completarGestion() [confirmado contextual]
+
+ExamGenerados <-- AsignarExamenesView: cancelarAsignacion() [cancelado global]
+ExamGeneradosContext <-- AsignarExamenesView: cancelarAsignacion() [cancelado contextual]
+
+AsignarExamenesView <-- AsignarExamenesView: reintentarAsignacion() [error en asignación]
+
+@enduml

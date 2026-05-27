@@ -441,3 +441,17 @@ El análisis identificó las clases de análisis (CancelarGeneracionView, Examen
 **Enlace:** [session-ses_197a.md](conversations/session-ses_197a.md)
 
 **Decisión:** El análisis que hizo del caso de uso cancelarGeneracion se aceptó. El único fallo fue que interpretó que el caso de uso se podia ejecutar desde el estado `ASIGNATURA_ABIERTO`, lo cual no es cierto y se modificó.
+
+## [27/05/2026][10:02] Análisis de asignarExamenes()
+
+**Prompt:** empezar → Analiza el caso de uso asignarExamenes, el cual es inmediatamente posterior a generarExamenes
+
+**Resultado:** Se realizó el análisis MVC de asignarExamenes() generando:
+- documents/analisis/asignarExamenes/README.md
+- modelosUML/analisis/asignarExamenes/colaboracion.puml
+
+El análisis identificó las clases de análisis (AsignarExamenesView, ExamenesController, ExamenRepository, Examen, Alumno, Grado), sus responsabilidades, colaboraciones y opciones de navegación siguiendo el patrón metodológico del proyecto. El caso de uso tiene doble entrada (EXAMENES_GENERADOS, EXAMENES_GENERADOS_CONTEXTUALES) y triple salida según la decisión del docente (confirmar → EXAMENES_ASIGNADOS o EXAMENES_ASIGNADOS_CONTEXTUALES; cancelar → estado de generación; error → reintentar).
+
+**Enlace:** [session-ses_1979.md](conversations/session-ses_1979.md)
+
+**Decisión:** 
