@@ -1,0 +1,45 @@
+@startuml
+title Diagrama de Secuencia - Crear Docente (Spring Boot + React)
+
+actor "Administrador Institucional" as Admin
+participant "Frontend (React)" as FE
+participant "DocentesController" as Controller
+participant "UsuarioService" as Service
+participant "UsuarioRepository" as Repo
+database "Base de Datos (PostgreSQL)" as DB
+
+Admin -> FE: Clic en "Nuevo Docente"
+activate FE
+FE --> Admin: Mostrar Formulario (datos mínimos)
+Admin -> FE: Ingresa datos (nombre, apellidos, DNI, username, email, password)
+FE -> FE: Validar formulario (client-side)
+FE -> Controller: POST /api/docentes (UsuarioCreateDTO JSON)\n(Header: Authorization: Bearer <token>)
+activate Controller
+Controller -> Service: crearDocente(usuarioCreateDTO)
+activate Service
+Service -> Service: Mapear DTO a Entidad (tipo=DOCENTE)
+Service -> Repo: save(usuario)
+activate Repo
+Repo -> DB: INSERT INTO usuarios (tipo, nombre, apellidos, dni, username, email, password_hash) VALUES ('DOCENTE', ?, ?, ?, ?, ?, ?)
+activate DB
+DB --> Repo: Usuario (con ID generado)
+deactivate DB
+Repo --> Service: Usuario
+deactivate Repo
+Service -> Service: Mapear Entidad a UsuarioDTO
+Service --> Controller: UsuarioDTO (201 Created)
+deactivate Service
+Controller --> FE: 201 Created (UsuarioDTO JSON)
+deactivate Controller
+FE -> FE: Mostrar Toast "Docente creado correctamente"
+FE -> FE: Redirigir a editarDocente(usuarioNuevo)
+FE --> Admin: Mostrar Formulario de Edición
+deactivate FE
+
+alt Datos Inválidos
+    Controller --> FE: 400 Bad Request (validation errors)
+    deactivate Controller
+    FE --> Admin: Mostrar errores de validación
+end
+
+@enduml

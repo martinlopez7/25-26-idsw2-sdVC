@@ -497,3 +497,17 @@ El diseño siguió el stack tecnológico del proyecto (Spring Boot + React + Pos
 **Enlace:** [session-ses_1974.md](conversations/session-ses_1974.md)
 
 **Decisión:** Se aceptó el diseño de cerrarSesion. Sin embargo he añadido al diagrama de secuencia la alternativa de que el usuario cancele la acción de cerrarSesion.
+
+## [27/05/2026][11:50] Diseño de crearDocente()
+
+**Prompt:** empezar → Diseña el caso de uso crearDocente
+
+**Resultado:** Se realizó el diseño MVC de crearDocente() generando:
+- documents/diseño/crearDocente/README.md
+- modelosUML/diseño/crearDocente/secuencia.puml
+
+El diseño siguió el patrón "el delgado" (C→U) con creación rápida y transferencia automática a edición. El usuario identificó un error conceptual: el docente creado debía guardarse en `UsuarioRepository` (compartido con `iniciarSesion`) y no en un `DocenteRepository`, ya que el docente necesita esas credenciales para autenticarse. Se revisaron los tres diseños (crearDocente, iniciarSesion, cerrarSesion) para asegurar consistencia en el flujo de datos desde la creación hasta la autenticación.
+
+**Enlace:** [session-ses_1972.md](conversations/session-ses_1972.md)
+
+**Decisión:** 
