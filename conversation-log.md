@@ -510,4 +510,4 @@ El diseño siguió el patrón "el delgado" (C→U) con creación rápida y trans
 
 **Enlace:** [session-ses_1972.md](conversations/session-ses_1972.md)
 
-**Decisión:** 
+**Decisión:** Al principio el diseño fue erróneo porque la IA interpretó que `Docente` es una entidad genérica del sistema. Pero no es así ya que es la entidad que posteriormente va a usar el actor Docente para ejecutar el caso de uso iniciarSesion, por lo que se guardará en el repositorio de usuarios.
