@@ -455,3 +455,17 @@ El análisis identificó las clases de análisis (AsignarExamenesView, ExamenesC
 **Enlace:** [session-ses_1979.md](conversations/session-ses_1979.md)
 
 **Decisión:** El análisis que hizo del caso de uso asignarExamenes se aceptó. Las modificaciones que se hicieron fueron porque se centró demasiado en flujos alternativos del caso de uso.
+
+## [27/05/2026][10:15] Análisis de corregirExamenes()
+
+**Prompt:** empezar → Analiza el caso de uso corregirExamenes
+
+**Resultado:** Se realizó el análisis MVC de corregirExamenes() generando:
+- documents/analisis/corregirExamenes/README.md
+- modelosUML/analisis/corregirExamenes/colaboracion.puml
+
+El análisis identificó las clases de análisis (CorregirExamenesView, ExamenesController, ExamenRepository, Examen, Pregunta, Respuesta), sus responsabilidades, colaboraciones y opciones de navegación siguiendo el patrón metodológico del proyecto. El flujo principal: obtener exámenes pendientes → docente introduce respuestas → comparar con clave de corrección → guardar resultados → retornar a EXAMENES_CORREGIDOS.
+
+**Enlace:** [session-ses_1978.md](conversations/session-ses_1978.md)
+
+**Decisión:**
