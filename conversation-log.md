@@ -511,3 +511,17 @@ El diseño siguió el patrón "el delgado" (C→U) con creación rápida y trans
 **Enlace:** [session-ses_1972.md](conversations/session-ses_1972.md)
 
 **Decisión:** Al principio el diseño fue erróneo porque la IA interpretó que `Docente` es una entidad genérica del sistema. Pero no es así ya que es la entidad que posteriormente va a usar el actor Docente para ejecutar el caso de uso iniciarSesion, por lo que se guardará en el repositorio de usuarios.
+
+## [27/05/2026][12:12] Diseño de verDocentes()
+
+**Prompt:** empezar → Diseña el caso de uso verDocentes
+
+**Resultado:** Se realizó el diseño MVC de verDocentes() generando:
+- documents/diseño/verDocentes/README.md
+- modelosUML/diseño/verDocentes/secuencia.puml
+
+El diseño siguió el stack tecnológico del proyecto (Spring Boot + React + PostgreSQL), identificando los participantes: Frontend (React) con DocentesListComponent, DocentesController con endpoints GET /api/docentes y GET /api/docentes?filtro={criterio}, UsuarioService, UsuarioRepository y Base de Datos (PostgreSQL). Se utilizó el repositorio compartido con iniciarSesion (UsuarioRepository) ya que los docentes son usuarios con tipo='DOCENTE'.
+
+**Enlace:** [session-ses_1971.md](conversations/session-ses_1971.md)
+
+**Decisión:**

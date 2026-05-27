@@ -1,0 +1,55 @@
+@startuml
+title Diagrama de Secuencia - Ver Docentes (Spring Boot + React)
+
+actor "Administrador Institucional" as Admin
+participant "Frontend (React)" as FE
+participant "DocentesController" as Controller
+participant "UsuarioService" as Service
+participant "UsuarioRepository" as Repo
+database "Base de Datos (PostgreSQL)" as DB
+
+Admin -> FE: Clic en "Ver Docentes"
+activate FE
+FE -> Controller: GET /api/docentes\n(Header: Authorization: Bearer <token>)
+activate Controller
+Controller -> Service: obtenerTodosLosDocentes()
+activate Service
+Service -> Repo: findByTipo("DOCENTE")
+activate Repo
+Repo -> DB: SELECT * FROM usuarios WHERE tipo = 'DOCENTE'
+activate DB
+DB --> Repo: List<Usuario>
+deactivate DB
+Repo --> Service: List<Usuario>
+deactivate Repo
+Service --> Controller: List<UsuarioDTO>
+deactivate Service
+Controller --> FE: 200 OK (List<UsuarioDTO> JSON)
+deactivate Controller
+FE --> Admin: Mostrar Lista de Docentes\n(Nombre, apellidos, DNI, username, email)
+deactivate FE
+
+alt Filtrar Docentes
+    Admin -> FE: Ingresa criterio de filtrado
+    FE -> Controller: GET /api/docentes?filtro={criterio}\n(Header: Authorization: Bearer <token>)
+    activate FE
+    activate Controller
+    Controller -> Service: filtrarDocentes(criterio)
+    activate Service
+    Service -> Repo: findByNombreContainingIgnoreCaseOrApellidosContainingIgnoreCaseOrDniContaining(criterio)
+    activate Repo
+    Repo -> DB: SELECT * FROM usuarios WHERE tipo = 'DOCENTE' AND (nombre ILIKE %criterio% OR ...)
+    activate DB
+    DB --> Repo: List<Usuario>
+    deactivate DB
+    Repo --> Service: List<Usuario>
+    deactivate Repo
+    Service --> Controller: List<UsuarioDTO>
+    deactivate Service
+    Controller --> FE: 200 OK (List<UsuarioDTO> JSON)
+    deactivate Controller
+    FE --> Admin: Mostrar Lista Filtrada
+    deactivate FE
+end
+
+@enduml
