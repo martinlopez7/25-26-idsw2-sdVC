@@ -524,4 +524,4 @@ El diseño siguió el stack tecnológico del proyecto (Spring Boot + React + Pos
 
 **Enlace:** [session-ses_1971.md](conversations/session-ses_1971.md)
 
-**Decisión:**
+**Decisión:** Se aceptó el diseño del caso de uso verDocentes.
