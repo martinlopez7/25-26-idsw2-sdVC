@@ -538,4 +538,4 @@ El diseño siguió el patrón "el gordo" (edición continua con múltiples ciclo
 
 **Enlace:** [session-ses_1970.md](conversations/session-ses_1970.md)
 
-**Decisión:**
+**Decisión:** Se aceptó el diseño del caso de uso editarDocente
