@@ -27,12 +27,7 @@ AsignarExamenesView --> ExamenesController: asignarExamenes(examenes, asignacion
 ExamenesController --> ExamenRepository: asignarAlumnos(examenes, asignaciones) : boolean
 ExamenRepository -- Examen
 
-ExamAsignados <-- AsignarExamenesView: completarGestion() [confirmado global]
-ExamAsignadosContext <-- AsignarExamenesView: completarGestion() [confirmado contextual]
-
-ExamGenerados <-- AsignarExamenesView: cancelarAsignacion() [cancelado global]
-ExamGeneradosContext <-- AsignarExamenesView: cancelarAsignacion() [cancelado contextual]
-
-AsignarExamenesView <-- AsignarExamenesView: reintentarAsignacion() [error en asignación]
+ExamAsignados <-- AsignarExamenesView
+ExamAsignadosContext <-- AsignarExamenesView
 
 @enduml

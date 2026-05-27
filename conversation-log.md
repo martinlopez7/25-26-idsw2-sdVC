@@ -454,4 +454,4 @@ El análisis identificó las clases de análisis (AsignarExamenesView, ExamenesC
 
 **Enlace:** [session-ses_1979.md](conversations/session-ses_1979.md)
 
-**Decisión:** 
+**Decisión:** El análisis que hizo del caso de uso asignarExamenes se aceptó. Las modificaciones que se hicieron fueron porque se centró demasiado en flujos alternativos del caso de uso.

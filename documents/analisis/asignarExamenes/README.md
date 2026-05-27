@@ -22,7 +22,6 @@ Análisis del caso de uso `asignarExamenes()` mediante el patrón MVC, identific
 
 - **Asignador de exámenes**: Asocia exámenes generados a alumnos destinatarios por grado
 - **Configurador de destinatarios**: Permite seleccionar qué alumnos reciben qué exámenes
-- **Punto de bifurcación**: Presenta tres flujos: confirmar asignación, cancelar asignación, o error en asignación
 
 **Invocación**: Este caso de uso es invocado automáticamente desde `generarExamenes()` mediante <<include>> tras generación exitosa.
 
@@ -32,8 +31,6 @@ Análisis del caso de uso `asignarExamenes()` mediante el patrón MVC, identific
 
 **Resultado**: 
 - **Asignación exitosa**: Transfiere a `EXAMENES_ASIGNADOS` o `EXAMENES_ASIGNADOS_CONTEXTUALES`
-- **Cancelación**: Retorna al estado de generación con exámenes sin asignar
-- **Error en asignación**: Permite reintentar introducción de destinatarios
 
 ## diagrama de colaboración
 
@@ -83,33 +80,21 @@ Análisis del caso de uso `asignarExamenes()` mediante el patrón MVC, identific
 | **AsignarExamenesView** | **ExamenesController** | `obtenerAlumnosPorGrado(asignaturaId)` | Obtener alumnos matriculados por grado |
 | **ExamenesController** | **ExamenRepository** | `obtenerAlumnosMatriculados(asignaturaId)` | Recuperar alumnos por grado |
 | **ExamenRepository** | **Alumno** | `getAlumnos()` | Obtener lista de alumnos |
+| **ExamenRepository** | **Grado** | `getGrado()` | Obtener grado del alumno |
 | **AsignarExamenesView** | **ExamenesController** | `asignarExamenes(examenes, asignaciones)` | Delegar proceso de asignación |
 | **ExamenesController** | **ExamenRepository** | `asignarAlumnos(examenes, asignaciones)` | Persistir asignaciones |
 | **ExamenRepository** | **Examen** | `setAlumno(alumno)` | Asignar alumno a examen |
 | **AsignarExamenesView** | **:EXAMENES_ASIGNADOS** | `completarGestion()` | Retorno tras confirmación global |
 | **AsignarExamenesView** | **:EXAMENES_ASIGNADOS_CONTEXTUALES** | `completarGestion()` | Retorno tras confirmación contextual |
 
-### flujo alternativo (cancelación)
-| Origen | Destino | Mensaje | Intención |
-|-|-|-|-|
-| **AsignarExamenesView** | **:EXAMENES_GENERADOS** | `cancelarAsignacion()` | Retornar sin asignar |
-| **AsignarExamenesView** | **:EXAMENES_GENERADOS_CONTEXTUALES** | `cancelarAsignacion()` | Retornar sin asignar |
-
-### flujo alternativo (error en asignación)
-| Origen | Destino | Mensaje | Intención |
-|-|-|-|-|
-| **AsignarExamenesView** | **AsignarExamenesView** | `reintentarAsignacion()` | Regresar a formulario para reintentar |
-
 ## enlaces de dependencia
 - **AsignarExamenesView** conoce a **ExamenesController** (delegación)
 - **AsignarExamenesView** conoce a **:EXAMENES_ASIGNADOS** (retorno tras confirmación global)
 - **AsignarExamenesView** conoce a **:EXAMENES_ASIGNADOS_CONTEXTUALES** (retorno tras confirmación contextual)
-- **AsignarExamenesView** conoce a **:EXAMENES_GENERADOS** (retorno tras cancelación)
-- **AsignarExamenesView** conoce a **:EXAMENES_GENERADOS_CONTEXTUALES** (retorno tras cancelación)
 - **ExamenesController** conoce a **ExamenRepository** (gestión de exámenes y asignaciones)
 - **ExamenRepository** conoce a **Examen** (gestión de entidad)
 - **ExamenRepository** conoce a **Alumno** (acceso a datos de alumnos)
-- **ExamenRepository** conoce a **Grado** (agrupación por grado)
+- **ExamenRepository** conoce a **Grado** (acceso a datos de grados)
 
 ## trazabilidad con artefactos previos
 
@@ -118,7 +103,6 @@ Análisis del caso de uso `asignarExamenes()` mediante el patrón MVC, identific
 - **RequiringAssignment** → **AsignarExamenesView.solicitarAsignacion()**
 - **ProvidingAssignment** → **AsignarExamenesView.mostrarFormularioAsignacion()**
 - **ProvidingConfirmation** → **AsignarExamenesView.mostrarConfirmacion()**
-- **Choice point (c)** → **ExamenesController.procesarDecision()**
 
 ### con diagrama de contexto
 - **EXAMENES_GENERADOS** → Entrada al caso de uso (origen global)
@@ -147,19 +131,16 @@ Análisis del caso de uso `asignarExamenes()` mediante el patrón MVC, identific
 - **Delegación**: Vista delega lógica de negocio al controlador
 - **Carga de datos**: Controlador obtiene alumnos por grado desde repositorio
 - **Asignación**: Repositorio coordina la relación examen-alumno
-- **Navegación**: Vista maneja la navegación directa a estados de destino
+- **Navegación**: Vista maneja navegación directa a estados de destino
 
 ## naturaleza del flujo de control
 
-### bifurcación de flujos
-- **Confirmación**: Flujo hacia asignación de alumnos y cambio de estado (EXAMENES_ASIGNADOS o EXAMENES_ASIGNADOS_CONTEXTUALES)
-- **Cancelación**: Flujo de retorno al estado de generación sin asignar (EXAMENES_GENERADOS o EXAMENES_GENERADOS_CONTEXTUALES)
-- **Reintento**: Flujo de retour al formulario para corregir asignaciones
+### flujo único de asignación
+- **Asignación**: Asocia exámenes a alumnos destinatarios por grado
+- **Transición**: Cambio de estado a EXAMENES_ASIGNADOS o EXAMENES_ASIGNADOS_CONTEXTUALES
 
 ### gestión de estado
-- **Asignación**: En caso de confirmación, asocia exámenes a alumnos destinatarios
-- **Preservación**: En caso de cancelación, mantiene exámenes sin asignar
-- **Transición**: Coordina cambio de estado según origen y decisión del docente
+- **Asignación exitosa**: Los exámenes se asignan a alumnos y se completa la gestión
 
 ## patrones arquitectónicos aplicados
 
