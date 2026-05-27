@@ -427,3 +427,17 @@ El análisis inicial no interpretó correctamente la dinámica del caso de uso. 
 **Enlace:** [session-ses_19c3.md](conversations/session-ses_19c3.md)
 
 **Decisión:** El análisis que hizo del caso de uso generarExamenes tuvo errores por lo que se le planteó el contexto de que algunos de los parámetros de configuración son diferentes por grado.
+
+## [27/05/2026][09:35] Análisis de cancelarGeneracion()
+
+**Prompt:** empezar → Analiza el caso de uso cancelarGeneracion, fijate en el protocolo de analisis de @AGENTS.md
+
+**Resultado:** Se realizó el análisis MVC de cancelarGeneracion() generando:
+- documents/analisis/cancelarGeneracion/README.md
+- modelosUML/analisis/cancelarGeneracion/colaboracion.puml
+
+El análisis identificó las clases de análisis (CancelarGeneracionView, ExamenesController, ExamenRepository, Examen), sus responsabilidades, colaboraciones y opciones de navegación siguiendo el patrón metodológico del proyecto. El caso de uso tiene doble entrada (EXAMENES_GENERADOS, EXAMENES_GENERADOS_CONTEXTUALES) y doble salida según la decisión del docente (confirmar → SISTEMA_DISPONIBLE o ASIGNATURA_ABIERTO; rechazar → estado actual).
+
+**Enlace:** [session-ses_197a.md](conversations/session-ses_197a.md)
+
+**Decisión:** 

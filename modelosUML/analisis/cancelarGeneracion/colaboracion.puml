@@ -1,0 +1,31 @@
+@startuml cancelarGeneracion-analisis
+skinparam linetype polyline
+
+rectangle #CDEBA5 ":EXAMENES_GENERADOS" as ExamGen
+rectangle #CDEBA5 ":EXAMENES_GENERADOS_CONTEXTUALES" as ExamGenCtx
+package cancelarGeneracion as "cancelarGeneracion()" {
+    rectangle #629EF9 CancelarGeneracionView
+    rectangle #b5bd68 ExamenesController
+    rectangle #F2AC4E ExamenRepository
+    rectangle #F2AC4E Examen
+}
+
+rectangle #CDEBA5 ":SISTEMA_DISPONIBLE" as SistemaDisponible
+rectangle #CDEBA5 ":ASIGNATURA_ABIERTO" as AsignaturaAbierto
+
+ExamGen -r-> CancelarGeneracionView: cancelarGeneracion()
+ExamGenCtx -r-> CancelarGeneracionView: cancelarGeneracion()
+
+CancelarGeneracionView -d-> ExamenesController: confirmarCancelacion()
+
+ExamenesController --> ExamenRepository: obtenerExamenesPorAsignatura(asignaturaId)
+ExamenRepository --> Examen: getExamenes()
+
+ExamenesController --> ExamenRepository: eliminarExamenes(examenes)
+
+CancelarGeneracionView ..> ExamGen: rechazarCancelacion()
+CancelarGeneracionView ..> ExamGenCtx: rechazarCancelacion()
+CancelarGeneracionView ..r.> SistemaDisponible: confirmarCancelacion()
+CancelarGeneracionView ..u.> AsignaturaAbierto: confirmarCancelacion()
+
+@enduml
