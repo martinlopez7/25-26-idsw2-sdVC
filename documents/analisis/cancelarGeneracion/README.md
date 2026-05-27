@@ -27,7 +27,6 @@ Análisis del caso de uso `cancelarGeneracion()` mediante diagrama de colaboraci
 **Invocación**: Este caso de uso es invocado desde:
 1. **`EXAMENES_GENERADOS`** - Estado desde generarExamenes() global
 2. **`EXAMENES_GENERADOS_CONTEXTUALES`** - Estado desde generarExamenes() contextual
-3. **`ASIGNATURA_ABIERTO`** - Desde editarAsignatura() → generarExamenes() contextuales
 
 **Resultado**: 
 - **Confirmado**: Elimina los exámenes generados y retorna al estado anterior
@@ -74,12 +73,10 @@ Análisis del caso de uso `cancelarGeneracion()` mediante diagrama de colaboraci
 ### flujo principal (cancelación confirmada)
 |Origen|Destino|Mensaje|Intención|
 |-|-|-|-|
-|**:EXAMENES_GENERADOS**|**CancelarGeneracionView**|`cancelarGeneracion()`|Invocación con datos del examen|
-|**:EXAMENES_GENERADOS_CONTEXTUALES**|**CancelarGeneracionView**|`cancelarGeneracion()`|Invocación con datos del examen|
-|**:ASIGNATURA_ABIERTO**|**CancelarGeneracionView**|`cancelarGeneracion()`|Invocación con datos del examen|
+|**:EXAMENES_GENERADOS**|**CancelarGeneracionView**|`cancelarGeneracion(examenes)`|Invocación con datos del examen|
+|**:EXAMENES_GENERADOS_CONTEXTUALES**|**CancelarGeneracionView**|`cancelarGeneracion(examenes)`|Invocación con datos del examen|
 |**CancelarGeneracionView**|**ExamenesController**|`confirmarCancelacion(examenes)`|Delegar proceso de cancelación|
 |**ExamenesController**|**ExamenRepository**|`eliminarExamenes(examenes)`|Eliminar exámenes no asignados|
-|**ExamenesController**|**ExamenRepository**|`obtenerExamenesPorAsignatura(asignaturaId)`|Obtener exámenes a eliminar|
 |**ExamenRepository**|**Examen**|`getExamenes()`|Recuperar exámenes generados|
 |**CancelarGeneracionView**|**:SISTEMA_DISPONIBLE**|`confirmarCancelacion()`|Retorno tras confirmación global|
 |**CancelarGeneracionView**|**:ASIGNATURA_ABIERTO**|`confirmarCancelacion()`|Retorno tras confirmación contextual|

@@ -13,13 +13,12 @@ package cancelarGeneracion as "cancelarGeneracion()" {
 rectangle #CDEBA5 ":SISTEMA_DISPONIBLE" as SistemaDisponible
 rectangle #CDEBA5 ":ASIGNATURA_ABIERTO" as AsignaturaAbierto
 
-ExamGen -r-> CancelarGeneracionView: cancelarGeneracion()
-ExamGenCtx -r-> CancelarGeneracionView: cancelarGeneracion()
+ExamGen -r-> CancelarGeneracionView: cancelarGeneracion(examenes)
+ExamGenCtx -r-> CancelarGeneracionView: cancelarGeneracion(examenes)
 
 CancelarGeneracionView -d-> ExamenesController: confirmarCancelacion()
 
-ExamenesController --> ExamenRepository: obtenerExamenesPorAsignatura(asignaturaId)
-ExamenRepository --> Examen: getExamenes()
+ExamenRepository -- Examen
 
 ExamenesController --> ExamenRepository: eliminarExamenes(examenes)
 

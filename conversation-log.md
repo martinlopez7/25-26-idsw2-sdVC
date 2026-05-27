@@ -440,4 +440,4 @@ El análisis identificó las clases de análisis (CancelarGeneracionView, Examen
 
 **Enlace:** [session-ses_197a.md](conversations/session-ses_197a.md)
 
-**Decisión:** 
+**Decisión:** El análisis que hizo del caso de uso cancelarGeneracion se aceptó. El único fallo fue que interpretó que el caso de uso se podia ejecutar desde el estado `ASIGNATURA_ABIERTO`, lo cual no es cierto y se modificó.
