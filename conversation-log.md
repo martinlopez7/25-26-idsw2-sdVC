@@ -606,4 +606,4 @@ El diseño siguió el patrón "el gordo" (edición continua con múltiples ciclo
 
 **Enlace:** [session-ses_1922.md](conversations/session-ses_1922.md)
 
-**Decisión:** 
+**Decisión:** Se aceptó el diseño del caso de uso editarAlumno
