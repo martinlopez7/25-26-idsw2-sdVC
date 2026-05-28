@@ -579,3 +579,17 @@ El diseño siguió el patrón de verDocentes() adaptándolo a la entidad Alumno,
 **Enlace:** [session-ses_1925.md](conversations/session-ses_1925.md)
 
 **Decisión:** El diseño que realizó del caso de uso verAlumnos fue mal interpretado. Interpretó que el sistema debe de mostrar todos los alumnos del sistema, pero lo que se busca es que solo muestre los alumnos del docente autenticado. Por lo que se modificó.
+
+## [28/05/2026][10:53] Diseño de crearAlumno()
+
+**Prompt:** empezar → Diseña el caso de uso crearAlumno
+
+**Resultado:** Se realizó el diseño MVC de crearAlumno() generando:
+- documents/diseño/crearAlumno/README.md
+- modelosUML/diseño/crearAlumno/secuencia.puml
+
+El diseño siguió la filosofía C→U (Create→Update), creando alumno con datos mínimos (nombre, apellidos, DNI) y transfiriendo automáticamente a `editarAlumno()`. Utiliza `AlumnoRepository` (no `UsuarioRepository` como en crearDocente) ya que los alumnos no se autentican en el sistema.
+
+**Enlace:** [session-ses_1924.md](conversations/session-ses_1924.md)
+
+**Decisión:**

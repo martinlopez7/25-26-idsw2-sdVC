@@ -1,0 +1,44 @@
+@startuml
+title Diagrama de Secuencia - Crear Alumno (Spring Boot + React)
+
+actor "Docente" as Teacher
+participant "Frontend (React)" as FE
+participant "AlumnosController" as Controller
+participant "AlumnoService" as Service
+participant "AlumnoRepository" as Repo
+database "Base de Datos (PostgreSQL)" as DB
+
+Teacher -> FE: Clic en "Nuevo Alumno"
+activate FE
+FE --> Teacher: Mostrar Formulario (datos mínimos)
+Teacher -> FE: Ingresa datos (nombre, apellidos, DNI)
+FE -> FE: Validar formulario (client-side)
+FE -> Controller: POST /api/alumnos (AlumnoCreateDTO JSON)\n(Header: Authorization: Bearer <token>)
+activate Controller
+Controller -> Service: crearAlumno(alumnoCreateDTO)
+activate Service
+Service -> Service: Mapear DTO a Entidad
+Service -> Repo: save(alumno)
+activate Repo
+Repo -> DB: INSERT INTO alumnos (nombre, apellidos, dni) VALUES (?, ?, ?)
+activate DB
+DB --> Repo: Alumno (con ID generado)
+deactivate DB
+Repo --> Service: Alumno
+deactivate Repo
+Service --> Controller: AlumnoDTO (201 Created)
+deactivate Service
+Controller --> FE: 201 Created (AlumnoDTO JSON)
+deactivate Controller
+FE -> FE: Mostrar Toast "Alumno creado correctamente"
+FE -> FE: Redirigir a editarAlumno(alumnoNuevo)
+FE --> Teacher: Mostrar Formulario de Edición
+deactivate FE
+
+alt Datos Inválidos
+    Controller --> FE: 400 Bad Request (validation errors)
+    deactivate Controller
+    FE --> Teacher: Mostrar errores de validación
+end
+
+@enduml
