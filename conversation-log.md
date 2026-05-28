@@ -565,3 +565,17 @@ El diseño identificó los participantes: Frontend (React) con MenuPrincipalComp
 **Enlace:** [session-ses_1928.md](conversations/session-ses_1928.md)
 
 **Decisión:** El diseño inicial de completarGestion no era coherente con iniciarSesion y cerrarSesion porque usaba `Sesion` como entidad separada cuando el estado de autenticación es el JWT en LocalStorage, y porque no quedaba claro cómo se extraía el tipo de actor. Se corrigió para usar `JwtTokenProvider.extractTipoActor(token)` y eliminar la referencia a `Sesion` como entidad.
+
+## [28/05/2026][10:22] Diseño de verAlumnos()
+
+**Prompt:** empezar → Diseña el caso de uso verAlumnos
+
+**Resultado:** Se realizó el diseño MVC de verAlumnos() generando:
+- documents/diseño/verAlumnos/README.md
+- modelosUML/diseño/verAlumnos/secuencia.puml
+
+El diseño siguió el patrón de verDocentes() adaptándolo a la entidad Alumno, utilizando AlumnosController con endpoints GET /api/alumnos y GET /api/alumnos?filtro={criterio}, AlumnoService para lógica de negocio, y AlumnoRepository para persistencia.
+
+**Enlace:** [session-ses_1925.md](conversations/session-ses_1925.md)
+
+**Decisión:**

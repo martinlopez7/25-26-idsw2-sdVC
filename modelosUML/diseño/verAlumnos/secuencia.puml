@@ -1,0 +1,61 @@
+@startuml secuencia-verAlumnos
+
+title Secuencia - verAlumnos()
+
+participant "Frontend (React)\nAlumnosListComponent" as view
+participant "AlumnosController" as controller
+participant "AlumnoService" as service
+participant "AlumnoRepository" as repository
+participant "Base de Datos\n(PostgreSQL)" as db
+
+view -> controller : GET /api/alumnos
+activate controller
+
+controller -> service : listarAlumnos()
+activate service
+
+service -> repository : findAll()
+activate repository
+
+repository -> db : SELECT * FROM alumnos
+activate db
+db --> repository : Lista<Alumno>
+deactivate db
+
+repository --> service : Lista<Alumno>
+deactivate repository
+
+service --> controller : Lista<AlumnoDTO>
+deactivate service
+
+controller --> view : 200 OK, Lista<AlumnoDTO>
+deactivate controller
+
+alt Filrado solicitado
+
+view -> controller : GET /api/alumnos?filtro={criterio}
+activate controller
+
+controller -> service : filtrarAlumnos(criterio)
+activate service
+
+service -> repository : findByNombreContainingOrApellidosContainingOrDniContaining(criterio)
+activate repository
+
+repository -> db : SELECT * FROM alumnos WHERE ...
+activate db
+db --> repository : Lista<Alumno>
+deactivate db
+
+repository --> service : Lista<Alumno>
+deactivate repository
+
+service --> controller : Lista<AlumnoDTO>
+deactivate service
+
+controller --> view : 200 OK, Lista<AlumnoDTO>
+deactivate controller
+
+end
+
+@enduml
