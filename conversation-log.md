@@ -593,3 +593,17 @@ El diseño siguió la filosofía C→U (Create→Update), creando alumno con dat
 **Enlace:** [session-ses_1924.md](conversations/session-ses_1924.md)
 
 **Decisión:** El diseño que que realizó del caso de uso crearAlumno fue impreciso ya que no asociaba el alumno creado con el docente autenticado. Esto se solucionó sacando el docenteId del token de autenticación y asociandolo al alumno.
+
+## [28/05/2026][11:40] Diseño de editarAlumno()
+
+**Prompt:** empezar → Diseña el caso de uso editarAlumno → Escribe los apartados participantes y decisiones de diseño del readme con el mismo formato que el de editarDocente basandote en el diagrama de secuencia
+
+**Resultado:** Se realizó el diseño MVC de editarAlumno() generando:
+- documents/diseño/editarAlumno/README.md
+- modelosUML/diseño/editarAlumno/secuencia.puml
+
+El diseño siguió el patrón "el gordo" (edición continua con múltiples ciclos de guardado). Participantes: Frontend (React) con AlumnoFormComponent en modo edición, AlumnosController con endpoints GET/PUT /api/alumnos/{id}, AlumnoService con lógica de validación y actualización, AlumnoRepository, DocenteRepository para verificar pertenencia al docente autenticado, y Base de Datos (PostgreSQL). Validación de datos únicos (DNI) y verificación de pertenencia del alumno al docente extraído del JWT.
+
+**Enlace:** [session-ses_1922.md](conversations/session-ses_1922.md)
+
+**Decisión:** 

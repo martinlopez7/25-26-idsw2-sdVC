@@ -1,0 +1,63 @@
+@startuml
+title Diagrama de Secuencia - Editar Alumno - Spring Boot + React
+
+actor "Docente" as Docente
+participant "Frontend (React)" as FE
+participant "AlumnosController" as Controller
+participant "AlumnoService" as Service
+participant "AlumnoRepository" as Repo
+participant "DocenteRepository" as DocenteRepo
+database "Base de Datos (PostgreSQL)" as DB
+
+Docente -> FE: Clic en "Editar" (desde ALUMNOS_ABIERTO o ALUMNO_ABIERTO)
+activate FE
+FE -> Controller: GET /api/alumnos/{id}\n(Header: Authorization: Bearer <token>)
+activate Controller
+Controller -> Service: obtenerAlumnoPorId(id)
+activate Service
+Service -> Repo: findById(id)
+activate Repo
+Repo -> DB: SELECT * FROM alumnos WHERE id = ?
+activate DB
+DB --> Repo: Optional<Alumno>
+deactivate DB
+Repo --> Service: Optional<Alumno>
+deactivate Repo
+alt Alumno Existe
+    Service -> Service: extraer docenteId del JWT
+    Service -> Service: verificar alumnoPerteneceADocente(alumno, docenteId)
+    Service --> Controller: AlumnoDTO
+    Controller --> FE: 200 OK (AlumnoDTO JSON)
+    FE --> Docente: Mostrar Formulario con datos precargados
+    Docente -> FE: Modifica campos y Guardar
+    FE -> FE: Validar formulario
+    FE -> Controller: PUT /api/alumnos/{id} (AlumnoUpdateDTO JSON)\n(Header: Authorization: Bearer <token>)
+    Controller -> Service: actualizarAlumno(id, alumnoUpdateDTO)
+    Service -> Repo: findById(id)
+    activate Repo
+    Repo -> DB: SELECT * FROM alumnos WHERE id = ?
+    DB --> Repo: Optional<Alumno>
+    Repo --> Service: Optional<Alumno>
+    deactivate Repo
+    Service -> Service: verificarUnicidadDNI(id, dni)
+    Service -> Service: actualizarCamposDesdeDTO(alumno, dto)
+    Service -> Repo: save(alumno)
+    activate Repo
+    Repo -> DB: UPDATE alumnos SET dni=?, nombre=?, apellidos=? WHERE id=?
+    DB --> Repo: Alumno actualizado
+    Repo --> Service: Alumno
+    deactivate Repo
+    Service --> Controller: AlumnoDTO
+    Controller --> FE: 200 OK (AlumnoDTO JSON)
+    FE -> FE: Actualizar Lista / Mostrar Toast
+    FE --> Docente: Notificación "Alumno actualizado correctamente"
+else Alumno No Existe O No Pertenece Al Docente
+    Service --> Controller: throw EntityNotFoundException
+    deactivate Service
+    Controller --> FE: 404 Not Found
+    deactivate Controller
+    FE --> Docente: Mostrar Error "Alumno no encontrado"
+end
+deactivate FE
+
+@enduml
