@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Detallar la interacción entre los componentes del sistema (Frontend React, Controller, Service, Repository) para visualizar y filtrar la lista de alumnos dados de alta en el sistema. Los alumnos se persistirán en `AlumnoRepository`.
+Detallar la interacción entre los componentes del sistema (Frontend React, Controller, Service, Repository) para visualizar y filtrar la lista de alumnos creados por el docente autenticado. Cada alumno guarda referencia al `docenteId` de quien lo creó, permitiendo filtrar directamente por el docente autenticado.
 
 ## Diagrama de secuencia de diseño
 
@@ -28,16 +28,17 @@ Detallar la interacción entre los componentes del sistema (Frontend React, Cont
 
 ## Participantes
 
-- **Frontend (React + TypeScript)**: Componente `AlumnosListComponent` que muestra la lista y campo de filtrado.
-- **AlumnosController**: Endpoint REST `GET /api/alumnos` y `GET /api/alumnos?filtro={criterio}` protegido.
-- **AlumnoService**: Lógica de negocio para obtener todos los alumnos y filtrar por criterios.
-- **AlumnoRepository**: Interface Spring Data JPA con `findAll()` y métodos de búsqueda por criterios.
-- **Base de Datos (PostgreSQL)**: Consulta de alumnos.
+- **Frontend (React + TypeScript)**: Componente `AlumnosListComponent` que muestra la lista filtrada y campo de búsqueda.
+- **AlumnosController**: Endpoints REST `GET /api/alumnos/mios` y `GET /api/alumnos/mios?filtro={criterio}` protegido con JWT.
+- **AlumnoService**: Lógica de negocio para obtener alumnos del docente autenticado mediante `docenteId`.
+- **AlumnoRepository**: Interface Spring Data JPA con `findByDocenteId()` y métodos de búsqueda filtrada.
+- **Base de Datos (PostgreSQL)**: Consulta de alumnos donde `docente_id` coincide con el docente autenticado.
 
 ## Decisiones de diseño
 
-- Uso de `AlumnoRepository.findAll()` para obtener todos los alumnos.
-- Filtrado por nombre, apellidos o DNI mediante consulta con `Or` conditions.
+- El endpoint `GET /api/alumnos/mios` filtra automáticamente por el `docenteId` extraído del JWT.
+- Se usa `AlumnoRepository.findByDocenteId(profesorId)` para obtener solo los alumnos creados por el docente.
+- Filtrado por nombre, apellidos o DNI mediante consulta con `Or` conditions (`findByDocenteIdAndNombreContainingOr...`).
 - Retorno de código HTTP `200 OK` con la lista de alumnos.
 - Mapeo de `Alumno` a `AlumnoDTO` para no exponer datos sensibles.
 - El filtrado es opcional y se realiza en el servidor para manejar grandes volúmenes de datos.

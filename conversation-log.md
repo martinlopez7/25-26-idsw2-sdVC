@@ -578,4 +578,4 @@ El diseño siguió el patrón de verDocentes() adaptándolo a la entidad Alumno,
 
 **Enlace:** [session-ses_1925.md](conversations/session-ses_1925.md)
 
-**Decisión:**
+**Decisión:** El diseño que realizó del caso de uso verAlumnos fue mal interpretado. Interpretó que el sistema debe de mostrar todos los alumnos del sistema, pero lo que se busca es que solo muestre los alumnos del docente autenticado. Por lo que se modificó.

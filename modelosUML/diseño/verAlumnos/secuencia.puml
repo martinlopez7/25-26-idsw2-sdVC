@@ -8,21 +8,21 @@ participant "AlumnoService" as service
 participant "AlumnoRepository" as repository
 participant "Base de Datos\n(PostgreSQL)" as db
 
-view -> controller : GET /api/alumnos
+view -> controller : GET /api/alumnos/mios
 activate controller
 
-controller -> service : listarAlumnos()
+controller -> service : obtenerAlumnosDelDocente(profesorId)
 activate service
 
-service -> repository : findAll()
+service -> repository : findByDocenteId(profesorId)
 activate repository
 
-repository -> db : SELECT * FROM alumnos
+repository -> db : SELECT * FROM alumnos WHERE docente_id = ?
 activate db
-db --> repository : Lista<Alumno>
+db --> repository : List<Alumno>
 deactivate db
 
-repository --> service : Lista<Alumno>
+repository --> service : List<Alumno>
 deactivate repository
 
 service --> controller : Lista<AlumnoDTO>
@@ -31,23 +31,23 @@ deactivate service
 controller --> view : 200 OK, Lista<AlumnoDTO>
 deactivate controller
 
-alt Filrado solicitado
+alt Filtrado solicitado
 
-view -> controller : GET /api/alumnos?filtro={criterio}
+view -> controller : GET /api/alumnos/mios?filtro={criterio}
 activate controller
 
-controller -> service : filtrarAlumnos(criterio)
+controller -> service : filtrarAlumnosDelDocente(profesorId, criterio)
 activate service
 
-service -> repository : findByNombreContainingOrApellidosContainingOrDniContaining(criterio)
+service -> repository : findByDocenteIdAndNombreContainingOrApellidosContainingOrDniContaining(profesorId, criterio)
 activate repository
 
-repository -> db : SELECT * FROM alumnos WHERE ...
+repository -> db : SELECT * FROM alumnos\nWHERE docente_id = ?\nAND (nombre ILIKE %criterio% OR apellidos ILIKE %criterio% OR dni ILIKE %criterio%)
 activate db
-db --> repository : Lista<Alumno>
+db --> repository : List<Alumno>
 deactivate db
 
-repository --> service : Lista<Alumno>
+repository --> service : List<Alumno>
 deactivate repository
 
 service --> controller : Lista<AlumnoDTO>
