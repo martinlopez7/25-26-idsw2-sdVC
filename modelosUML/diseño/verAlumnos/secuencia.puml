@@ -8,7 +8,7 @@ participant "AlumnoService" as service
 participant "AlumnoRepository" as repository
 participant "Base de Datos\n(PostgreSQL)" as db
 
-view -> controller : GET /api/alumnos/mios
+view -> controller : GET /api/alumnos/mios\n(Header: Authorization: Bearer <token>)
 activate controller
 
 controller -> service : obtenerAlumnosDelDocente(profesorId)
