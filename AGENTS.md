@@ -92,7 +92,7 @@ Cuando se te asigne diseñar un caso de uso concreto, tu objetivo es consultar s
 * **Stack tecnológico:** El stack tecnológico que se va a utilizar está explicado en `documents/diseño/README.md`
 * **Ejemplos de Referencia:** Para comprender el nivel de detalle, la estructura y el estilo técnico esperado, toma como modelo la carpeta `contexto/ejemplos-diseño/casos-uso/`, en donde encontrarás algunos casos de uso ya diseñados. 
   * *Nota importante:* Estos archivos pertenecen a un **proyecto de ejemplo externo**, pero sirven como plantilla.
-  * **Casos de Uso de Ejemplo:** Revisa los ejemplos de diseños de casos de uso resueltos en esa carpeta y los ya diseñados previamente, ya que algunos son muy similares a los que deberás de analizar.
+  * **Casos de Uso de Ejemplo:** Revisa los ejemplos de diseños de casos de uso resueltos en esa carpeta y los ya diseñados previamente (se encuentran en `modelosUML/diseño`), ya que algunos son muy similares a los que deberás de analizar.
   * **Diagrama de Contexto de Ejemplo:** Analiza también el archivo `contexto/ejemplos-analisis/diagrama-contexto-administrador.puml` para entender el contexto de ese mismo proyecto de referencia para ver como se relaciona con los casos de uso ya diseñados de ejemplo.
 
   ### Artefactos a Entregar y Ubicación
