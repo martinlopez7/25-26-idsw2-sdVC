@@ -41,4 +41,4 @@ Detallar la interacción entre los componentes del sistema (Frontend React, Cont
 - Mapeo manual DTO-Entidad en capa de servicio.
 - Transferencia automática a `editarAlumno()` tras creación exitosa.
 - Validaciones duplicadas: client-side (UX inmediata) y server-side (seguridad).
-- El docente autenticado filtra los alumnos que ve/crea a través de las asignaturas que imparte.
+- El alumno creado se asocia al docente extraído del JWT (`docenteId`), manteniendo la trazabilidad de creación.

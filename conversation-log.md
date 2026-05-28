@@ -592,4 +592,4 @@ El diseño siguió la filosofía C→U (Create→Update), creando alumno con dat
 
 **Enlace:** [session-ses_1924.md](conversations/session-ses_1924.md)
 
-**Decisión:**
+**Decisión:** El diseño que que realizó del caso de uso crearAlumno fue impreciso ya que no asociaba el alumno creado con el docente autenticado. Esto se solucionó sacando el docenteId del token de autenticación y asociandolo al alumno.
