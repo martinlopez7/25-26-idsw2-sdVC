@@ -620,4 +620,4 @@ El diseño siguió el patrón de eliminación segura con confirmación previa (m
 
 **Enlace:** [session-ses_1920.md](conversations/session-ses_1920.md)
 
-**Decisión:**
+**Decisión:** El diseño del caso de uso eliminarAlumno se aceptó
