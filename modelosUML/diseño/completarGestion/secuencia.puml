@@ -1,80 +1,48 @@
 @startuml completarGestion
-skinparam titleFontSize 16
-skinparam componentStyle rectangle
+title Diagrama de Secuencia - completarGestion() (Spring Boot + React)
 
-title Diagrama de Secuencia - completarGestion()
+actor "Usuario (Docente/Admin)" as User
+participant "Frontend (React)" as FE
+participant "AuthController" as Controller
+participant "AuthService" as Service
+participant "JwtTokenProvider" as JWT
 
-actor ":Docente" as docente
-actor ":AdministradorInstitucional" as admin
+User -> FE: Solicita completarGestion()
+activate FE
+activate User
 
-participant ":MenuPrincipalComponent" as frontend
-participant ":AuthController" as controller
-participant ":AuthService" as service
+FE -> Controller: GET /api/auth/menu\nAuthorization: Bearer <token>
+activate Controller
 
-note right of frontend
-  El usuario solicita
-  volver al menú principal
-end note
+Controller -> JWT: extractTipoActor(token)
+activate JWT
+JWT --> Controller: String tipoActor (DOCENTE | ADMINISTRADOR_INSTITUCIONAL)
+deactivate JWT
 
-alt #LightBlue Actor Docente
-    docente -> frontend : Solicita completarGestion()
-    activate docente
-    activate frontend
+Controller -> Service: obtenerOpcionesMenu(tipoActor)
+activate Service
 
-    frontend -> controller : GET /api/auth/menu
-    activate controller
+alt #LightBlue tipoActor = DOCENTE
+    Service --> Controller: MenuDTO{opciones: [cerrarSesion, importarConfiguracionGlobal, exportarConfiguracionGlobal, gestionAlumnos, gestionGrados, gestionAsignaturas, gestionPreguntas, gestionRespuestas, gestionExamenes]}
+else #LightGreen tipoActor = ADMINISTRADOR_INSTITUCIONAL
+    Service --> Controller: MenuDTO{opciones: [cerrarSesion, gestionDocentes]}
+end
+deactivate Service
 
-    controller -> service : obtenerOpcionesMenu(usuario)
-    activate service
+Controller --> FE: 200 OK + MenuDTO
+deactivate Controller
 
-    service --> controller : OpcionesMenu{tipo: "DOCENTE"}
-    deactivate service
-
-    controller --> frontend : 200 OK + MenuDTO
-    deactivate controller
-
-    frontend -> frontend : renderizarMenu(opciones)
-
-    loop Para cada opción disponible
-        docente -> frontend : Selecciona opción
-        frontend -> docente : Navega a caso de uso
-    end
-
-    deactivate frontend
-    deactivate docente
-
-else #LightGreen Actor Administrador Institucional
-    admin -> frontend : Solicita completarGestion()
-    activate admin
-    activate frontend
-
-    frontend -> controller : GET /api/auth/menu
-    activate controller
-
-    controller -> service : obtenerOpcionesMenu(usuario)
-    activate service
-
-    service --> controller : OpcionesMenu{tipo: "ADMINISTRADOR_INSTITUCIONAL"}
-    deactivate service
-
-    controller --> frontend : 200 OK + MenuDTO
-    deactivate controller
-
-    frontend -> frontend : renderizarMenu(opciones)
-
-    loop Para cada opción disponible
-        admin -> frontend : Selecciona opción
-        frontend -> admin : Navega a caso de uso
-    end
-
-    deactivate frontend
-    deactivate admin
+loop Para cada opción del menú
+    FE -> User: Mostrar opciones disponibles
+    User -> FE: Selecciona opción
+    FE -> User: Redirigir a caso de uso
 end
 
-legend right
-|= Tipo Actor |= Opciones Disponibles |
-| DOCENTE | verGrados, verAsignaturas, verAlumnos, verPreguntas, generarExamenes, corregirExamenes, importarConfiguracionGlobal, exportarConfiguracionGlobal, cerrarSesion |
-| ADMINISTRADOR_INSTITUCIONAL | verDocentes, cerrarSesion |
-endlegend
+deactivate FE
+deactivate User
 
+note right of FE
+  El JWT se almacena en LocalStorage
+  y se envía en cada petición autenticada
+end note
 @enduml

@@ -564,4 +564,4 @@ El diseño identificó los participantes: Frontend (React) con MenuPrincipalComp
 
 **Enlace:** [session-ses_1928.md](conversations/session-ses_1928.md)
 
-**Decisión:**
+**Decisión:** El diseño inicial de completarGestion no era coherente con iniciarSesion y cerrarSesion porque usaba `Sesion` como entidad separada cuando el estado de autenticación es el JWT en LocalStorage, y porque no quedaba claro cómo se extraía el tipo de actor. Se corrigió para usar `JwtTokenProvider.extractTipoActor(token)` y eliminar la referencia a `Sesion` como entidad.

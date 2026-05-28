@@ -14,7 +14,7 @@
 
 ## Propósito
 
-Detallar la interacción entre los componentes del sistema (Frontend React, Controller, Service, Repository) para mostrar el menú principal de opciones disponibles según el tipo de actor autenticado (Docente o Administrador Institucional). Este caso de uso funciona como **hub central de navegación** del sistema.
+Detallar la interacción entre los componentes del sistema (Frontend React, Controller, Service) para mostrar el menú principal de opciones disponibles según el tipo de actor autenticado (Docente o Administrador Institucional). El tipo de actor se extrae del JWT almacenado en LocalStorage.
 
 ## Diagrama de secuencia de diseño
 
@@ -28,18 +28,25 @@ Detallar la interacción entre los componentes del sistema (Frontend React, Cont
 
 ## Participantes
 
-- **Frontend (React + TypeScript)**: Componente `MenuPrincipalComponent` que muestra las opciones disponibles según el tipo de actor.
-- **AuthController**: Endpoint REST `GET /api/auth/menu` protegido que retorna las opciones disponibles para el usuario.
-- **AuthService**: Lógica de negocio para determinar las opciones disponibles según el tipo de actor (DOCENTE o ADMINISTRADOR_INSTITUCIONAL).
-- **Sesion**: Mantiene el estado de autenticación activa en el frontend (JWT token).
-- **Base de Datos (PostgreSQL)**: No requiere consulta a base de datos, las opciones se determinan por el tipo de actor.
+- **Frontend (React + TypeScript)**: Componente `MenuPrincipalComponent` que muestra las opciones disponibles según el tipo de actor. Extrae el JWT de LocalStorage y lo envía en la cabecera Authorization.
+- **AuthController**: Endpoint REST `GET /api/auth/menu` protegido con JWT. Extrae el tipo de actor del token para determinar las opciones disponibles.
+- **AuthService**: Lógica de negocio para determinar las opciones disponibles según el tipo de actor (DOCENTE o ADMINISTRADOR_INSTITUCIONAL). No requiere acceso a base de datos.
+- **JwtTokenProvider**: Componente de utilidad para extraer información del token JWT (tipo de actor).
+- **Base de Datos (PostgreSQL)**: No requiere consulta a base de datos, las opciones se determinan por el tipo de actor extraído del JWT.
 
 ## Decisiones de diseño
 
-- Las opciones del menú se determinan **statelessly** en el servidor según el tipo de actor extraído del JWT.
-- No se requiere acceso a base de datos para determinar las opciones, ya que estas son fijas por tipo de actor.
-- El frontend recibe una lista de opciones con: `id`, `label`, `icon` y `ruta` de navegación.
-- El menú se estructura jerárquicamente por módulos (Gestión, Exámenes, Configuración, Sesión).
-- El JWT contiene el `tipo` del actor (DOCENTE o ADMINISTRADOR_INSTITUCIONAL) para determinar permisos en frontend.
-- Navegación flexible: el usuario selecciona cualquier opción disponible y se redirige al caso de uso correspondiente.
+- Las opciones del menú se determinan en el servidor según el **tipo de actor extraído del JWT**, no hay consulta a base de datos.
+- El endpoint está protegido con JWT (`@PreAuthorize`) igual que el resto de endpoints autenticados.
+- El JWT se envía en la cabecera `Authorization: Bearer <token>` desde el frontend.
+- No se requiere `Sesion` como entidad, el estado de autenticación es el JWT mismo (coherente con iniciarSesion/cerrarSesion).
+- Retorno de `MenuDTO` con la lista de opciones disponibles para el tipo de actor.
 
+## Flujo de navegación
+
+1. El usuario selecciona "Completar Gestión" desde cualquier estado del sistema
+2. El frontend envía GET /api/auth/menu con el JWT en la cabecera
+3. El backend extrae el tipo de actor del JWT
+4. El backend retorna las opciones disponibles para ese tipo
+5. El frontend renderiza el menú y el usuario selecciona una opción
+6. El usuario es redirigido al caso de uso correspondiente
