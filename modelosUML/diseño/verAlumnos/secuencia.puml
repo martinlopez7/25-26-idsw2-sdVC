@@ -10,11 +10,11 @@ participant "Base de Datos\n(PostgreSQL)" as db
 
 view -> controller : GET /api/alumnos/mios\n(Header: Authorization: Bearer <token>)
 activate controller
-
-controller -> service : obtenerAlumnosDelDocente(profesorId)
+controller -> controller: extraer docenteId del JWT
+controller -> service : obtenerAlumnosDelDocente(docenteId)
 activate service
 
-service -> repository : findByDocenteId(profesorId)
+service -> repository : findByDocenteId(docenteId)
 activate repository
 
 repository -> db : SELECT * FROM alumnos WHERE docente_id = ?
@@ -33,13 +33,14 @@ deactivate controller
 
 alt Filtrado solicitado
 
-view -> controller : GET /api/alumnos/mios?filtro={criterio}
+view -> controller : GET /api/alumnos/mios?filtro={criterio}\n(Header: Authorization: Bearer <token>)
 activate controller
 
-controller -> service : filtrarAlumnosDelDocente(profesorId, criterio)
+controller -> controller: extraer docenteId del JWT
+controller -> service : filtrarAlumnosDelDocente(docenteId, criterio)
 activate service
 
-service -> repository : findByDocenteIdAndNombreContainingOrApellidosContainingOrDniContaining(profesorId, criterio)
+service -> repository : findByDocenteIdAndNombreContainingOrApellidosContainingOrDniContaining(docenteId, criterio)
 activate repository
 
 repository -> db : SELECT * FROM alumnos\nWHERE docente_id = ?\nAND (nombre ILIKE %criterio% OR apellidos ILIKE %criterio% OR dni ILIKE %criterio%)
