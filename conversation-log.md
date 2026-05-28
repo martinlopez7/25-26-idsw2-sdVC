@@ -552,4 +552,4 @@ El diseño siguió el patrón de eliminación segura con confirmación previa, u
 
 **Enlace:** [session-ses_1929.md](conversations/session-ses_1929.md)
 
-**Decisión:**
+**Decisión:** La IA interpretó que un docente si tiene un recurso asociado no se puede eliminar. Sin embargo, queremos todo lo contrario, cuando se diseñen los casos de uso del actor `Docente` se corregirá este caso de uso.
