@@ -1,0 +1,53 @@
+@startuml
+title Diagrama de Secuencia - Eliminar Alumno (Spring Boot + React)
+
+actor "Docente" as Teacher
+participant "Frontend (React)" as FE
+participant "AlumnosController" as Controller
+participant "AlumnoService" as Service
+participant "AlumnoRepository" as Repo
+database "Base de Datos (PostgreSQL)" as DB
+
+Teacher -> FE: Clic en "Eliminar" (alumnoId)
+activate FE
+FE --> Teacher: Mostrar Modal de Confirmación\n(datos del alumno)
+Teacher -> FE: Confirma eliminación
+FE -> Controller: DELETE /api/alumnos/{alumnoId}\n(Header: Authorization: Bearer <token>)
+activate Controller
+Controller -> Service: eliminarAlumno(alumnoId)
+activate Service
+Service -> Repo: findById(alumnoId)
+activate Repo
+Repo -> DB: SELECT * FROM alumnos WHERE id = ?
+activate DB
+DB --> Repo: Optional<Alumno>
+deactivate DB
+Repo --> Service: Optional<Alumno>
+deactivate Repo
+alt Alumno Existe
+    Service -> Service: extraer docenteId del JWT
+    Service -> Service: verificarAlumnoPerteneceADocente(alumno, docenteId)
+    Service -> Repo: deleteById(alumnoId)
+    activate Repo
+    Repo -> DB: DELETE FROM alumnos WHERE id = ?
+    activate DB
+    DB --> Repo: OK
+    deactivate DB
+    Repo --> Service: void
+    deactivate Repo
+    Service --> Controller: void
+    deactivate Service
+    Controller --> FE: 204 No Content
+    deactivate Controller
+    FE -> FE: Remover de la lista (actualizar vista)
+    FE --> Teacher: Notificación "Alumno eliminado correctamente"
+else Alumno No Existe O No Pertenece Al Docente
+    Service --> Controller: throw EntityNotFoundException
+    deactivate Service
+    Controller --> FE: 404 Not Found
+    deactivate Controller
+    FE --> Teacher: Mostrar Error "Alumno no encontrado"
+end
+deactivate FE
+
+@enduml

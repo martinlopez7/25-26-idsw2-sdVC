@@ -607,3 +607,17 @@ El diseño siguió el patrón "el gordo" (edición continua con múltiples ciclo
 **Enlace:** [session-ses_1922.md](conversations/session-ses_1922.md)
 
 **Decisión:** Se aceptó el diseño del caso de uso editarAlumno
+
+## [28/05/2026][12:04] Diseño de eliminarAlumno()
+
+**Prompt:** empezar → Diseña el caso de uso eliminarAlumno, fijate en los diseños de crearAlumno, verAlumnos y editarAlumno
+
+**Resultado:** Se realizó el diseño MVC de eliminarAlumno() generando:
+- documents/diseño/eliminarAlumno/README.md
+- modelosUML/diseño/eliminarAlumno/secuencia.puml
+
+El diseño siguió el patrón de eliminación segura con confirmación previa (modal de React), identificando los participantes: Frontend (React) con modal de confirmación, AlumnosController con endpoint DELETE /api/alumnos/{id}, AlumnoService con lógica de eliminación y verificación de pertenencia al docente autenticado, AlumnoRepository y Base de Datos (PostgreSQL). Se incluyeron verificaciones de existencia del alumno y pertenencia al docente extraído del JWT.
+
+**Enlace:** [session-ses_1920.md](conversations/session-ses_1920.md)
+
+**Decisión:**
