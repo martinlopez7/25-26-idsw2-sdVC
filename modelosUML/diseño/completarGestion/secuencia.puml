@@ -1,0 +1,80 @@
+@startuml completarGestion
+skinparam titleFontSize 16
+skinparam componentStyle rectangle
+
+title Diagrama de Secuencia - completarGestion()
+
+actor ":Docente" as docente
+actor ":AdministradorInstitucional" as admin
+
+participant ":MenuPrincipalComponent" as frontend
+participant ":AuthController" as controller
+participant ":AuthService" as service
+
+note right of frontend
+  El usuario solicita
+  volver al menú principal
+end note
+
+alt #LightBlue Actor Docente
+    docente -> frontend : Solicita completarGestion()
+    activate docente
+    activate frontend
+
+    frontend -> controller : GET /api/auth/menu
+    activate controller
+
+    controller -> service : obtenerOpcionesMenu(usuario)
+    activate service
+
+    service --> controller : OpcionesMenu{tipo: "DOCENTE"}
+    deactivate service
+
+    controller --> frontend : 200 OK + MenuDTO
+    deactivate controller
+
+    frontend -> frontend : renderizarMenu(opciones)
+
+    loop Para cada opción disponible
+        docente -> frontend : Selecciona opción
+        frontend -> docente : Navega a caso de uso
+    end
+
+    deactivate frontend
+    deactivate docente
+
+else #LightGreen Actor Administrador Institucional
+    admin -> frontend : Solicita completarGestion()
+    activate admin
+    activate frontend
+
+    frontend -> controller : GET /api/auth/menu
+    activate controller
+
+    controller -> service : obtenerOpcionesMenu(usuario)
+    activate service
+
+    service --> controller : OpcionesMenu{tipo: "ADMINISTRADOR_INSTITUCIONAL"}
+    deactivate service
+
+    controller --> frontend : 200 OK + MenuDTO
+    deactivate controller
+
+    frontend -> frontend : renderizarMenu(opciones)
+
+    loop Para cada opción disponible
+        admin -> frontend : Selecciona opción
+        frontend -> admin : Navega a caso de uso
+    end
+
+    deactivate frontend
+    deactivate admin
+end
+
+legend right
+|= Tipo Actor |= Opciones Disponibles |
+| DOCENTE | verGrados, verAsignaturas, verAlumnos, verPreguntas, generarExamenes, corregirExamenes, importarConfiguracionGlobal, exportarConfiguracionGlobal, cerrarSesion |
+| ADMINISTRADOR_INSTITUCIONAL | verDocentes, cerrarSesion |
+endlegend
+
+@enduml

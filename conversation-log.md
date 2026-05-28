@@ -552,4 +552,16 @@ El diseño siguió el patrón de eliminación segura con confirmación previa, u
 
 **Enlace:** [session-ses_1929.md](conversations/session-ses_1929.md)
 
-**Decisión:** La IA interpretó que un docente si tiene un recurso asociado no se puede eliminar. Sin embargo, queremos todo lo contrario, cuando se diseñen los casos de uso del actor `Docente` se corregirá este caso de uso.
+## [28/05/2026][09:33] Diseño de completarGestion()
+
+**Prompt:** empezar → Diseña el caso de uso completarGestion
+
+**Resultado:** Se realizó el diseño MVC de completarGestion() generando:
+- documents/diseño/completarGestion/README.md
+- modelosUML/diseño/completarGestion/secuencia.puml
+
+El diseño identificó los participantes: Frontend (React) con MenuPrincipalComponent, AuthController con endpoint GET /api/auth/menu, AuthService con lógica para determinar opciones según tipo de actor (DOCENTE o ADMINISTRADOR_INSTITUCIONAL), y Sesion (JWT). Las opciones se determinan stateless en el servidor según el tipo de actor extraído del JWT, sin necesidad de consulta a base de datos.
+
+**Enlace:** [session-ses_1928.md](conversations/session-ses_1928.md)
+
+**Decisión:**

@@ -109,3 +109,4 @@ Debes generar y guardar los siguientes artefactos en las rutas exactas indicadas
 ### Reglas Críticas
 * No inventes estructuras nuevas; la consistencia con los ejemplos es obligatoria.
 * Asegúrate de crear los directorios correspondientes si aún no existen antes de escribir los archivos.
+* Los diseños deben de ser coherentes entre sí ya que todo forma parte de un mismo sistema.
