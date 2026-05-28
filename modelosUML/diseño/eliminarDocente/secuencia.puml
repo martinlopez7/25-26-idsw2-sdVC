@@ -1,0 +1,57 @@
+@startuml
+title Diagrama de Secuencia - Eliminar Docente (Spring Boot + React)
+
+actor "Administrador Institucional" as Admin
+participant "Frontend (React)" as FE
+participant "DocentesController" as Controller
+participant "UsuarioService" as Service
+participant "UsuarioRepository" as Repo
+database "Base de Datos (PostgreSQL)" as DB
+
+Admin -> FE: Clic en "Eliminar" (docenteId)
+activate FE
+FE --> Admin: Mostrar Modal de Confirmación\n(datos del docente)
+Admin -> FE: Confirma eliminación
+FE -> Controller: DELETE /api/docentes/{docenteId}\n(Header: Authorization: Bearer <token>)
+activate Controller
+Controller -> Service: eliminarDocente(docenteId)
+activate Service
+Service -> Repo: findById(docenteId)
+activate Repo
+Repo -> DB: SELECT * FROM usuarios WHERE id = ? AND tipo = 'DOCENTE'
+activate DB
+DB --> Repo: Optional<Usuario>
+deactivate DB
+Repo --> Service: Optional<Usuario>
+deactivate Repo
+alt Docente Existe
+    Service -> Repo: deleteById(docenteId)
+    activate Repo
+    Repo -> DB: DELETE FROM usuarios WHERE id = ?
+    activate DB
+    DB --> Repo: OK
+    deactivate DB
+    Repo --> Service: void
+    deactivate Repo
+    Service --> Controller: void
+    deactivate Service
+    Controller --> FE: 204 No Content
+    deactivate Controller
+    FE -> FE: Remover de la lista (actualizar vista)
+    FE --> Admin: Notificación "Docente eliminado correctamente"
+else Docente No Existe
+    Service --> Controller: throw EntityNotFoundException
+    deactivate Service
+    Controller --> FE: 404 Not Found
+    deactivate Controller
+    FE --> Admin: Mostrar Error "Docente no encontrado"
+end
+deactivate FE
+
+alt Integridad Referencial
+    Service --> Controller: throw DataIntegrityViolationException
+    deactivate Service
+    Controller --> FE: 409 Conflict
+    deactivate Controller
+    FE --> Admin: Mostrar Error "No se puede eliminar el docente\nporque tiene asignaturas asociadas"
+end

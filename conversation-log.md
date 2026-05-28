@@ -539,3 +539,17 @@ El diseño siguió el patrón "el gordo" (edición continua con múltiples ciclo
 **Enlace:** [session-ses_1970.md](conversations/session-ses_1970.md)
 
 **Decisión:** Se aceptó el diseño del caso de uso editarDocente
+
+## [28/05/2026][09:06] Diseño de eliminarDocente()
+
+**Prompt:** empezar → Diseña el caso de uso eliminarDocente
+
+**Resultado:** Se realizó el diseño MVC de eliminarDocente() generando:
+- documents/diseño/eliminarDocente/README.md
+- modelosUML/diseño/eliminarDocente/secuencia.puml
+
+El diseño siguió el patrón de eliminación segura con confirmación previa, utilizando UsuarioRepository (compartido con iniciarSesion) para la persistencia. Se incluyeron los participantes: Frontend (React) con modal de confirmación, DocentesController con endpoint DELETE /api/docentes/{id}, UsuarioService con lógica de eliminación y validación de existencia, UsuarioRepository y Base de Datos (PostgreSQL). Se manejó el error de integridad referencial (409 Conflict) cuando el docente tiene asignaturas asociadas.
+
+**Enlace:** [session-ses_1929.md](conversations/session-ses_1929.md)
+
+**Decisión:**
