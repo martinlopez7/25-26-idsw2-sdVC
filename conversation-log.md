@@ -651,3 +651,17 @@ Se verificó que la implementación respeta el diseño: endpoint POST /api/auth/
 **Enlace:** [session-ses_18d6.md](conversations/session-ses_18d6.md)
 
 **Decisión:** El caso de uso cerrarSesion se aceptó.
+
+## [29/05/2026][10:25] Implementación de verDocentes() y menús diferenciados por actor
+
+**Prompt:** este sistema tiene dos actores, administrador institucional y docente. cuando cualquiera de los dos se autentica en el caso de uso iniciarSesion se le devuelve un token que contiene el tipo de actor que es. quiero que dependiendo del tipo de actor que sea, el front end devuelva una pagina principal distinta, ya que los casos de uso que ejecuta cada actor son distintos. que habria que hacer para implementar el caso de uso verDocentes
+
+**Resultado:** Se implementó:
+- Backend: UsuarioDTO, UsuarioService, DocentesController (GET /api/docentes), UsuarioRepository con métodos findByTipoActor() y findByTipoActorAndCriterio()
+- Frontend: api.ts (axios con interceptor), docentesService, DocentesListComponent, AdminMenu.tsx y DocenteMenu.tsx, App.tsx con rutas separadas /menu-admin y /menu-docente, AdminRoute para proteger rutas por rol
+- AuthContext exportó AuthUser type
+- LoginPage redirige según tipoActor
+
+**Enlace:** [session-ses_18d4.md](conversations/session-ses_18d4.md)
+
+**Decisión:** Para redirigir a los actores a sus páginas principales respectivas tuve dos opciones: la primera una vez el usuario se autenticase dependiendo del tipo de actor que sea (información que queda almacenada en el token) redirigirles a ambos a la misma página pero rendirizar distintos componentes (uno para el admin y otro para el docente) y la segunda opción fue directamente redirigirles a páginas distintas. Me decanté por la segunda.

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { authService, LoginRequest } from '../../services/authService';
 import { useAuth } from '../../context/AuthContext';
 
@@ -6,6 +7,7 @@ export default function LoginPage() {
   const [credentials, setCredentials] = useState<LoginRequest>({ username: '', password: '' });
   const [error, setError] = useState<string>('');
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,6 +16,11 @@ export default function LoginPage() {
     try {
       const response = await authService.login(credentials);
       login(response.token, response.tipoActor);
+      if (response.tipoActor === 'ADMINISTRADOR_INSTITUCIONAL') {
+        navigate('/menu-admin');
+      } else {
+        navigate('/menu-docente');
+      }
     } catch (err: any) {
       setError(err.response?.data?.error || 'Credenciales inválidas');
     }
