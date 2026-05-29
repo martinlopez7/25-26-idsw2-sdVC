@@ -5,6 +5,11 @@ export default function LogoutButton() {
   const { token, logout } = useAuth();
 
   const handleLogout = async () => {
+    const confirmed = window.confirm('¿Estás seguro de que quieres cerrar sesión?');
+    if (!confirmed) {
+      return;
+    }
+
     if (token) {
       try {
         await authService.logout(token);

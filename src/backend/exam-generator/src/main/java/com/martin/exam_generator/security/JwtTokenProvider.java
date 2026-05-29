@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class JwtTokenProvider {
@@ -17,6 +19,8 @@ public class JwtTokenProvider {
 
     @Value("${jwt.expiration}")
     private long jwtExpiration;
+
+    private final Set<String> tokenBlacklist = ConcurrentHashMap.newKeySet();
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
@@ -55,6 +59,9 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token) {
         try {
+            if (tokenBlacklist.contains(token)) {
+                return false;
+            }
             Jwts.parser()
                     .verifyWith(getSigningKey())
                     .build()
@@ -63,5 +70,9 @@ public class JwtTokenProvider {
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
+    }
+
+    public void invalidateToken(String token) {
+        tokenBlacklist.add(token);
     }
 }

@@ -639,3 +639,15 @@ Se verificó que la implementación respeta el diseño: endpoint POST /api/auth/
 **Enlace:** [session-ses_18fe.md](conversations/session-ses_18fe.md)
 
 **Decisión:** Se aceptó la implementación de iniciarSesion
+
+## [29/05/2026][09:42] Implementación de cerrarSesion()
+
+**Prompt:** empezar → implementa el caso de uso cerrarSesion
+
+**Resultado:** Se implementó el caso de uso cerrarSesion() generando:
+- Backend: JwtTokenProvider - añadí blacklist de tokens con `invalidateToken()` y verificación en `validateToken()`, AuthService - implementé método `logout()` que extrae el token del header y lo añade a la blacklist
+- Frontend: App.tsx - añadí import y uso de LogoutButton en el menú principal, LogoutButton.tsx - añadí confirmación con `window.confirm()` antes de cerrar sesión
+
+**Enlace:** [session-ses_18d6.md](conversations/session-ses_18d6.md)
+
+**Decisión:** El caso de uso cerrarSesion se aceptó.

@@ -46,5 +46,9 @@ public class AuthService {
     }
 
     public void logout(String authHeader) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+            jwtTokenProvider.invalidateToken(token);
+        }
     }
 }
