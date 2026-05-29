@@ -678,4 +678,4 @@ El error 403 se debía a que faltaba el JwtAuthenticationFilter. Sin él, el bac
 
 **Enlace:** [session-ses_18d1.md](conversations/session-ses_18d1.md)
 
-**Decisión:** 
+**Decisión:** La implementación del caso de uso crearDocente() se aceptó. Sin embargo la IA se olvidó de encriptar contraseña del docente, por lo que para ser fieles a su diseño se corrigió.

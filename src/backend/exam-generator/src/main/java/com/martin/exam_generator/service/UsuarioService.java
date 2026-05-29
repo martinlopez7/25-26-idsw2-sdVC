@@ -4,6 +4,7 @@ import com.martin.exam_generator.dto.UsuarioCreateDTO;
 import com.martin.exam_generator.dto.UsuarioDTO;
 import com.martin.exam_generator.entities.Usuario;
 import com.martin.exam_generator.repository.UsuarioRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +14,11 @@ import java.util.stream.Collectors;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<UsuarioDTO> obtenerTodosLosDocentes() {
@@ -46,7 +49,7 @@ public class UsuarioService {
 
         Usuario docente = new Usuario();
         docente.setUsername(dto.getUsername());
-        docente.setPassword(dto.getPassword());
+        docente.setPassword(passwordEncoder.encode(dto.getPassword()));
         docente.setTipoActor(Usuario.TipoActor.DOCENTE);
         docente.setNombre(dto.getNombre());
         docente.setApellidos(dto.getApellidos());
