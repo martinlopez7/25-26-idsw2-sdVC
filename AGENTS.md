@@ -110,3 +110,97 @@ Debes generar y guardar los siguientes artefactos en las rutas exactas indicadas
 * No inventes estructuras nuevas; la consistencia con los ejemplos es obligatoria.
 * Asegúrate de crear los directorios correspondientes si aún no existen antes de escribir los archivos.
 * Los diseños deben de ser coherentes entre sí ya que todo forma parte de un mismo sistema.
+
+## Implementación de Casos de Uso
+
+### Rol y Objetivo
+Cuando se te asigne implementar un caso de uso concreto, tu objetivo es consultar su diseño técnico y traducirlo a código funcional siguiendo el stack tecnológico del proyecto y las metodologías definidas.
+
+### Stack Tecnológico
+El stack tecnológico que se va a utilizar está explicado en `documents/diseño/README.md`:
+* **Backend:** Java + Spring Boot 4.x (API RESTful, Spring Security, Spring Data JPA)
+* **Frontend:** React 18+ + TypeScript (componentes y hooks)
+* **Base de Datos:** PostgreSQL con ORM (Spring Data JPA + Hibernate)
+
+### Estructura del Proyecto
+El proyecto se estructura en dos módulos principales:
+
+```
+src/
+├── backend/                    # Spring Boot
+│   └── exam-generator/src/main/java/com/martin/exam_generator/
+│       ├── controller/         # REST Controllers
+│       ├── service/            # Lógica de negocio
+│       ├── repository/         # Acceso a datos (JPA)
+│       ├── entities/           # Entidades JPA
+│       ├── dto/                # Data Transfer Objects
+│       ├── security/           # Configuración Spring Security
+│       └── exception/          # Manejo de excepciones
+└── frontend/                   # React + TypeScript
+    └── src/
+        ├── components/         # Componentes React (por crear)
+        ├── hooks/              # Custom hooks (por crear)
+        ├── services/           # Llamadas API REST (por crear)
+        ├── types/              # Tipos TypeScript (por crear)
+        ├── context/            # React Context (por crear)
+        ├── App.tsx             # Componente principal
+        └── index.tsx           # Punto de entrada
+```
+
+**Paquete base:** `com.martin.exam_generator`
+
+### Artefactos a Entregar y Ubicación
+Debes generar y guardar los siguientes artefactos en las rutas exactas indicadas:
+
+1. **Backend - Controller**
+   * **Ubicación:** `src/backend/exam-generator/src/main/java/com/martin/exam_generator/controller/{NombreEntidad}Controller.java`
+   * **Formato:** Anotaciones Spring (@RestController, @RequestMapping, @GetMapping, @PostMapping, etc.)
+   * **Responsabilidad:** Recibir peticiones HTTP, delegar a servicio, retornar respuestas JSON
+
+2. **Backend - Service**
+   * **Ubicación:** `src/backend/exam-generator/src/main/java/com/martin/exam_generator/service/{NombreEntidad}Service.java`
+   * **Formato:** Anotaciones Spring (@Service, @Transactional)
+   * **Responsabilidad:** Contener la lógica de negocio, validar reglas de negocio, coordinar repositorios
+
+3. **Backend - Repository**
+   * **Ubicación:** `src/backend/exam-generator/src/main/java/com/martin/exam_generator/repository/{NombreEntidad}Repository.java`
+   * **Formato:** Extender JpaRepository (Spring Data JPA)
+   * **Responsabilidad:** Operaciones CRUD básicas y consultas personalizadas con JPQL
+
+4. **Backend - Entidad JPA**
+   * **Ubicación:** `src/backend/exam-generator/src/main/java/com/martin/exam_generator/entities/{NombreEntidad}.java`
+   * **Formato:** Anotaciones JPA (@Entity, @Table, @Column, @ManyToOne, @OneToMany, etc.)
+   * **Responsabilidad:** Mapear la entidad a la tabla correspondiente en PostgreSQL
+
+5. **Backend - DTOs**
+   * **Ubicación:** `src/backend/exam-generator/src/main/java/com/martin/exam_generator/dto/`
+   * **Archivos:** `{NombreEntidad}Request.java`, `{NombreEntidad}Response.java`
+   * **Formato:** POJOs con lombok (@Data, @NoArgsConstructor, @AllArgsConstructor)
+   * **Responsabilidad:** Transferir datos entre capas, validar peticiones entrantes
+
+6. **Frontend - Componente**
+   * **Ubicación:** `frontend/src/components/{modulo}/{NombreEntidad}*.tsx`
+   * **Formato:** Componente React funcional con hooks
+   * **Responsabilidad:** Renderizar interfaz de usuario, manejar estado local, llamar a servicios
+
+7. **Frontend - Servicio API**
+   * **Ubicación:** `frontend/src/services/{nombreEntidad}Service.ts`
+   * **Formato:** Funciones que consumen la API REST (fetch o axios)
+   * **Responsabilidad:** Abstraer llamadas HTTP, retornar Promises al componente
+
+### Orden de Implementación Recomendado
+Para cada caso de uso, sigue este orden de implementación:
+
+1. **Backend - Entidad JPA** (modelo de dominio → tabla PostgreSQL)
+2. **Backend - Repository** (operaciones de acceso a datos)
+3. **Backend - DTOs** (estructura de datos para transfer)
+4. **Backend - Service** (lógica de negocio del caso de uso)
+5. **Backend - Controller** (endpoints REST)
+6. **Frontend - Servicio API** (consumo del endpoint)
+7. **Frontend - Componente** (interfaz de usuario)
+
+### Reglas Críticas
+* Antes de implementar, consulta el diseño en `documents/diseño/{nombreDelCasoDeUso}/`, el análisis en `documents/analisis/{nombreDelCasoDeUso}/` y el detallado en `contexto/disciplina-requisitos/detalladoCasosDeUso/{nombreDelCasoDeUso}`
+* Mantén consistencia con los casos de uso ya implementados del mismo módulo
+* El frontend debe seguir el flujo de navegación definido en los diagramas de contexto (`contexto/disciplina-requisitos/diagramasDeContexto/`)
+* Utiliza los mismos patrones de nomenclatura y estructura ya establecidos en el proyecto

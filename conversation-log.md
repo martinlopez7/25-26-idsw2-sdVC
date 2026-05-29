@@ -621,3 +621,21 @@ El diseño siguió el patrón de eliminación segura con confirmación previa (m
 **Enlace:** [session-ses_1920.md](conversations/session-ses_1920.md)
 
 **Decisión:** El diseño del caso de uso eliminarAlumno se aceptó
+
+## [29/05/2026][09:04] Inicialización de proyectos e implementación de iniciarSesion
+
+**Prompt:** empezar → Usuario quiso inicializar proyectos Spring Boot y React → Modificar protocolo de implementación en AGENTS.md según estructura de carpetas → Implementar iniciarSesion → Probar y verificar que respeta el diseño
+
+**Resultado:** Se modificó el protocolo de implementación en AGENTS.md para reflejar la estructura de carpetas real del proyecto (backend: `com.martin.exam_generator`, frontend: `src/` con components, hooks, services, types, context). Se crearon los proyectos: Spring Boot (usuario lo creó manualmente) y React + TypeScript (create-react-app con axios, react-router-dom, bootstrap).
+
+Se implementó el caso de uso iniciarSesion y cerrarSesion generando:
+- Backend: Usuario entity, UsuarioRepository, LoginRequest, JwtResponse, JwtTokenProvider, SecurityConfig (con CORS), AuthService, AuthController (login + logout), GlobalExceptionHandler, DataInitializer (usuario admin con password BCrypt)
+- Frontend: AuthContext, authService, LoginPage, LogoutButton, App.tsx (router con rutas protegidas)
+
+Se corrigieron imports en LoginPage.tsx y LogoutButton.tsx (ruta relativa incorrecta). Se añadió configuración CORS a SecurityConfig para permitir peticiones de localhost:3000.
+
+Se verificó que la implementación respeta el diseño: endpoint POST /api/auth/login, LoginRequest/JwtResponse DTOs, BCrypt password verification, JWT con username y tipoActor, manejo de excepciones 401, token en LocalStorage.
+
+**Enlace:** [session-ses_18fe.md](conversations/session-ses_18fe.md)
+
+**Decisión:** Se aceptó la implementación de iniciarSesion
