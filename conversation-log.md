@@ -665,3 +665,17 @@ Se verificó que la implementación respeta el diseño: endpoint POST /api/auth/
 **Enlace:** [session-ses_18d4.md](conversations/session-ses_18d4.md)
 
 **Decisión:** Para redirigir a los actores a sus páginas principales respectivas tuve dos opciones: la primera una vez el usuario se autenticase dependiendo del tipo de actor que sea (información que queda almacenada en el token) redirigirles a ambos a la misma página pero rendirizar distintos componentes (uno para el admin y otro para el docente) y la segunda opción fue directamente redirigirles a páginas distintas. Me decanté por la segunda.
+
+## [29/05/2026][12:26] Implementación de crearDocente() y corrección de JwtAuthenticationFilter
+
+**Prompt:**  empezar → implementa el caso de uso crearDocente → Error 403 al crear docente, el endpoint no se alcanzaba
+
+**Resultado:** Se implementó crearDocente() generando:
+- Backend: UsuarioCreateDTO (con validaciones), campos adicionales en la entidad Usuario (nombre, apellidos, dni, email), UsuarioRepository con existsByUsername/Dni/Email, UsuarioService.crearDocente(), DocentesController POST /api/docentes, GlobalExceptionHandler para IllegalArgumentException
+- Frontend: docentesService.crearDocente(), UsuarioFormComponent con formulario validado, ruta /docentes/crear en App.tsx
+
+El error 403 se debía a que faltaba el JwtAuthenticationFilter. Sin él, el backend no procesaba el token JWT del frontend. Se creó el filtro y se configuró en SecurityConfig para extraer y validar el token del header Authorization.
+
+**Enlace:** [session-ses_18d1.md](conversations/session-ses_18d1.md)
+
+**Decisión:** 

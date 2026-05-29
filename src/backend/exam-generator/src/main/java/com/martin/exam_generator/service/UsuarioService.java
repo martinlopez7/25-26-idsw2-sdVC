@@ -1,5 +1,6 @@
 package com.martin.exam_generator.service;
 
+import com.martin.exam_generator.dto.UsuarioCreateDTO;
 import com.martin.exam_generator.dto.UsuarioDTO;
 import com.martin.exam_generator.entities.Usuario;
 import com.martin.exam_generator.repository.UsuarioRepository;
@@ -30,5 +31,29 @@ public class UsuarioService {
         return docentes.stream()
                 .map(UsuarioDTO::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    public UsuarioDTO crearDocente(UsuarioCreateDTO dto) {
+        if (usuarioRepository.existsByUsername(dto.getUsername())) {
+            throw new IllegalArgumentException("El nombre de usuario ya existe");
+        }
+        if (usuarioRepository.existsByDni(dto.getDni())) {
+            throw new IllegalArgumentException("El DNI ya está registrado");
+        }
+        if (usuarioRepository.existsByEmail(dto.getEmail())) {
+            throw new IllegalArgumentException("El email ya está registrado");
+        }
+
+        Usuario docente = new Usuario();
+        docente.setUsername(dto.getUsername());
+        docente.setPassword(dto.getPassword());
+        docente.setTipoActor(Usuario.TipoActor.DOCENTE);
+        docente.setNombre(dto.getNombre());
+        docente.setApellidos(dto.getApellidos());
+        docente.setDni(dto.getDni());
+        docente.setEmail(dto.getEmail());
+
+        Usuario saved = usuarioRepository.save(docente);
+        return UsuarioDTO.fromEntity(saved);
     }
 }

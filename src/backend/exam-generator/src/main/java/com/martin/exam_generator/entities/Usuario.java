@@ -26,6 +26,18 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private TipoActor tipoActor;
 
+    @Column
+    private String nombre;
+
+    @Column
+    private String apellidos;
+
+    @Column(unique = true)
+    private String dni;
+
+    @Column(unique = true)
+    private String email;
+
     public enum TipoActor {
         DOCENTE,
         ADMINISTRADOR_INSTITUCIONAL
