@@ -184,9 +184,16 @@ export default function UsuarioFormComponent() {
                   <button type="submit" className="btn btn-primary" disabled={loading}>
                     {loading ? 'Guardando...' : (isEditMode ? 'Guardar Cambios' : 'Crear Docente')}
                   </button>
-                  <button type="button" className="btn btn-secondary" onClick={handleCancel}>
-                    Cancelar
-                  </button>
+                  <div className="d-flex gap-2">
+                    {isEditMode && (
+                      <button type="button" className="btn btn-danger" onClick={() => navigate(`/docentes/eliminar/${id}`)}>
+                        Eliminar
+                      </button>
+                    )}
+                    <button type="button" className="btn btn-secondary" onClick={handleCancel}>
+                      Cancelar
+                    </button>
+                  </div>
                 </div>
               </form>
             </div>

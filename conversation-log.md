@@ -706,4 +706,4 @@ En el diseño del caso de uso verDocentes especificaba que el filtro se usaba pa
 
 **Enlace:** [session-ses_18c6.md](conversations/session-ses_18c6.md)
 
-**Decisión:** 
+**Decisión:** La implementación del caso de uso eliminarDocente() se aceptó. Sin embargo, tal y como definimos en el requisitado, se puede eliminar tanto en el listado de docentes como cuando tienes el docente abierto, por lo que este segundo "camino" de eliminación se añadió manualmente. Además, para ser fieles al diseño del caso de uso, al eliminar un docente se elimina por medio de su ID.
