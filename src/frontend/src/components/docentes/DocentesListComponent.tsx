@@ -51,7 +51,7 @@ export default function DocentesListComponent() {
             <input
               type="text"
               className="form-control"
-              placeholder="Buscar por username..."
+              placeholder="Buscar por nombre, apellido, DNI..."
               value={filtro}
               onChange={(e) => setFiltro(e.target.value)}
             />

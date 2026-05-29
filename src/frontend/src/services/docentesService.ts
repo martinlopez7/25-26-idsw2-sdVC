@@ -21,7 +21,7 @@ export interface UsuarioCreateDTO {
 
 export const docentesService = {
   getDocentes: async (filtro?: string): Promise<UsuarioDTO[]> => {
-    const url = filtro ? `/docentes?filtro=${encodeURIComponent(filtro)}` : '/docentes';
+    const url = filtro ? `/docentes?criterio=${encodeURIComponent(filtro)}` : '/docentes';
     const response = await api.get<UsuarioDTO[]>(url);
     return response.data;
   },

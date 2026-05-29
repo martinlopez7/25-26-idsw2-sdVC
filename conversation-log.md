@@ -679,3 +679,7 @@ El error 403 se debía a que faltaba el JwtAuthenticationFilter. Sin él, el bac
 **Enlace:** [session-ses_18d1.md](conversations/session-ses_18d1.md)
 
 **Decisión:** La implementación del caso de uso crearDocente() se aceptó. Sin embargo la IA se olvidó de encriptar contraseña del docente, por lo que para ser fieles a su diseño se corrigió.
+
+## [29/05/2026][12:55] Corrección de verDocentes() de acuerdo a su diseño
+
+En el diseño del caso de uso verDocentes especificaba que el filtro se usaba para buscar docentes según su nombre, apellido y dni. Sin embargo me he despistado y la implementación solo permitía filtrar por nombre de usuario, por lo que lo he corregido para ser fieles al diseño.

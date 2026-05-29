@@ -33,7 +33,6 @@ public class DocentesController {
 
     @PostMapping
     public ResponseEntity<UsuarioDTO> crearDocente(@Valid @RequestBody UsuarioCreateDTO dto) {
-        System.out.println("crear");
         UsuarioDTO created = usuarioService.crearDocente(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }

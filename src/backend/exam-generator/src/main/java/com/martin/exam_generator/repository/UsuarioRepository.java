@@ -16,7 +16,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     List<Usuario> findByTipoActor(Usuario.TipoActor tipoActor);
 
     @Query("SELECT u FROM Usuario u WHERE u.tipoActor = :tipoActor AND " +
-           "(LOWER(u.username) LIKE LOWER(CONCAT('%', :criterio, '%')))")
+            "(LOWER(u.nombre) LIKE LOWER(CONCAT('%', :criterio, '%')) OR " +
+            "LOWER(u.apellidos) LIKE LOWER(CONCAT('%', :criterio, '%')) OR " +
+            "LOWER(u.dni) LIKE LOWER(CONCAT('%', :criterio, '%')))")
     List<Usuario> findByTipoActorAndCriterio(@Param("tipoActor") Usuario.TipoActor tipoActor,
                                              @Param("criterio") String criterio);
 
