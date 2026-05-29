@@ -1,10 +1,23 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { docentesService, UsuarioCreateDTO } from '../../services/docentesService';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { docentesService, UsuarioCreateDTO, UsuarioUpdateDTO, UsuarioDTO } from '../../services/docentesService';
 
 export default function UsuarioFormComponent() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<UsuarioCreateDTO>({
+  const { id } = useParams<{ id: string }>();
+  const isEditMode = Boolean(id);
+
+  const emptyForm: UsuarioCreateDTO = {
+    nombre: '',
+    apellidos: '',
+    dni: '',
+    username: '',
+    email: '',
+    password: '',
+  };
+
+  const [formData, setFormData] = useState<UsuarioCreateDTO>(emptyForm);
+  const [updateData, setUpdateData] = useState<UsuarioUpdateDTO>({
     nombre: '',
     apellidos: '',
     dni: '',
@@ -15,9 +28,34 @@ export default function UsuarioFormComponent() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (isEditMode && id) {
+      setLoading(true);
+      docentesService.obtenerDocentePorId(Number(id))
+        .then((docente: UsuarioDTO) => {
+          const data = {
+            nombre: docente.nombre || '',
+            apellidos: docente.apellidos || '',
+            dni: docente.dni || '',
+            username: docente.username,
+            email: docente.email || '',
+            password: '',
+          };
+          setFormData(data);
+          setUpdateData(data);
+        })
+        .catch(() => setError('Error al cargar los datos del docente'))
+        .finally(() => setLoading(false));
+    }
+  }, [id, isEditMode]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    if (isEditMode) {
+      setUpdateData(prev => ({ ...prev, [name]: value }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
     setError('');
   };
 
@@ -27,10 +65,14 @@ export default function UsuarioFormComponent() {
     setError('');
 
     try {
-      const created = await docentesService.crearDocente(formData);
-      navigate(`/docentes/editar/${created.id}`);
+      if (isEditMode && id) {
+        await docentesService.actualizarDocente(Number(id), updateData);
+      } else {
+        await docentesService.crearDocente(formData);
+      }
+      navigate('/docentes');
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Error al crear el docente');
+      setError(err.response?.data?.error || 'Error al guardar el docente');
     } finally {
       setLoading(false);
     }
@@ -40,13 +82,15 @@ export default function UsuarioFormComponent() {
     navigate('/docentes');
   };
 
+  const currentData = isEditMode ? updateData : formData;
+
   return (
     <div className="container mt-4">
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card">
             <div className="card-header">
-              <h4>Crear Docente</h4>
+              <h4>{isEditMode ? 'Editar Docente' : 'Crear Docente'}</h4>
             </div>
             <div className="card-body">
               {error && <div className="alert alert-danger">{error}</div>}
@@ -59,7 +103,7 @@ export default function UsuarioFormComponent() {
                     className="form-control"
                     id="nombre"
                     name="nombre"
-                    value={formData.nombre}
+                    value={currentData.nombre}
                     onChange={handleChange}
                     required
                   />
@@ -72,7 +116,7 @@ export default function UsuarioFormComponent() {
                     className="form-control"
                     id="apellidos"
                     name="apellidos"
-                    value={formData.apellidos}
+                    value={currentData.apellidos}
                     onChange={handleChange}
                     required
                   />
@@ -85,7 +129,7 @@ export default function UsuarioFormComponent() {
                     className="form-control"
                     id="dni"
                     name="dni"
-                    value={formData.dni}
+                    value={currentData.dni}
                     onChange={handleChange}
                     pattern="^[0-9]{8}[A-Z]$"
                     title="Formato: 12345678A"
@@ -100,7 +144,7 @@ export default function UsuarioFormComponent() {
                     className="form-control"
                     id="username"
                     name="username"
-                    value={formData.username}
+                    value={currentData.username}
                     onChange={handleChange}
                     required
                   />
@@ -113,29 +157,31 @@ export default function UsuarioFormComponent() {
                     className="form-control"
                     id="email"
                     name="email"
-                    value={formData.email}
+                    value={currentData.email}
                     onChange={handleChange}
                     required
                   />
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="password" className="form-label">Contraseña</label>
+                  <label htmlFor="password" className="form-label">
+                    {isEditMode ? 'Nueva Contraseña (dejar vacío para mantener)' : 'Contraseña'}
+                  </label>
                   <input
                     type="password"
                     className="form-control"
                     id="password"
                     name="password"
-                    value={formData.password}
+                    value={currentData.password}
                     onChange={handleChange}
-                    minLength={6}
-                    required
+                    minLength={isEditMode ? 0 : 6}
+                    required={!isEditMode}
                   />
                 </div>
 
                 <div className="d-flex justify-content-between">
                   <button type="submit" className="btn btn-primary" disabled={loading}>
-                    {loading ? 'Creando...' : 'Crear Docente'}
+                    {loading ? 'Guardando...' : (isEditMode ? 'Guardar Cambios' : 'Crear Docente')}
                   </button>
                   <button type="button" className="btn btn-secondary" onClick={handleCancel}>
                     Cancelar

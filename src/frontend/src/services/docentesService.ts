@@ -19,6 +19,15 @@ export interface UsuarioCreateDTO {
   password: string;
 }
 
+export interface UsuarioUpdateDTO {
+  nombre: string;
+  apellidos: string;
+  dni: string;
+  username: string;
+  email: string;
+  password?: string;
+}
+
 export const docentesService = {
   getDocentes: async (filtro?: string): Promise<UsuarioDTO[]> => {
     const url = filtro ? `/docentes?criterio=${encodeURIComponent(filtro)}` : '/docentes';
@@ -27,6 +36,14 @@ export const docentesService = {
   },
   crearDocente: async (docente: UsuarioCreateDTO): Promise<UsuarioDTO> => {
     const response = await api.post<UsuarioDTO>('/docentes', docente);
+    return response.data;
+  },
+  obtenerDocentePorId: async (id: number): Promise<UsuarioDTO> => {
+    const response = await api.get<UsuarioDTO>(`/docentes/${id}`);
+    return response.data;
+  },
+  actualizarDocente: async (id: number, docente: UsuarioUpdateDTO): Promise<UsuarioDTO> => {
+    const response = await api.put<UsuarioDTO>(`/docentes/${id}`, docente);
     return response.data;
   },
 };

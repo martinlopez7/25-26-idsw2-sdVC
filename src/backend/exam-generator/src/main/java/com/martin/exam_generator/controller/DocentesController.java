@@ -2,6 +2,7 @@ package com.martin.exam_generator.controller;
 
 import com.martin.exam_generator.dto.UsuarioCreateDTO;
 import com.martin.exam_generator.dto.UsuarioDTO;
+import com.martin.exam_generator.dto.UsuarioUpdateDTO;
 import com.martin.exam_generator.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -31,9 +32,21 @@ public class DocentesController {
         return ResponseEntity.ok(docentes);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioDTO> obtenerDocente(@PathVariable Long id) {
+        UsuarioDTO docente = usuarioService.obtenerDocentePorId(id);
+        return ResponseEntity.ok(docente);
+    }
+
     @PostMapping
     public ResponseEntity<UsuarioDTO> crearDocente(@Valid @RequestBody UsuarioCreateDTO dto) {
         UsuarioDTO created = usuarioService.crearDocente(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioDTO> actualizarDocente(@PathVariable Long id, @Valid @RequestBody UsuarioUpdateDTO dto) {
+        UsuarioDTO updated = usuarioService.actualizarDocente(id, dto);
+        return ResponseEntity.ok(updated);
     }
 }

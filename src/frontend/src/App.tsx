@@ -30,6 +30,7 @@ function AppRoutes() {
       <Route path="/menu-docente" element={<ProtectedRoute><DocenteMenu /></ProtectedRoute>} />
       <Route path="/docentes" element={<AdminRoute><DocentesListComponent /></AdminRoute>} />
       <Route path="/docentes/crear" element={<AdminRoute><UsuarioFormComponent /></AdminRoute>} />
+      <Route path="/docentes/editar/:id" element={<AdminRoute><UsuarioFormComponent /></AdminRoute>} />
       <Route path="*" element={<Navigate to={isAuthenticated ? (user?.tipoActor === 'ADMINISTRADOR_INSTITUCIONAL' ? "/menu-admin" : "/menu-docente") : "/login"} />} />
     </Routes>
   );
