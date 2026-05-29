@@ -694,4 +694,4 @@ En el diseño del caso de uso verDocentes especificaba que el filtro se usaba pa
 
 **Enlace:** [session-ses_18c9.md](conversations/session-ses_18c9.md)
 
-**Decisión:** 
+**Decisión:** La implementación del caso de uso editar se aceptó. Sin embargo, tal y como definimos en el requisitado, análisis y diseño, cuando se crea un docente se debe transferir el sistema a modo edición automáticamente, por lo que se corrigió.

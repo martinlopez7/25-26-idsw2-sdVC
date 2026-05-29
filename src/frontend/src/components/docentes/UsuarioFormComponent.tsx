@@ -67,10 +67,11 @@ export default function UsuarioFormComponent() {
     try {
       if (isEditMode && id) {
         await docentesService.actualizarDocente(Number(id), updateData);
+        navigate('/docentes');
       } else {
-        await docentesService.crearDocente(formData);
+        const created = await docentesService.crearDocente(formData);
+         navigate(`/docentes/editar/${created.id}`);
       }
-      navigate('/docentes');
     } catch (err: any) {
       setError(err.response?.data?.error || 'Error al guardar el docente');
     } finally {
