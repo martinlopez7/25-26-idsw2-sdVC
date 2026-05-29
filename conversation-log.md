@@ -695,3 +695,15 @@ En el diseño del caso de uso verDocentes especificaba que el filtro se usaba pa
 **Enlace:** [session-ses_18c9.md](conversations/session-ses_18c9.md)
 
 **Decisión:** La implementación del caso de uso editar se aceptó. Sin embargo, tal y como definimos en el requisitado, análisis y diseño, cuando se crea un docente se debe transferir el sistema a modo edición automáticamente, por lo que se corrigió.
+
+## [29/05/2026][14:07] Implementación de eliminarDocente()
+
+**Prompt:** empezar → me gustaria implementar el caso de uso eliminarDocente
+
+**Resultado:** Se implementó eliminarDocente() generando:
+- Backend: GlobalExceptionHandler - añadida handler para DataIntegrityViolationException → 409 Conflict, UsuarioService.eliminarDocente(Long id), DocentesController DELETE /api/docentes/{id} → 204 No Content
+- Frontend: docentesService.eliminarDocente(id), EliminarDocenteComponent.tsx (nuevo componente con carga de datos, confirmación y eliminación), App.tsx con ruta /docentes/eliminar/:id protegida con AdminRoute
+
+**Enlace:** [session-ses_18c6.md](conversations/session-ses_18c6.md)
+
+**Decisión:** 

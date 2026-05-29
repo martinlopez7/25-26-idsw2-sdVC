@@ -46,4 +46,7 @@ export const docentesService = {
     const response = await api.put<UsuarioDTO>(`/docentes/${id}`, docente);
     return response.data;
   },
+  eliminarDocente: async (id: number): Promise<void> => {
+    await api.delete(`/docentes/${id}`);
+  },
 };

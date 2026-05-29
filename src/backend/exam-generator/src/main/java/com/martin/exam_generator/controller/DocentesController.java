@@ -49,4 +49,10 @@ public class DocentesController {
         UsuarioDTO updated = usuarioService.actualizarDocente(id, dto);
         return ResponseEntity.ok(updated);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarDocente(@PathVariable Long id) {
+        usuarioService.eliminarDocente(id);
+        return ResponseEntity.noContent().build();
+    }
 }

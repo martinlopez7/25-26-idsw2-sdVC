@@ -100,4 +100,11 @@ public class UsuarioService {
         Usuario saved = usuarioRepository.save(docente);
         return UsuarioDTO.fromEntity(saved);
     }
+
+    public void eliminarDocente(Long id) {
+        Usuario docente = usuarioRepository.findById(id)
+                .filter(u -> u.getTipoActor() == Usuario.TipoActor.DOCENTE)
+                .orElseThrow(() -> new EntityNotFoundException("Docente no encontrado con id: " + id));
+        usuarioRepository.delete(docente);
+    }
 }
