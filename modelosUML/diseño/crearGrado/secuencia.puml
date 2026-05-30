@@ -1,0 +1,48 @@
+@startuml
+title Diagrama de Secuencia - Crear Grado (Spring Boot + React)
+
+actor "Docente" as Teacher
+participant "Frontend (React)" as FE
+participant "GradosController" as Controller
+participant "GradoService" as Service
+participant "GradoRepository" as Repo
+database "Base de Datos (PostgreSQL)" as DB
+
+Teacher -> FE: Clic en "Nuevo Grado"
+activate FE
+FE --> Teacher: Mostrar Formulario (datos mínimos)
+Teacher -> FE: Ingresa datos (título, código)
+FE -> FE: Validar formulario (client-side)
+FE -> Controller: POST /api/grados (GradoCreateDTO JSON)\n(Header: Authorization: Bearer <token>)
+activate Controller
+Controller -> Controller: extraer docenteId del JWT
+activate Controller
+Controller -> Service: crearGrado(gradoCreateDTO, docenteId)
+activate Service
+Service -> Service: Mapear DTO a Entidad
+Service -> Service: Asociar grado al docente (docenteId)
+Service -> Repo: save(grado)
+activate Repo
+Repo -> DB: INSERT INTO grados (titulo, codigo, docente_id) VALUES (?, ?, ?)
+activate DB
+DB --> Repo: Grado (con ID generado)
+deactivate DB
+Repo --> Service: Grado
+deactivate Repo
+Service --> Controller: GradoDTO (201 Created)
+deactivate Service
+deactivate Controller
+Controller --> FE: 201 Created (GradoDTO JSON)
+deactivate Controller
+FE -> FE: Mostrar Toast "Grado creado correctamente"
+FE -> FE: Redirigir a editarGrado(gradoNuevo)
+FE --> Teacher: Mostrar Formulario de Edición
+deactivate FE
+
+alt Datos Inválidos
+    Controller --> FE: 400 Bad Request (validation errors)
+    deactivate Controller
+    FE --> Teacher: Mostrar errores de validación
+end
+
+@enduml

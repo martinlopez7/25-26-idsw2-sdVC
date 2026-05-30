@@ -775,3 +775,17 @@ El diseño siguió el patrón de verAlumnos(), con endpoint `GET /api/grados/mio
 **Enlace:** [session-ses_186a.md](conversations/session-ses_186a.md)
 
 **Decisión:** Se aceptó el diseño de verGrados
+
+## [30/05/2026][16:58] Diseño de crearGrado()
+
+**Prompt:** empezar → Diseña el caso de uso crearGrado
+
+**Resultado:** Se realizó el diseño MVC de crearGrado() generando:
+- documents/diseño/crearGrado/README.md
+- modelosUML/diseño/crearGrado/secuencia.puml
+
+El diseño siguió la filosofía C→U (Create→Update), transfiriendo automáticamente a `editarGrado()` tras la creación. Los participantes son: Frontend (GradoFormComponent), GradosController (POST /api/grados), GradoService y GradoRepository.
+
+**Enlace:** [session-ses_1869.md](conversations/session-ses_1869.md)
+
+**Decisión:** 
