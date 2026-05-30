@@ -707,3 +707,20 @@ En el diseño del caso de uso verDocentes especificaba que el filtro se usaba pa
 **Enlace:** [session-ses_18c6.md](conversations/session-ses_18c6.md)
 
 **Decisión:** La implementación del caso de uso eliminarDocente() se aceptó. Sin embargo, tal y como definimos en el requisitado, se puede eliminar tanto en el listado de docentes como cuando tienes el docente abierto, por lo que este segundo "camino" de eliminación se añadió manualmente. Además, para ser fieles al diseño del caso de uso, al eliminar un docente se elimina por medio de su ID.
+
+## [30/05/2026][10:10] Implementación de verAlumnos()
+
+**Prompt:** empezar → me gustaria implementar el caso de uso verAlumnos del actor docente
+
+**Resultado:** Se implementó verAlumnos() generando:
+- Backend: Alumno entity (con docenteId), AlumnoRepository (findByDocenteId, findByDocenteIdAndCriterio), AlumnoDTO, AlumnoService (obtenerAlumnosDelDocente, filtrarAlumnos), AlumnosController GET /api/alumnos/mios
+- Frontend: alumnosService.getAlumnos(), AlumnosListComponent.tsx, ruta /alumnos en App.tsx
+
+**Modificaciones al JWT:** Para filtrar alumnos por el docente autenticado, se añadió docenteId al token JWT:
+- JwtTokenProvider.generateToken() - añadido parámetro docenteId y claim "docenteId"
+- JwtTokenProvider.extractDocenteId()
+- AuthService.login() - pasa usuario.getId() como docenteId
+
+**Enlace:** [session-ses_1882.md](conversations/session-ses_1882.md)
+
+**Decisión:** 

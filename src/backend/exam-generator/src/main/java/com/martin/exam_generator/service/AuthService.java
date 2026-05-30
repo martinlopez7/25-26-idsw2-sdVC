@@ -39,7 +39,8 @@ public class AuthService {
 
         String token = jwtTokenProvider.generateToken(
                 usuario.getUsername(),
-                usuario.getTipoActor().name()
+                usuario.getTipoActor().name(),
+                usuario.getId()
         );
 
         return new JwtResponse(token, usuario.getTipoActor().name());
