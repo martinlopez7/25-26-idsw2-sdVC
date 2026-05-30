@@ -788,4 +788,4 @@ El diseño siguió la filosofía C→U (Create→Update), transfiriendo automát
 
 **Enlace:** [session-ses_1869.md](conversations/session-ses_1869.md)
 
-**Decisión:** 
+**Decisión:** Se aceptó el diseño de crearGrado
