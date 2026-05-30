@@ -22,4 +22,6 @@ public interface AlumnoRepository extends JpaRepository<Alumno, Long> {
                                             @Param("criterio") String criterio);
 
     boolean existsByDocenteIdAndDni(Long docenteId, String dni);
+
+    boolean existsByDocenteIdAndDniAndIdNot(Long docenteId, String dni, Long id);
 }

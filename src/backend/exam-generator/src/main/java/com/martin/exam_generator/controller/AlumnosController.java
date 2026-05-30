@@ -2,6 +2,7 @@ package com.martin.exam_generator.controller;
 
 import com.martin.exam_generator.dto.AlumnoCreateDTO;
 import com.martin.exam_generator.dto.AlumnoDTO;
+import com.martin.exam_generator.dto.AlumnoUpdateDTO;
 import com.martin.exam_generator.security.JwtTokenProvider;
 import com.martin.exam_generator.service.AlumnoService;
 import jakarta.validation.Valid;
@@ -40,6 +41,16 @@ public class AlumnosController {
         return ResponseEntity.ok(alumnos);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<AlumnoDTO> obtenerAlumno(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable Long id) {
+
+        Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
+        AlumnoDTO alumno = alumnoService.obtenerAlumnoPorIdYVerificarPertenecia(id, docenteId);
+        return ResponseEntity.ok(alumno);
+    }
+
     @PostMapping
     public ResponseEntity<AlumnoDTO> crearAlumno(
             @RequestHeader("Authorization") String authHeader,
@@ -48,5 +59,16 @@ public class AlumnosController {
         Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
         AlumnoDTO created = alumnoService.crearAlumno(dto, docenteId);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AlumnoDTO> actualizarAlumno(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable Long id,
+            @Valid @RequestBody AlumnoUpdateDTO dto) {
+
+        Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
+        AlumnoDTO updated = alumnoService.actualizarAlumno(id, dto, docenteId);
+        return ResponseEntity.ok(updated);
     }
 }

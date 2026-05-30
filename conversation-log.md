@@ -736,3 +736,15 @@ En el diseño del caso de uso verDocentes especificaba que el filtro se usaba pa
 **Enlace:** [session-ses_1880.md](conversations/session-ses_1880.md)
 
 **Decisión:** Se aceptó la implementación de crearAlumno. El único error que hubo fue a la hora de validar un alumno a la hora de guardarlo, al principio se implementó existsByDni() pero lo correcto es existsByDocenteIdAndDni(), ya que dos docentes distintos pueden tener al mismo alumno guardado en el sistema con el mismo DNI.
+
+## [30/05/2026][15:20] Implementación de editarAlumno()
+
+**Prompt:** empezar → me gustaria implementar el caso de uso editarAlumno
+
+**Resultado:** Se implementó editarAlumno() generando:
+- Backend: AlumnoUpdateDTO (idéntico a AlumnoCreateDTO con validaciones @NotBlank, @Pattern para DNI), AlumnoRepository.existsByDocenteIdAndDniAndIdNot() para verificar DNI único excluyendo el propio registro, AlumnoService.obtenerAlumnoPorId(), obtenerAlumnoPorIdYVerificarPertenecia() y actualizarAlumno() con verificación de pertenencia al docente autenticado, AlumnosController GET /{id} y PUT /{id}
+- Frontend: alumnosService.getAlumnoById(), AlumnoFormComponent.tsx modificado para cargar datos por ID cuando está en modo edición (isEditing=true) usando useParams, con estado de carga loadingData
+
+**Enlace:** [session-ses_1871.md](conversations/session-ses_1871.md)
+
+**Decisión:** 
