@@ -723,4 +723,4 @@ En el diseño del caso de uso verDocentes especificaba que el filtro se usaba pa
 
 **Enlace:** [session-ses_1882.md](conversations/session-ses_1882.md)
 
-**Decisión:** 
+**Decisión:** Se aceptó la implementación del caso de uso verAlumnos.
