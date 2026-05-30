@@ -748,3 +748,16 @@ En el diseño del caso de uso verDocentes especificaba que el filtro se usaba pa
 **Enlace:** [session-ses_1871.md](conversations/session-ses_1871.md)
 
 **Decisión:** Se aceptó la implementación del caso de uso editarAlumno. El único error fue que al darle al botón "Guardar cambios" en el front, te redirigía a la misma página de edición y no al listado de alumnos, por lo que se modificó.
+
+## [30/05/2026][16:27] Implementación de eliminarAlumno()
+
+**Prompt:** empezar → me gustaria implementar el caso de uso eliminarAlumno
+
+**Resultado:** Se implementó eliminarAlumno() generando:
+- Backend: AlumnoService.eliminarAlumno(Long id, Long docenteId) con verificación de existencia y pertenencia al docente autenticado, AlumnosController DELETE /api/alumnos/{id} → 204 No Content
+- Frontend: alumnosService.eliminarAlumno(id), EliminarAlumnoComponent.tsx (componente con carga de datos del alumno, modal de confirmación con advertencia, y eliminación), App.tsx con ruta /alumnos/eliminar/:id protegida con ProtectedRoute
+- Punto adicional: Botón "Eliminar" en AlumnoFormComponent.tsx visible solo en modo edición (ALUMNO_ABIERTO), permitiendo eliminar desde el estado ASIGNATURA_ABIERTO
+
+**Enlace:** [session-ses_186d.md](conversations/session-ses_186d.md)
+
+**Decisión:** Se aceptó la implementación de eliminarAlumno

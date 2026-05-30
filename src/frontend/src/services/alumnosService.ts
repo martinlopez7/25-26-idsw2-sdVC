@@ -28,4 +28,8 @@ export const alumnosService = {
     const response = await api.put<AlumnoDTO>(`/alumnos/${id}`, alumno);
     return response.data;
   },
+
+  eliminarAlumno: async (id: number): Promise<void> => {
+    await api.delete(`/alumnos/${id}`);
+  },
 };

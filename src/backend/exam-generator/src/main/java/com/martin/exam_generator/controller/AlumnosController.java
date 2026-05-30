@@ -71,4 +71,14 @@ public class AlumnosController {
         AlumnoDTO updated = alumnoService.actualizarAlumno(id, dto, docenteId);
         return ResponseEntity.ok(updated);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarAlumno(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable Long id) {
+
+        Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
+        alumnoService.eliminarAlumno(id, docenteId);
+        return ResponseEntity.noContent().build();
+    }
 }

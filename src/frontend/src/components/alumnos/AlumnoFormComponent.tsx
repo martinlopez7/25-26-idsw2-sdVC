@@ -127,6 +127,15 @@ export default function AlumnoFormComponent({ alumno: alumnoProp, isEditing = fa
                       <button type="button" className="btn btn-secondary" onClick={handleCancel}>
                         Cancelar
                       </button>
+                      {isEditing && (
+                        <button
+                          type="button"
+                          className="btn btn-danger ms-auto"
+                          onClick={() => navigate(`/alumnos/eliminar/${id}`)}
+                        >
+                          Eliminar
+                        </button>
+                      )}
                     </div>
                   </form>
                 </>

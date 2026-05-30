@@ -80,4 +80,15 @@ public class AlumnoService {
         Alumno saved = alumnoRepository.save(alumno);
         return AlumnoDTO.fromEntity(saved);
     }
+
+    public void eliminarAlumno(Long id, Long docenteId) {
+        Alumno alumno = alumnoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Alumno no encontrado con id: " + id));
+
+        if (!alumno.getDocenteId().equals(docenteId)) {
+            throw new EntityNotFoundException("Alumno no encontrado con id: " + id);
+        }
+
+        alumnoRepository.delete(alumno);
+    }
 }
