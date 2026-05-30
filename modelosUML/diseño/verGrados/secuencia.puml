@@ -1,0 +1,61 @@
+@startuml secuencia-verGrados
+
+title Secuencia - verGrados()
+
+participant "Frontend (React)\nGradosListComponent" as view
+participant "GradosController" as controller
+participant "GradoService" as service
+participant "GradoRepository" as repository
+participant "Base de Datos\n(PostgreSQL)" as db
+
+view -> controller : GET /api/grados/mios\n(Header: Authorization: Bearer <token>)
+activate controller
+controller -> controller: extraer docenteId del JWT
+controller -> service : obtenerGradosDelDocente(docenteId)
+activate service
+
+service -> repository : findByDocenteId(docenteId)
+activate repository
+
+repository -> db : SELECT * FROM grados WHERE docente_id = ?
+activate db
+db --> repository : List<Grado>
+deactivate db
+
+repository --> service : List<Grado>
+deactivate repository
+
+service --> controller : Lista<GradoDTO>
+deactivate service
+
+controller --> view : 200 OK, Lista<GradoDTO>
+deactivate controller
+
+alt Filtrado solicitado
+
+view -> controller : GET /api/grados/mios?filtro={criterio}\n(Header: Authorization: Bearer <token>)
+activate controller
+controller -> controller: extraer docenteId del JWT
+controller -> service : filtrarGradosDelDocente(docenteId, criterio)
+activate service
+
+service -> repository : findByDocenteIdAndTituloContainingOrCodigoContaining(docenteId, criterio, criterio)
+activate repository
+
+repository -> db : SELECT * FROM grados\nWHERE docente_id = ?\nAND (titulo ILIKE %criterio% OR codigo ILIKE %criterio%)
+activate db
+db --> repository : List<Grado>
+deactivate db
+
+repository --> service : List<Grado>
+deactivate repository
+
+service --> controller : Lista<GradoDTO>
+deactivate service
+
+controller --> view : 200 OK, Lista<GradoDTO>
+deactivate controller
+
+end
+
+@enduml

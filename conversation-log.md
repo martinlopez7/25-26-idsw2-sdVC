@@ -761,3 +761,17 @@ En el diseño del caso de uso verDocentes especificaba que el filtro se usaba pa
 **Enlace:** [session-ses_186d.md](conversations/session-ses_186d.md)
 
 **Decisión:** Se aceptó la implementación de eliminarAlumno
+
+## [30/05/2026][16:48] Diseño de verGrados()
+
+**Prompt:** empezar → Diseña el caso de uso verGrados, quiero que te bases en el diseño de verAlumnos 
+
+**Resultado:** Se realizó el diseño MVC de verGrados() generando:
+- documents/diseño/verGrados/README.md
+- modelosUML/diseño/verGrados/secuencia.puml
+
+El diseño siguió el patrón de verAlumnos(), con endpoint `GET /api/grados/mios` que filtra automáticamente por el `docenteId` extraído del JWT. Los criterios de filtrado son título y código del grado.
+
+**Enlace:** [session-ses_186a.md](conversations/session-ses_186a.md)
+
+**Decisión:** 
