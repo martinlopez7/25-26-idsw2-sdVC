@@ -45,7 +45,7 @@ export default function AlumnoFormComponent({ alumno: alumnoProp, isEditing = fa
     try {
       if (isEditing && alumno?.id) {
         await alumnosService.actualizarAlumno(alumno.id, { nombre, apellidos, dni });
-        navigate(`/alumnos/editar/${alumno.id}`);
+        navigate('/alumnos');
       } else {
         const created = await alumnosService.crearAlumno({ nombre, apellidos, dni });
         navigate(`/alumnos/editar/${created.id}`);

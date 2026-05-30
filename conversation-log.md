@@ -747,4 +747,4 @@ En el diseño del caso de uso verDocentes especificaba que el filtro se usaba pa
 
 **Enlace:** [session-ses_1871.md](conversations/session-ses_1871.md)
 
-**Decisión:** 
+**Decisión:** Se aceptó la implementación del caso de uso editarAlumno. El único error fue que al darle al botón "Guardar cambios" en el front, te redirigía a la misma página de edición y no al listado de alumnos, por lo que se modificó.
