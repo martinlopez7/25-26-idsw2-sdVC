@@ -1,5 +1,6 @@
 package com.martin.exam_generator.service;
 
+import com.martin.exam_generator.dto.AlumnoCreateDTO;
 import com.martin.exam_generator.dto.AlumnoDTO;
 import com.martin.exam_generator.entities.Alumno;
 import com.martin.exam_generator.repository.AlumnoRepository;
@@ -29,5 +30,20 @@ public class AlumnoService {
         return alumnos.stream()
                 .map(AlumnoDTO::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    public AlumnoDTO crearAlumno(AlumnoCreateDTO dto, Long docenteId) {
+        if (alumnoRepository.existsByDocenteIdAndDni(docenteId, dto.getDni())) {
+            throw new IllegalArgumentException("Ya existe un alumno con este DNI");
+        }
+
+        Alumno alumno = new Alumno();
+        alumno.setNombre(dto.getNombre());
+        alumno.setApellidos(dto.getApellidos());
+        alumno.setDni(dto.getDni());
+        alumno.setDocenteId(docenteId);
+
+        Alumno saved = alumnoRepository.save(alumno);
+        return AlumnoDTO.fromEntity(saved);
     }
 }

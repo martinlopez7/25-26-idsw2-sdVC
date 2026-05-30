@@ -13,4 +13,14 @@ export const alumnosService = {
     const response = await api.get<AlumnoDTO[]>(url);
     return response.data;
   },
+
+  crearAlumno: async (alumno: Omit<AlumnoDTO, 'id'>): Promise<AlumnoDTO> => {
+    const response = await api.post<AlumnoDTO>('/alumnos', alumno);
+    return response.data;
+  },
+
+  actualizarAlumno: async (id: number, alumno: Omit<AlumnoDTO, 'id'>): Promise<AlumnoDTO> => {
+    const response = await api.put<AlumnoDTO>(`/alumnos/${id}`, alumno);
+    return response.data;
+  },
 };

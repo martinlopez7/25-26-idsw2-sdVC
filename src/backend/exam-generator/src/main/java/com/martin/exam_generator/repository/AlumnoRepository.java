@@ -21,4 +21,5 @@ public interface AlumnoRepository extends JpaRepository<Alumno, Long> {
     List<Alumno> findByDocenteIdAndCriterio(@Param("docenteId") Long docenteId,
                                             @Param("criterio") String criterio);
 
+    boolean existsByDocenteIdAndDni(Long docenteId, String dni);
 }

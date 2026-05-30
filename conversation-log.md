@@ -724,3 +724,15 @@ En el diseño del caso de uso verDocentes especificaba que el filtro se usaba pa
 **Enlace:** [session-ses_1882.md](conversations/session-ses_1882.md)
 
 **Decisión:** Se aceptó la implementación del caso de uso verAlumnos.
+
+## [30/05/2026][14:35] Implementación de crearAlumno()
+
+**Prompt:** empezar → me gustaria implementar el caso de uso crearAlumno
+
+**Resultado:** Se implementó crearAlumno() generando:
+- Backend: AlumnoCreateDTO (con validaciones @NotBlank, @Pattern para DNI), AlumnosController POST /api/alumnos, AlumnoService.crearAlumno() con verificación de DNI único por docente, AlumnoRepository.existsByDocenteIdAndDni()
+- Frontend: alumnosService.crearAlumno() y actualizarAlumno(), AlumnoFormComponent.tsx (formulario reutilizable para crear/editar), rutas /alumnos/crear y /alumnos/editar/:id en App.tsx
+
+**Enlace:** [session-ses_1880.md](conversations/session-ses_1880.md)
+
+**Decisión:** Se aceptó la implementación de crearAlumno. El único error que hubo fue a la hora de validar un alumno a la hora de guardarlo, al principio se implementó existsByDni() pero lo correcto es existsByDocenteIdAndDni(), ya que dos docentes distintos pueden tener al mismo alumno guardado en el sistema con el mismo DNI.
