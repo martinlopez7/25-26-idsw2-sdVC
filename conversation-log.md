@@ -774,4 +774,4 @@ El diseño siguió el patrón de verAlumnos(), con endpoint `GET /api/grados/mio
 
 **Enlace:** [session-ses_186a.md](conversations/session-ses_186a.md)
 
-**Decisión:** 
+**Decisión:** Se aceptó el diseño de verGrados
