@@ -1,0 +1,51 @@
+@startuml eliminarGrado-diseño
+title Diagrama de Secuencia - Eliminar Grado - Spring Boot + React
+
+actor "Docente" as Teacher
+participant "Frontend (React)" as FE
+participant "GradosController" as Controller
+participant "GradoService" as Service
+participant "GradoRepository" as Repo
+database "Base de Datos (PostgreSQL)" as DB
+
+Teacher -> FE: Clic en "Eliminar" (en una fila)
+activate FE
+FE --> Teacher: Mostrar Diálogo de Confirmación (Modal)\ncon datos del grado
+Teacher -> FE: Confirma eliminación
+FE -> Controller: DELETE /api/grados/{id}\n(Header: Authorization: Bearer <token>)
+activate Controller
+Controller -> Service: eliminarGrado(id)
+activate Service
+Service -> Repo: findById(id)
+activate Repo
+Repo -> DB: SELECT * FROM grados WHERE id = ?
+activate DB
+DB --> Repo: Optional<Grado>
+deactivate DB
+Repo --> Service: Optional<Grado>
+deactivate Repo
+alt Grado Existe
+    Service -> Repo: deleteById(id)
+    activate Repo
+    Repo -> DB: DELETE FROM grados WHERE id = ?
+    activate DB
+    DB --> Repo: OK
+    deactivate DB
+    Repo --> Service: void
+    deactivate Repo
+    Service --> Controller: void
+    deactivate Service
+    Controller --> FE: 204 No Content
+    deactivate Controller
+    FE -> FE: Remover de la lista (actualizar vista)
+    FE --> Teacher: Notificación "Grado eliminado correctamente"
+else Grado No Existe
+    Service --> Controller: throw EntityNotFoundException
+    deactivate Service
+    Controller --> FE: 404 Not Found
+    deactivate Controller
+    FE --> Teacher: Mostrar Error "Grado no encontrado"
+end
+deactivate FE
+
+@enduml

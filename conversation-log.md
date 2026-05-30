@@ -808,3 +808,17 @@ Se incluyeron endpoints adicionales para gestión de alumnos por grado:
 **Enlace:** [session-ses_1870.md](conversations/session-ses_1870.md)
 
 **Decisión:** El diseño inicial se corrigió según las indicaciones del usuario: un alumno solo puede estar en un grado, la información de pertenencia se guarda en la entidad Alumno (columna grado_id), y al añadir un alumno solo se muestran aquellos que no tienen grado asignado (grado_id IS NULL).
+
+## [30/05/2026][17:32] Diseño de eliminarGrado()
+
+**Prompt:** empezar → Diseña el caso de uso eliminarGrado
+
+**Resultado:** Se realizó el diseño MVC de eliminarGrado() generando:
+- documents/diseño/eliminarGrado/README.md
+- modelosUML/diseño/eliminarGrado/secuencia.puml
+
+El diseño siguió el patrón de eliminación segura con confirmación previa, identificando los participantes: Frontend (React) con modal de confirmación, GradosController con endpoint DELETE /api/grados/{id}, GradoService con lógica de eliminación y validación de existencia, GradoRepository y Base de Datos (PostgreSQL). Se incluyeron verificaciones de existencia del grado y manejo de integridad referencial (409 Conflict si tiene alumnos o asignaturas asociadas).
+
+**Enlace:** [session-ses_1868.md](conversations/session-ses_1868.md)
+
+**Decisión:** Se aceptó el diseño de eliminarGrado
