@@ -789,3 +789,22 @@ El diseño siguió la filosofía C→U (Create→Update), transfiriendo automát
 **Enlace:** [session-ses_1869.md](conversations/session-ses_1869.md)
 
 **Decisión:** Se aceptó el diseño de crearGrado
+
+## [30/05/2026][17:20] Diseño de editarGrado()
+
+**Prompt:** empezar → diseña el caso de uso editarGrado
+
+**Resultado:** Se realizó el diseño MVC de editarGrado() generando:
+- documents/diseño/editarGrado/README.md
+- modelosUML/diseño/editarGrado/secuencia.puml
+
+El diseño siguió el patrón "el gordo" (edición continua con múltiples ciclos), identificando los participantes: Frontend (React) con GradoFormComponent, GradosController con endpoints GET/PUT /api/grados/{id}, GradoService con lógica de validación y actualización, GradoRepository y AlumnoRepository para persistencia, y Base de Datos (PostgreSQL).
+
+Se incluyeron endpoints adicionales para gestión de alumnos por grado:
+- GET /api/alumnos/sin-grado (obtener alumnos disponibles)
+- PUT /api/grados/{id}/alumnos/{alumnoId} (asignar alumno al grado)
+- DELETE /api/grados/{id}/alumnos/{alumnoId} (desasignar alumno del grado)
+
+**Enlace:** [session-ses_1870.md](conversations/session-ses_1870.md)
+
+**Decisión:** El diseño inicial se corrigió según las indicaciones del usuario: un alumno solo puede estar en un grado, la información de pertenencia se guarda en la entidad Alumno (columna grado_id), y al añadir un alumno solo se muestran aquellos que no tienen grado asignado (grado_id IS NULL).

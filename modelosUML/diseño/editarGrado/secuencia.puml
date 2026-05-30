@@ -1,0 +1,132 @@
+@startuml
+title Diagrama de Secuencia - Editar Grado - Spring Boot + React
+
+actor "Docente" as Docente
+participant "Frontend (React)" as FE
+participant "GradosController" as Controller
+participant "GradoService" as Service
+participant "GradoRepository" as Repo
+participant "AlumnoRepository" as AlumnoRepo
+database "Base de Datos (PostgreSQL)" as DB
+
+Docente -> FE: Clic en "Editar" (desde GRADOS_ABIERTO o GRADO_ABIERTO)
+activate FE
+FE -> Controller: GET /api/grados/{id}\n(Header: Authorization: Bearer <token>)
+activate Controller
+Controller -> Service: obtenerGradoPorId(id)
+activate Service
+Service -> Repo: findById(id)
+activate Repo
+Repo -> DB: SELECT * FROM grados WHERE id = ?
+activate DB
+DB --> Repo: Optional<Grado>
+deactivate DB
+Repo --> Service: Optional<Grado>
+deactivate Repo
+alt Grado Existe
+    Service -> AlumnoRepo: findByGradoId(id)
+    activate AlumnoRepo
+    AlumnoRepo -> DB: SELECT * FROM alumnos WHERE grado_id = ?
+    DB --> AlumnoRepo: List<Alumno>
+    deactivate AlumnoRepo
+    Service --> Controller: GradoDTO (con lista de alumnos)
+    Controller --> FE: 200 OK (GradoDTO JSON)
+    FE --> Docente: Mostrar Formulario con datos precargados\n(nombre, código, lista de alumnos actuales)
+else Grado No Existe
+    Service --> Controller: throw EntityNotFoundException
+    deactivate Service
+    Controller --> FE: 404 Not Found
+    deactivate Controller
+    FE --> Docente: Mostrar Error "Grado no encontrado"
+end
+deactivate FE
+
+loop Edición continua
+    Docente -> FE: Modifica campos (título, código)
+    FE -> FE: Validar formulario
+
+    alt Añadir alumno
+        FE -> Controller: GET /api/alumnos/sin-grado\n(Header: Authorization: Bearer <token>)
+        activate Controller
+        Controller -> Service: obtenerAlumnosSinGrado()
+        Service -> AlumnoRepo: findByGradoIsNull()
+        activate AlumnoRepo
+        AlumnoRepo -> DB: SELECT * FROM alumnos WHERE grado_id IS NULL
+        DB --> AlumnoRepo: List<Alumno>
+        deactivate AlumnoRepo
+        Service --> Controller: List<AlumnoDTO>
+        Controller --> FE: 200 OK (Lista de alumnos disponibles)
+        FE --> Docente: Mostrar modal con alumnos disponibles
+        Docente -> FE: Selecciona alumno a añadir
+        FE -> Controller: PUT /api/grados/{id}/alumnos/{alumnoId}\n(Header: Authorization: Bearer <token>)
+        Controller -> Service: añadirAlumnoAGrado(gradoId, alumnoId)
+        Service -> AlumnoRepo: findById(alumnoId)
+        activate AlumnoRepo
+        AlumnoRepo -> DB: SELECT * FROM alumnos WHERE id = ?
+        DB --> AlumnoRepo: Optional<Alumno>
+        deactivate AlumnoRepo
+        Service -> Service: alumno.setGrado(grado); alumnoRepo.save(alumno)
+        Service -> AlumnoRepo: save(alumno)
+        activate AlumnoRepo
+        AlumnoRepo -> DB: UPDATE alumnos SET grado_id = ? WHERE id = ?
+        DB --> AlumnoRepo: Alumno actualizado
+        deactivate AlumnoRepo
+        Service --> Controller: AlumnoDTO
+        Controller --> FE: 200 OK (AlumnoDTO)
+        FE -> FE: Mostrar Toast "Alumno añadido al grado"
+        FE --> Docente: Actualizar lista de alumnos del grado
+        deactivate Controller
+    end
+
+    alt Desasignar alumno
+        Docente -> FE: Clic en "X" junto a alumno
+        FE -> Controller: DELETE /api/grados/{id}/alumnos/{alumnoId}\n(Header: Authorization: Bearer <token>)
+        activate Controller
+        Controller -> Service: quitarAlumnoDeGrado(gradoId, alumnoId)
+        Service -> AlumnoRepo: findById(alumnoId)
+        activate AlumnoRepo
+        AlumnoRepo -> DB: SELECT * FROM alumnos WHERE id = ?
+        DB --> AlumnoRepo: Optional<Alumno>
+        deactivate AlumnoRepo
+        Service -> Service: alumno.setGrado(null); alumnoRepo.save(alumno)
+        Service -> AlumnoRepo: save(alumno)
+        activate AlumnoRepo
+        AlumnoRepo -> DB: UPDATE alumnos SET grado_id = NULL WHERE id = ?
+        DB --> AlumnoRepo: Alumno actualizado
+        deactivate AlumnoRepo
+        Service --> Controller: void
+        Controller --> FE: 204 No Content
+        deactivate Controller
+        FE -> FE: Mostrar Toast "Alumno desasignado del grado"
+        FE --> Docente: Actualizar lista de alumnos del grado
+    end
+
+    Docente -> FE: Clic en "Guardar cambios"
+    FE -> Controller: PUT /api/grados/{id} (GradoUpdateDTO JSON)\n(Header: Authorization: Bearer <token>)
+    activate Controller
+    Controller -> Service: actualizarGrado(id, gradoUpdateDTO)
+    Service -> Repo: findById(id)
+    activate Repo
+    Repo -> DB: SELECT * FROM grados WHERE id = ?
+    DB --> Repo: Optional<Grado>
+    Repo --> Service: Optional<Grado>
+    deactivate Repo
+    Service -> Service: validarUnicidadTituloYCodigo(id, titulo, codigo)
+    Service -> Service: actualizarCamposDesdeDTO(grado, dto)
+    Service -> Repo: save(grado)
+    activate Repo
+    Repo -> DB: UPDATE grados SET titulo=?, codigo=? WHERE id=?
+    DB --> Repo: Grado actualizado
+    Repo --> Service: Grado
+    deactivate Repo
+    Service --> Controller: GradoDTO
+    Controller --> FE: 200 OK (GradoDTO JSON)
+    FE -> FE: Mostrar Toast "Grado actualizado correctamente"
+    FE --> Docente: Mantener Formulario de Edición\npara más modificaciones
+    deactivate Controller
+end
+
+Docente -> FE: Clic en "Volver a lista"
+FE --> Docente: Redirigir a verGrados()
+
+@enduml
