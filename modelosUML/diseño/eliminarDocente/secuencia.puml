@@ -47,11 +47,3 @@ else Docente No Existe
     FE --> Admin: Mostrar Error "Docente no encontrado"
 end
 deactivate FE
-
-alt Integridad Referencial
-    Service --> Controller: throw DataIntegrityViolationException
-    deactivate Service
-    Controller --> FE: 409 Conflict
-    deactivate Controller
-    FE --> Admin: Mostrar Error "No se puede eliminar el docente\nporque tiene asignaturas asociadas"
-end

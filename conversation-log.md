@@ -826,3 +826,7 @@ El diseño siguió el patrón de eliminación segura con confirmación previa, i
 ## [31/05/2026][10:47] Corrección de análisis y diseño de completarGestion
 
 **Decisión:** Me he dado cuenta de que el caso de uso completarGestion no es tan complejo como inicialmente pensé. Es simplemente un caso de uso que redirige al menú principal, por lo que simplifiqué el análisis y diseño.
+
+## [31/05/2026][11:19] Corrección de diseño de eliminarDocente
+
+**Decisión:** Me he dado cuenta de que el diseño del caso de uso eliminarDocente no refleja lo que realmente quiero que haga. En el caso en el que se quiera eliminar a un docente y este tenga entidades asociadas a él (alumnos, grados, asignaturas, etc...) quiero que estás entidades asociacas también se eliminen, por lo que modifiqué su diseño.
