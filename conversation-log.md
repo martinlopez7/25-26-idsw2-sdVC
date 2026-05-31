@@ -860,3 +860,15 @@ El flujo sigue la filosofía C→U (Create→Update): crear grado con datos mín
 **Enlace:** [session-ses_1827.md](conversations/session-ses_1827.md)
 
 **Decisión:** La implementación del caso de uso crearGrado() se aceptó.
+
+## [31/05/2026][13:02] Implementación de editarGrado()
+
+**Prompt:** empezar → me gustaría implementar el caso de uso editarGrado
+
+**Resultado:** Se implementó editarGrado() generando:
+- Backend: Alumno entity - añadido campo gradoId (Long, nullable), AlumnoRepository - añadidos métodos findByGradoId() y findByDocenteIdAndGradoIsNull() (este último con @Query JPQL), GradoDTO - añadido campo alumnos (List<AlumnoDTO>), AlumnoDTO - añadido campo gradoId, GradoUpdateDTO - creado con validaciones, GradoService - añadidos métodos obtenerGradoPorId(), obtenerAlumnosSinGrado(), anadirAlumnoAGrado(), quitarAlumnoDeGrado(), actualizarGrado() y validarUnicidadTituloYCodigo(), GradosController - añadidos endpoints GET /{id}, PUT /{id}, GET /sin-grado, PUT /{id}/alumnos/{alumnoId}, DELETE /{id}/alumnos/{alumnoId}
+- Frontend: gradosService - actualizados tipos GradoDTO (con alumnos) y AlumnoDTO (con gradoId), añadidos métodos getAlumnosSinGrado(), anadirAlumnoAGrado(), quitarAlumnoDeGrado(), EditarGradoComponent.tsx - creado (formulario de edición continua, lista de alumnos con botón quitar, modal para añadir alumnos), App.tsx - actualizada ruta /grados/editar/:id para usar EditarGradoComponent
+
+**Enlace:** [session-ses_1826.md](conversations/session-ses_1826.md)
+
+**Decisión:** La implementación del caso de uso editarGrado() se aceptó.

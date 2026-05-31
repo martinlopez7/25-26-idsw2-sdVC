@@ -27,4 +27,7 @@ public class Alumno {
 
     @Column(nullable = false)
     private Long docenteId;
+
+    @Column
+    private Long gradoId;
 }

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,6 +15,7 @@ public class GradoDTO {
     private Long id;
     private String titulo;
     private String codigo;
+    private List<AlumnoDTO> alumnos;
 
     public static GradoDTO fromEntity(Grado grado) {
         GradoDTO dto = new GradoDTO();

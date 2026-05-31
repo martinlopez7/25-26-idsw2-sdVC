@@ -13,6 +13,7 @@ import AlumnoFormComponent from './components/alumnos/AlumnoFormComponent';
 import EliminarAlumnoComponent from './components/alumnos/EliminarAlumnoComponent';
 import GradosListComponent from './components/grados/GradosListComponent';
 import GradoFormComponent from './components/grados/GradoFormComponent';
+import EditarGradoComponent from './components/grados/EditarGradoComponent';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth();
@@ -44,7 +45,7 @@ function AppRoutes() {
       <Route path="/alumnos/eliminar/:id" element={<ProtectedRoute><EliminarAlumnoComponent /></ProtectedRoute>} />
       <Route path="/grados" element={<ProtectedRoute><GradosListComponent /></ProtectedRoute>} />
       <Route path="/grados/crear" element={<ProtectedRoute><GradoFormComponent /></ProtectedRoute>} />
-      <Route path="/grados/editar/:id" element={<ProtectedRoute><GradoFormComponent isEditing /></ProtectedRoute>} />
+      <Route path="/grados/editar/:id" element={<ProtectedRoute><EditarGradoComponent /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to={isAuthenticated ? (user?.tipoActor === 'ADMINISTRADOR_INSTITUCIONAL' ? "/menu-admin" : "/menu-docente") : "/login"} />} />
     </Routes>
   );

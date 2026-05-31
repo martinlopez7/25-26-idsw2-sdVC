@@ -14,6 +14,7 @@ public class AlumnoDTO {
     private String nombre;
     private String apellidos;
     private String dni;
+    private Long gradoId;
 
     public static AlumnoDTO fromEntity(Alumno alumno) {
         AlumnoDTO dto = new AlumnoDTO();
@@ -21,6 +22,7 @@ public class AlumnoDTO {
         dto.setNombre(alumno.getNombre());
         dto.setApellidos(alumno.getApellidos());
         dto.setDni(alumno.getDni());
+        dto.setGradoId(alumno.getGradoId());
         return dto;
     }
 }
