@@ -834,3 +834,15 @@ El diseño siguió el patrón de eliminación segura con confirmación previa, i
 ## [31/05/2026][11:41] Corrección de diseño de eliminarGrado
 
 **Decisión:** Me he dado cuenta de que el diseño del caso de uso eliminarGrado no refleja lo que realmente quiero que haga. En el caso en el que se quiera eliminar un grado y este tenga entidades asociadas a él (alumnos o asignaturas) al eliminarlo quiero que estas entidades asociadas dejen de tener referencia a ese grado (es decir, grado_id = null).
+
+## [31/05/2026][12:13] Implementación de verGrados()
+
+**Prompt:** empezar → me gustaria implementar el caso de uso verGrados
+
+**Resultado:** Se implementó verGrados() generando:
+- Backend: Grado entity (campos id, titulo, codigo, docenteId), GradoDTO, GradoRepository (findByDocenteId, findByDocenteIdAndCriterio con filtrado por titulo y codigo), GradoService (obtenerGradosDelDocente, filtrarGradosDelDocente), GradosController GET /api/grados/mios
+- Frontend: gradosService.getGrados(), GradosListComponent.tsx, ruta /grados en App.tsx
+
+**Enlace:** [session-ses_182a.md](conversations/session-ses_182a.md)
+
+**Decisión:** Se aceptó la implementación de verGrados.
