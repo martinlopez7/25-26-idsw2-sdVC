@@ -822,3 +822,7 @@ El diseño siguió el patrón de eliminación segura con confirmación previa, i
 **Enlace:** [session-ses_1868.md](conversations/session-ses_1868.md)
 
 **Decisión:** Se aceptó el diseño de eliminarGrado
+
+## [31/05/2026][10:47] Corrección de análisis y diseño de completarGestion
+
+**Decisión:** Me he dado cuenta de que el caso de uso completarGestion no es tan complejo como inicialmente pensé. Es simplemente un caso de uso que redirige al menú principal, por lo que simplifiqué el análisis y diseño.

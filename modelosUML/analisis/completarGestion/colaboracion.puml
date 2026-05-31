@@ -5,41 +5,16 @@ rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponible
 package completarGestion as "completarGestion()" {
     rectangle #629EF9 CompletarGestionView
     rectangle #b5bd68 CompletarGestionController
-    rectangle #F2AC4E PermisosRepository
-    rectangle #F2AC4E OpcionesMenu
-    rectangle #F2AC4E Sesion
 }
 
-rectangle #CDEBA5 ":Collaboration VerGrados" as VerGrados
-rectangle #CDEBA5 ":Collaboration VerAsignaturas" as VerAsignaturas
-rectangle #CDEBA5 ":Collaboration VerAlumnos" as VerAlumnos
-rectangle #CDEBA5 ":Collaboration VerPreguntas" as VerPreguntas
-rectangle #CDEBA5 ":Collaboration GenerarExamenes" as GenerarExamenes
-rectangle #CDEBA5 ":Collaboration CorregirExamenes" as CorregirExamenes
-rectangle #CDEBA5 ":Collaboration ImportarConfiguracionGlobal" as ImportarConfiguracionGlobal
-rectangle #CDEBA5 ":Collaboration ExportarConfiguracionGlobal" as ExportarConfiguracionGlobal
-rectangle #CDEBA5 ":Collaboration CerrarSesion" as CerrarSesion
-rectangle #CDEBA5 ":Collaboration VerDocentes" as VerDocentes
+rectangle #CDEBA5 ":AdminMenu" as AdminMenu
+rectangle #CDEBA5 ":DocenteMenu" as DocenteMenu
 
-SistemaDisponible -r-> CompletarGestionView: mostrarMenu()
+SistemaDisponible -r-> CompletarGestionView: completarGestion()
 
-CompletarGestionView -d-> CompletarGestionController: habilitarOpciones(usuario)
+CompletarGestionView -d-> CompletarGestionController: solicitarMenu()
 
-CompletarGestionController --> Sesion: getUsuario() : Usuario
-CompletarGestionController --> PermisosRepository: obtenerOpciones(usuario) : List<Opcion>
-CompletarGestionController --> OpcionesMenu: crearOpciones(opciones) : OpcionesMenu
-
-CompletarGestionView --> OpcionesMenu: getOpciones() : List<Opcion>
-
-CompletarGestionView ..> VerGrados: verGrados()
-CompletarGestionView ..> VerAsignaturas: verAsignaturas()
-CompletarGestionView ..> VerAlumnos: verAlumnos()
-CompletarGestionView ..> VerPreguntas: verPreguntas()
-CompletarGestionView ..> GenerarExamenes: generarExamenes()
-CompletarGestionView ..> CorregirExamenes: corregirExamenes()
-CompletarGestionView ..> ImportarConfiguracionGlobal: importarConfiguracionGlobal()
-CompletarGestionView ..> ExportarConfiguracionGlobal: exportarConfiguracionGlobal()
-CompletarGestionView ..> CerrarSesion: cerrarSesion()
-CompletarGestionView ..> VerDocentes: verDocentes()
+CompletarGestionController -r-> AdminMenu: mostrarMenuAdmin()
+CompletarGestionController -l-> DocenteMenu: mostrarMenuDocente()
 
 @enduml
