@@ -71,7 +71,9 @@ public class GradoService {
     public AlumnoDTO anadirAlumnoAGrado(Long gradoId, Long alumnoId) {
         Alumno alumno = alumnoRepository.findById(alumnoId)
                 .orElseThrow(() -> new IllegalArgumentException("Alumno no encontrado"));
-        alumno.setGradoId(gradoId);
+        Grado grado = gradoRepository.findById(gradoId)
+                .orElseThrow(() -> new IllegalArgumentException("Grado no encontrado"));
+        alumno.setGrado(grado);
         Alumno saved = alumnoRepository.save(alumno);
         return AlumnoDTO.fromEntity(saved);
     }
@@ -80,10 +82,10 @@ public class GradoService {
     public void quitarAlumnoDeGrado(Long gradoId, Long alumnoId) {
         Alumno alumno = alumnoRepository.findById(alumnoId)
                 .orElseThrow(() -> new IllegalArgumentException("Alumno no encontrado"));
-        if (!gradoId.equals(alumno.getGradoId())) {
+        if (!gradoId.equals(alumno.getGrado() != null ? alumno.getGrado().getId() : null)) {
             throw new IllegalArgumentException("El alumno no pertenece a este grado");
         }
-        alumno.setGradoId(null);
+        alumno.setGrado(null);
         alumnoRepository.save(alumno);
     }
 
@@ -116,5 +118,18 @@ public class GradoService {
                 throw new IllegalArgumentException("Ya existe un grado con este código");
             }
         }
+    }
+
+    @Transactional
+    public void eliminarGrado(Long id) {
+        if (!gradoRepository.existsById(id)) {
+            throw new IllegalArgumentException("Grado no encontrado");
+        }
+        List<Alumno> alumnos = alumnoRepository.findByGradoId(id);
+        for (Alumno alumno : alumnos) {
+            alumno.setGrado(null);
+            alumnoRepository.save(alumno);
+        }
+        gradoRepository.deleteById(id);
     }
 }

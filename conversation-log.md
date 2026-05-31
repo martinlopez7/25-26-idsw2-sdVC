@@ -872,3 +872,17 @@ El flujo sigue la filosofía C→U (Create→Update): crear grado con datos mín
 **Enlace:** [session-ses_1826.md](conversations/session-ses_1826.md)
 
 **Decisión:** La implementación del caso de uso editarGrado() se aceptó.
+
+## [31/05/2026][13:29] Implementación de eliminarGrado()
+
+**Prompt:** empezar → me gustaria implementar el caso de uso eliminarGrado 
+
+**Resultado:** Se implementó el caso de uso eliminarGrado() generando:
+- Backend: GradoService - método eliminarGrado(Long id), GradosController - endpoint DELETE /api/grados/{id}
+- Frontend: gradosService - método eliminarGrado(id), EliminarGradoComponent.tsx, App.tsx - ruta /grados/eliminar/:id
+
+Tras probar, se detectó un bug: al eliminar un grado, los alumnos asociados mantenían grado_id en lugar de pasar a null. Se corrigió modificando la entidad Alumno para usar @ManyToOne con @OnDelete(action = OnDeleteAction.SET_NULL) en lugar de un simple @Column Long gradoId. Se actualizaron AlumnoRepository (cambio en query JPQL de a.gradoId IS NULL a a.grado IS NULL), GradoService (métodos anadirAlumnoAGrado, quitarAlumnoDeGrado y eliminarGrado para usar la relación grado en lugar de gradoId), y AlumnoDTO (a dto.setGradoId(alumno.getGrado() != null ? alumno.getGrado().getId() : null)).
+
+**Enlace:** [session-ses_1824.md](conversations/session-ses_1824.md)
+
+**Decisión:** La implementación de eliminarGrado() se aceptó.

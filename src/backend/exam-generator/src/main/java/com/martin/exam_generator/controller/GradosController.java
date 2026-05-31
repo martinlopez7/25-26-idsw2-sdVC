@@ -89,4 +89,10 @@ public class GradosController {
         gradoService.quitarAlumnoDeGrado(gradoId, alumnoId);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarGrado(@PathVariable Long id) {
+        gradoService.eliminarGrado(id);
+        return ResponseEntity.noContent().build();
+    }
 }

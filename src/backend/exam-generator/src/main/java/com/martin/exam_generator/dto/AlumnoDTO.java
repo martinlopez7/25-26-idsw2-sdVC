@@ -22,7 +22,7 @@ public class AlumnoDTO {
         dto.setNombre(alumno.getNombre());
         dto.setApellidos(alumno.getApellidos());
         dto.setDni(alumno.getDni());
-        dto.setGradoId(alumno.getGradoId());
+        dto.setGradoId(alumno.getGrado() != null ? alumno.getGrado().getId() : null);
         return dto;
     }
 }

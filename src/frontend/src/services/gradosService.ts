@@ -55,4 +55,8 @@ export const gradosService = {
   quitarAlumnoDeGrado: async (gradoId: number, alumnoId: number): Promise<void> => {
     await api.delete(`/grados/${gradoId}/alumnos/${alumnoId}`);
   },
+
+  eliminarGrado: async (id: number): Promise<void> => {
+    await api.delete(`/grados/${id}`);
+  },
 };

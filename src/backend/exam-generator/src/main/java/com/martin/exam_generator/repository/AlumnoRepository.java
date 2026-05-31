@@ -27,6 +27,6 @@ public interface AlumnoRepository extends JpaRepository<Alumno, Long> {
 
     List<Alumno> findByGradoId(Long gradoId);
 
-    @Query("SELECT a FROM Alumno a WHERE a.docenteId = :docenteId AND a.gradoId IS NULL")
+    @Query("SELECT a FROM Alumno a WHERE a.docenteId = :docenteId AND a.grado IS NULL")
     List<Alumno> findByDocenteIdAndGradoIsNull(@Param("docenteId") Long docenteId);
 }

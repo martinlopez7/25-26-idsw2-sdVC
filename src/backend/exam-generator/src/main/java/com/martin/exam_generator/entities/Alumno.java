@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "alumnos")
@@ -28,6 +30,8 @@ public class Alumno {
     @Column(nullable = false)
     private Long docenteId;
 
-    @Column
-    private Long gradoId;
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "grado_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    private Grado grado;
 }
