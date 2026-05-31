@@ -1,5 +1,6 @@
 package com.martin.exam_generator.service;
 
+import com.martin.exam_generator.dto.GradoCreateDTO;
 import com.martin.exam_generator.dto.GradoDTO;
 import com.martin.exam_generator.entities.Grado;
 import com.martin.exam_generator.repository.GradoRepository;
@@ -29,5 +30,19 @@ public class GradoService {
         return grados.stream()
                 .map(GradoDTO::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    public GradoDTO crearGrado(GradoCreateDTO dto, Long docenteId) {
+        if (gradoRepository.existsByDocenteIdAndCodigo(docenteId, dto.getCodigo())) {
+            throw new IllegalArgumentException("Ya existe un grado con este código");
+        }
+
+        Grado grado = new Grado();
+        grado.setTitulo(dto.getTitulo());
+        grado.setCodigo(dto.getCodigo());
+        grado.setDocenteId(docenteId);
+
+        Grado saved = gradoRepository.save(grado);
+        return GradoDTO.fromEntity(saved);
     }
 }

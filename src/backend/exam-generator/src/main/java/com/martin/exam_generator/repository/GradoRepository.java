@@ -18,4 +18,6 @@ public interface GradoRepository extends JpaRepository<Grado, Long> {
             "LOWER(g.codigo) LIKE LOWER(CONCAT('%', :criterio, '%')))")
     List<Grado> findByDocenteIdAndCriterio(@Param("docenteId") Long docenteId,
                                            @Param("criterio") String criterio);
+
+    boolean existsByDocenteIdAndCodigo(Long docenteId, String codigo);
 }

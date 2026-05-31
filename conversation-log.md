@@ -846,3 +846,17 @@ El diseño siguió el patrón de eliminación segura con confirmación previa, i
 **Enlace:** [session-ses_182a.md](conversations/session-ses_182a.md)
 
 **Decisión:** Se aceptó la implementación de verGrados.
+
+## [31/05/2026][12:39] Implementación de crearGrado()
+
+**Prompt:** empezar → me gustaria implementar el caso de uso crearGrado
+
+**Resultado:** Se implementó crearGrado() generando:
+- Backend: GradoCreateDTO (con validaciones @NotBlank, @Size), métodos de unicidad en GradoRepository (existsByDocenteIdAndTitulo, existsByDocenteIdAndCodigo y sus variantes AndIdNot), GradoService con crearGrado(), obtenerGradoPorIdYVerificarPertenecia() y actualizarGrado(), GradosController con endpoints POST /api/grados, PUT /api/grados/{id}, GET /api/grados/{id}
+- Frontend: gradosService con crearGrado(), getGradoById() y actualizarGrado(), GradoFormComponent.tsx (formulario reutilizable para crear/editar), rutas /grados/crear y /grados/editar/:id en App.tsx
+
+El flujo sigue la filosofía C→U (Create→Update): crear grado con datos mínimos y transferir automáticamente a editarGrado() para completar datos.
+
+**Enlace:** [session-ses_1827.md](conversations/session-ses_1827.md)
+
+**Decisión:** La implementación del caso de uso crearGrado() se aceptó.

@@ -12,4 +12,19 @@ export const gradosService = {
     const response = await api.get<GradoDTO[]>(url);
     return response.data;
   },
+
+  getGradoById: async (id: number): Promise<GradoDTO> => {
+    const response = await api.get<GradoDTO>(`/grados/${id}`);
+    return response.data;
+  },
+
+  crearGrado: async (grado: Omit<GradoDTO, 'id'>): Promise<GradoDTO> => {
+    const response = await api.post<GradoDTO>('/grados', grado);
+    return response.data;
+  },
+
+  actualizarGrado: async (id: number, grado: Omit<GradoDTO, 'id'>): Promise<GradoDTO> => {
+    const response = await api.put<GradoDTO>(`/grados/${id}`, grado);
+    return response.data;
+  },
 };
