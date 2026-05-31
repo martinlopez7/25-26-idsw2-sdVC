@@ -829,4 +829,8 @@ El diseño siguió el patrón de eliminación segura con confirmación previa, i
 
 ## [31/05/2026][11:19] Corrección de diseño de eliminarDocente
 
-**Decisión:** Me he dado cuenta de que el diseño del caso de uso eliminarDocente no refleja lo que realmente quiero que haga. En el caso en el que se quiera eliminar a un docente y este tenga entidades asociadas a él (alumnos, grados, asignaturas, etc...) quiero que estás entidades asociacas también se eliminen, por lo que modifiqué su diseño.
+**Decisión:** Me he dado cuenta de que el diseño del caso de uso eliminarDocente no refleja lo que realmente quiero que haga. En el caso en el que se quiera eliminar a un docente y este tenga entidades asociadas a él (alumnos, grados, asignaturas, etc...) quiero que estas entidades asociadas también se eliminen, por lo que modifiqué su diseño.
+
+## [31/05/2026][11:41] Corrección de diseño de eliminarGrado
+
+**Decisión:** Me he dado cuenta de que el diseño del caso de uso eliminarGrado no refleja lo que realmente quiero que haga. En el caso en el que se quiera eliminar un grado y este tenga entidades asociadas a él (alumnos o asignaturas) al eliminarlo quiero que estas entidades asociadas dejen de tener referencia a ese grado (es decir, grado_id = null).

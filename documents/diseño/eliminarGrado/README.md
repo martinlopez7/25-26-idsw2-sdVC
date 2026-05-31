@@ -39,5 +39,5 @@ Detallar la interacción entre los componentes del sistema (Frontend React, Cont
 - Confirmación explícita del usuario mediante modal de React.
 - Verificación previa de existencia del ID (lanza `EntityNotFoundException` → 404).
 - Retorno de `204 No Content` al éxito (sin body en respuesta).
-- Manejo de integridad referencial: si el grado tiene asignaturas o alumnos asociados, JPA lanza `DataIntegrityViolationException` capturada por `@ControllerAdvice` → 409 Conflict.
+- Si el grado tiene asignaturas o alumnos asociados, al eliminarlo los alumnos y/o asignaturas dejarán de tener referencia a ese grado (es decir, grado_id = null).
 - Respuesta al frontend sin contenido, actualización optimista de la lista.
