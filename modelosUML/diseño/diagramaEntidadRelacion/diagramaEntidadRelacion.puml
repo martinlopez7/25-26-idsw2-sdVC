@@ -1,0 +1,63 @@
+@startuml
+' Configuración visual para parecer un diagrama ERD
+hide circle
+skinparam linetype ortho
+
+entity "usuarios" as usuarios {
+  * id : INT <<PK>>
+}
+
+entity "grados" as grados {
+  * id : INT <<PK>>
+  --
+  * docente_id : INT <<FK>>
+}
+
+entity "alumnos" as alumnos {
+  * id : INT <<PK>>
+  --
+  * docente_id : INT <<FK>>
+  * grado_id : INT <<FK>>
+}
+
+entity "asignaturas" as asignaturas {
+  * id : INT <<PK>>
+  --
+  * docente_id : INT <<FK>>
+  * grado_id : INT <<FK>>
+}
+
+' Tabla intermedia para la relación Many-to-Many
+entity "alumnos_asignaturas" as alumnos_asignaturas {
+  * alumno_id : INT <<PK>> <<FK>>
+  * asignatura_id : INT <<PK>> <<FK>>
+}
+
+entity "preguntas" as preguntas {
+  * id : INT <<PK>>
+  --
+  * asignatura_id : INT <<FK>>
+}
+
+entity "respuestas" as respuestas {
+  * id : INT <<PK>>
+  --
+  * pregunta_id : INT <<FK>>
+}
+
+' Relaciones (Cardinalidades)
+usuarios ||--o{ grados : "docente_id"
+usuarios ||--o{ alumnos : "docente_id"
+grados ||--o{ alumnos : "grado_id"
+
+usuarios ||--o{ asignaturas : "docente_id"
+grados ||--o{ asignaturas : "grado_id"
+
+' Relación Many-to-Many explicada a través de la tabla intermedia
+alumnos ||--o{ alumnos_asignaturas : ""
+asignaturas ||--o{ alumnos_asignaturas : ""
+
+asignaturas ||--o{ preguntas : "asignatura_id"
+preguntas ||--o{ respuestas : "pregunta_id"
+
+@enduml

@@ -90,6 +90,7 @@ Cuando se te asigne diseñar un caso de uso concreto, tu objetivo es consultar s
 
 ### Fuentes de Referencia y Contexto
 * **Stack tecnológico:** El stack tecnológico que se va a utilizar está explicado en `documents/diseño/README.md`
+* **Diagrama entidad-relación del sistema** El diagrama entidad-relación del sistema que se va a utilizar está explicado en `modelosUML/diseño/diagramaEntidadRelacion/diagramaEntidadRelacion.puml` (solo están las primaryKeys y foreignKeys)
 * **Ejemplos de Referencia:** Para comprender el nivel de detalle, la estructura y el estilo técnico esperado, toma como modelo la carpeta `contexto/ejemplos-diseño/casos-uso/`, en donde encontrarás algunos casos de uso ya diseñados. 
   * *Nota importante:* Estos archivos pertenecen a un **proyecto de ejemplo externo**, pero sirven como plantilla.
   * **Casos de Uso de Ejemplo:** Revisa los ejemplos de diseños de casos de uso resueltos en esa carpeta y los ya diseñados previamente (se encuentran en `modelosUML/diseño`), ya que algunos son muy similares a los que deberás de analizar.
@@ -121,6 +122,8 @@ El stack tecnológico que se va a utilizar está explicado en `documents/diseño
 * **Backend:** Java + Spring Boot 4.x (API RESTful, Spring Security, Spring Data JPA)
 * **Frontend:** React 18+ + TypeScript (componentes y hooks)
 * **Base de Datos:** PostgreSQL con ORM (Spring Data JPA + Hibernate)
+
+El diagrama entidad-relación del sistema que se va a utilizar está explicado en `modelosUML/diseño/diagramaEntidadRelacion/diagramaEntidadRelacion.puml` (solo están las primaryKeys y foreignKeys)
 
 ### Estructura del Proyecto
 El proyecto se estructura en dos módulos principales:

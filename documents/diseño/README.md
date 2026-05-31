@@ -23,3 +23,9 @@ Para la construcción del sistema de generación de exámenes universitarios, se
 *   **ORM**: Spring Data JPA con Hibernate.
 *   **Ventajas**: Robusto, excelente manejo de relaciones entre entidades, estándar académico, facilmente migrable a otros motores.
 
+## Diagrama entidad-relación del sistema
+
+| ![Diagrama](/images/diseño/diagramaEntidadRelacion/diagramaEntidadRelacion.svg) |
+| --------- |
+| [Código UML](/modelosUML/diseño/diagramaEntidadRelacion/diagramaEntidadRelacion.puml)|
+
