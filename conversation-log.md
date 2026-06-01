@@ -918,3 +918,17 @@ El diseño siguió la filosofía C→U (Create→Update), creando asignatura con
 **Enlace:** [session-ses_17db.md](conversations/session-ses_17db.md)
 
 **Decisión:** El diseño que realizó del caso de uso crearAsignatura se aceptó.
+
+## [01/06/2026][11:17] Diseño de editarAsignatura()
+
+**Prompt:** empezar → Diseña el caso de uso editarAsignatura, basándote en el diseño de editarGrado. Además, ten en cuenta que solo puedes asociar un alumno a una asignatura si este alumno pertenece a alguno de los grados asociados de la asignatura.
+
+**Resultado:** Se realizó el diseño MVC de editarAsignatura() generando:
+- documents/diseño/editarAsignatura/README.md
+- modelosUML/diseño/editarAsignatura/secuencia.puml
+
+El diseño siguió el patrón "el gordo" (edición continua con múltiples ciclos), identificando los participantes: Frontend (React) con formulario de edición, AsignaturasController con endpoints GET/PUT /api/asignaturas/{id}, AsignaturaService con lógica de validación, GradoService para gestión de grados asociados, AlumnoService para matriculación (con la restricción de que un alumno solo puede matricularse si pertenece a algún grado de la asignatura), AsignaturaRepository, GradoRepository, AlumnoRepository y Base de Datos (PostgreSQL). Se definieron los endpoints para gestionar alumnos disponibles, matricular y desmatricular. Validación de unicidad de título/código y verificación de pertenencia del alumno a un grado de la asignatura.
+
+**Enlace:** [session-ses_17d9.md](conversations/session-ses_17d9.md)
+
+**Decisión:** El diseño que realizó del caso de uso editarAsignatura se aceptó.
