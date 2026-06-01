@@ -904,3 +904,17 @@ El diseño siguió el patrón de verGrados(), con endpoint `GET /api/asignaturas
 **Enlace:** [session-ses_17da.md](conversations/session-ses_17da.md)
 
 **Decisión:** Se aceptó el diseño de verAsignaturas
+
+## [01/06/2026][11:03] Diseño de crearAsignatura()
+
+**Prompt:** empezar → Diseña el caso de uso crearAsignatura
+
+**Resultado:** Se realizó el diseño MVC de crearAsignatura() generando:
+- documents/diseño/crearAsignatura/README.md
+- modelosUML/diseño/crearAsignatura/secuencia.puml
+
+El diseño siguió la filosofía C→U (Create→Update), creando asignatura con datos mínimos (título, código, curso académico) y transfiriendo automáticamente a `editarAsignatura()`. Participantes: Frontend (React), AsignaturasController, AsignaturaService, AsignaturaRepository y PostgreSQL. El docenteId se extrae del JWT para asociar la asignatura al docente autenticado.
+
+**Enlace:** [session-ses_17db.md](conversations/session-ses_17db.md)
+
+**Decisión:** El diseño que realizó del caso de uso crearAsignatura se aceptó.
