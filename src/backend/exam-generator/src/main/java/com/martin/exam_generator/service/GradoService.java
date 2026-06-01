@@ -6,6 +6,7 @@ import com.martin.exam_generator.dto.GradoDTO;
 import com.martin.exam_generator.dto.GradoUpdateDTO;
 import com.martin.exam_generator.entities.Grado;
 import com.martin.exam_generator.repository.GradoRepository;
+import com.martin.exam_generator.repository.AsignaturaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +19,14 @@ import java.util.stream.Collectors;
 public class GradoService {
 
     private final GradoRepository gradoRepository;
+    private final AsignaturaRepository asignaturaRepository;
     private final AlumnoService alumnoService;
 
-    public GradoService(GradoRepository gradoRepository, AlumnoService alumnoService) {
+    public GradoService(GradoRepository gradoRepository, 
+                        AsignaturaRepository asignaturaRepository,
+                        AlumnoService alumnoService) {
         this.gradoRepository = gradoRepository;
+        this.asignaturaRepository = asignaturaRepository;
         this.alumnoService = alumnoService;
     }
 
@@ -119,5 +124,38 @@ public class GradoService {
             alumnoService.quitarAlumnoDeGrado(id, alumno.getId());
         }
         gradoRepository.deleteById(id);
+    }
+
+    public List<Long> obtenerGradoIdsDeAsignatura(Long asignaturaId) {
+        return asignaturaRepository.findById(asignaturaId)
+                .orElseThrow(() -> new EntityNotFoundException("Asignatura no encontrada"))
+                .getGrados().stream()
+                .map(Grado::getId)
+                .collect(Collectors.toList());
+    }
+
+    public boolean verificarAlumnoPerteneceAGradoDeAsignatura(Long alumnoId, Long asignaturaId) {
+        List<Long> gradoIds = obtenerGradoIdsDeAsignatura(asignaturaId);
+        return alumnoService.verificarAlumnoPerteneceAGrado(alumnoId, gradoIds);
+    }
+
+    public boolean verificarAlumnoPerteneceAGrado(Long alumnoId, List<Long> gradoIds) {
+        if (gradoIds == null || gradoIds.isEmpty()) {
+            return false;
+        }
+        return alumnoService.verificarAlumnoPerteneceAGrado(alumnoId, gradoIds);
+    }
+
+    public void verificarGradoPerteneceAlDocente(Long gradoId, Long docenteId) {
+        Grado grado = gradoRepository.findById(gradoId)
+                .orElseThrow(() -> new EntityNotFoundException("Grado no encontrado con id: " + gradoId));
+        if (!grado.getDocenteId().equals(docenteId)) {
+            throw new EntityNotFoundException("Grado no encontrado con id: " + gradoId);
+        }
+    }
+
+    public Grado obtenerGradoEntityPorId(Long gradoId) {
+        return gradoRepository.findById(gradoId)
+                .orElseThrow(() -> new EntityNotFoundException("Grado no encontrado con id: " + gradoId));
     }
 }

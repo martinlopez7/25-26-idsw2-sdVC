@@ -110,7 +110,8 @@ export default function AsignaturaFormComponent() {
     if (!id) return;
 
     try {
-      const updated = await asignaturasService.desmatricularAlumno(parseInt(id), alumnoId);
+      await asignaturasService.desmatricularAlumno(parseInt(id), alumnoId);
+      const updated = await asignaturasService.getAsignaturaById(parseInt(id));
       setAsignaturaData(updated);
       setSuccessMessage('Alumno desmatriculado correctamente');
       setTimeout(() => setSuccessMessage(''), 3000);
@@ -140,7 +141,8 @@ export default function AsignaturaFormComponent() {
     if (!id) return;
 
     try {
-      const updated = await asignaturasService.matricularAlumno(parseInt(id), alumnoId);
+      await asignaturasService.matricularAlumno(parseInt(id), alumnoId);
+      const updated = await asignaturasService.getAsignaturaById(parseInt(id));
       setAsignaturaData(updated);
       setAlumnosDisponibles(prev => prev.filter(a => a.id !== alumnoId));
       setSuccessMessage('Alumno matriculado correctamente');

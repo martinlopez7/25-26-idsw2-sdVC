@@ -117,8 +117,8 @@ public class AsignaturasController {
         Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
 
         try {
-            AsignaturaDTO asignatura = asignaturaService.addAlumno(id, alumnoId, docenteId);
-            return ResponseEntity.ok(asignatura);
+            asignaturaService.matricularAlumno(id, alumnoId, docenteId);
+            return ResponseEntity.ok().build();
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         } catch (IllegalArgumentException e) {
@@ -135,8 +135,8 @@ public class AsignaturasController {
         Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
 
         try {
-            AsignaturaDTO asignatura = asignaturaService.removeAlumno(id, alumnoId, docenteId);
-            return ResponseEntity.ok(asignatura);
+            asignaturaService.desmatricularAlumno(id, alumnoId, docenteId);
+            return ResponseEntity.noContent().build();
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }

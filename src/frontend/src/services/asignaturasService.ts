@@ -62,14 +62,12 @@ export const asignaturasService = {
     return response.data;
   },
 
-  matricularAlumno: async (asignaturaId: number, alumnoId: number): Promise<AsignaturaDTO> => {
-    const response = await api.post<AsignaturaDTO>(`/asignaturas/${asignaturaId}/alumnos/${alumnoId}`);
-    return response.data;
+  matricularAlumno: async (asignaturaId: number, alumnoId: number): Promise<void> => {
+    await api.post(`/asignaturas/${asignaturaId}/alumnos/${alumnoId}`);
   },
 
-  desmatricularAlumno: async (asignaturaId: number, alumnoId: number): Promise<AsignaturaDTO> => {
-    const response = await api.delete<AsignaturaDTO>(`/asignaturas/${asignaturaId}/alumnos/${alumnoId}`);
-    return response.data;
+  desmatricularAlumno: async (asignaturaId: number, alumnoId: number): Promise<void> => {
+    await api.delete(`/asignaturas/${asignaturaId}/alumnos/${alumnoId}`);
   },
 
   eliminarAsignatura: async (id: number): Promise<void> => {
