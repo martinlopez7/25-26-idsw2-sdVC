@@ -1,6 +1,7 @@
 # exam-generator > eliminarAsignatura > Diseño
 
 > |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/eliminarAsignatura/eliminarAsignatura.svg)|[Análisis](/documents/analisis/eliminarAsignatura/README.md)|**Diseño**|
+> |-|-|-|-|
 
 ## Información del artefacto
 
