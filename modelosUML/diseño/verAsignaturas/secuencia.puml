@@ -1,0 +1,61 @@
+@startuml secuencia-verAsignaturas
+
+title Secuencia - verAsignaturas()
+
+participant "Frontend (React)\nAsignaturasListComponent" as view
+participant "AsignaturasController" as controller
+participant "AsignaturaService" as service
+participant "AsignaturaRepository" as repository
+participant "Base de Datos\n(PostgreSQL)" as db
+
+view -> controller : GET /api/asignaturas/mias\n(Header: Authorization: Bearer <token>)
+activate controller
+controller -> controller: extraer docenteId del JWT
+controller -> service : obtenerAsignaturasDelDocente(docenteId)
+activate service
+
+service -> repository : findByDocenteId(docenteId)
+activate repository
+
+repository -> db : SELECT * FROM asignaturas WHERE docente_id = ?
+activate db
+db --> repository : List<Asignatura>
+deactivate db
+
+repository --> service : List<Asignatura>
+deactivate repository
+
+service --> controller : Lista<AsignaturaDTO>
+deactivate service
+
+controller --> view : 200 OK, Lista<AsignaturaDTO>
+deactivate controller
+
+alt Filtrado solicitado
+
+view -> controller : GET /api/asignaturas/mias?filtro={criterio}\n(Header: Authorization: Bearer <token>)
+activate controller
+controller -> controller: extraer docenteId del JWT
+controller -> service : filtrarAsignaturasDelDocente(docenteId, criterio)
+activate service
+
+service -> repository : findByDocenteIdAndTituloContainingOrCodigoContainingOrCursoAcademicoContaining(docenteId, criterio)
+activate repository
+
+repository -> db : SELECT * FROM asignaturas\nWHERE docente_id = ?\nAND (titulo ILIKE %criterio% OR codigo ILIKE %criterio% OR curso_academico ILIKE %criterio%)
+activate db
+db --> repository : List<Asignatura>
+deactivate db
+
+repository --> service : List<Asignatura>
+deactivate repository
+
+service --> controller : Lista<AsignaturaDTO>
+deactivate service
+
+controller --> view : 200 OK, Lista<AsignaturaDTO>
+deactivate controller
+
+end
+
+@enduml

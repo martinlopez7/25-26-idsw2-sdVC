@@ -890,3 +890,17 @@ Tras probar, se detectó un bug: al eliminar un grado, los alumnos asociados man
 ## [01/06/2026][10:05] Error de cohesión en el diseño e implementación de editarGrado
 
 **Decisión:** Analicé el diseño e implementación del caso de uso editarGrado desde el punto de vista de la cohesión. El hecho de que GradoService se comunique directamente con AlumnoRepository me parece poco cohesivo. Me parecería mejor que GradoService se comunicase con AlumnoService y que esta se comunicase con AlumnoRepository, por lo que se modificó el diseño del caso de uso.
+
+## [01/06/2026][10:45] Diseño de verAsignaturas()
+
+**Prompt:** empezar → Diseña el caso de uso verAsignaturas
+
+**Resultado:** Se realizó el diseño MVC de verAsignaturas() generando:
+- documents/diseño/verAsignaturas/README.md
+- modelosUML/diseño/verAsignaturas/secuencia.puml
+
+El diseño siguió el patrón de verGrados(), con endpoint `GET /api/asignaturas/mias` que filtra automáticamente por el `docenteId` extraído del JWT. Los criterios de filtrado son título, código y curso académico.
+
+**Enlace:** [session-ses_17da.md](conversations/session-ses_17da.md)
+
+**Decisión:** Se aceptó el diseño de verAsignaturas
