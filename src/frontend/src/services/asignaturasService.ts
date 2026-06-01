@@ -71,4 +71,8 @@ export const asignaturasService = {
     const response = await api.delete<AsignaturaDTO>(`/asignaturas/${asignaturaId}/alumnos/${alumnoId}`);
     return response.data;
   },
+
+  eliminarAsignatura: async (id: number): Promise<void> => {
+    await api.delete(`/asignaturas/${id}`);
+  },
 };

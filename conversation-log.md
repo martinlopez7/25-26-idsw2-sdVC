@@ -984,3 +984,17 @@ El diseño siguió el patrón de verGrados() y verAlumnos(), filtrando automáti
 **Enlace:** [session-ses_17d5.md](conversations/session-ses_17d5.md)
 
 **Decisión:** La implementación de editarAsignatura() se aceptó.
+
+## [01/06/2026][13:50] Implementación de eliminarAsignatura()
+
+**Prompt:** empezar → me gustaría implementar el caso de uso eliminarAsignatura → el usuario modificó el diseño indicando que si la asignatura tiene relaciones (alumnos y grados asociados), estas entidades relacionadas perderán su relación con la asignatura pero no se eliminarán → quiero implementar también la eliminación desde la página de edición de asignatura
+
+**Resultado:** Se implementó el caso de uso eliminarAsignatura() generando:
+- Backend: AsignaturaService.java - método `eliminarAsignatura(id, docenteId)` que limpia relaciones con alumnos y grados antes de eliminar (getAlumnos().clear(), getGrados().clear()), AsignaturasController.java - endpoint DELETE /api/asignaturas/{id} → 204 No Content
+- Frontend: asignaturasService.ts - método `eliminarAsignatura(id)`, EliminarAsignaturaComponent.tsx - componente con modal de confirmación mostrando título, código y curso académico, App.tsx - ruta /asignaturas/eliminar/:id
+- Diseño: secuencia.puml actualizado para reflejar la limpieza de relaciones antes de la eliminación
+- AsignaturaFormComponent.tsx - añadido botón "Eliminar" que redirige a /asignaturas/eliminar/:id
+
+**Enlace:** [session-ses_17d0.md](conversations/session-ses_17d0.md)
+
+**Decisión:** El diseño inicial no contemplaba el comportamiento de las relaciones al eliminar. S specificó que al eliminar una asignatura con alumnos y grados asociados, estas entidades relacionadas deben perder su relación con la asignatura pero no eliminarse. Se implementó limpiando las listas de alumnos y grados antes de llamar a delete(). Además se implementó el camino de eliminación desde la página de edición de asignatura.

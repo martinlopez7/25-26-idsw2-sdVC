@@ -309,6 +309,15 @@ export default function AsignaturaFormComponent() {
                   <button type="button" className="btn btn-secondary" onClick={handleCancel}>
                     Cancelar
                   </button>
+                  {isEditing && (
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={() => navigate(`/asignaturas/eliminar/${id}`)}
+                    >
+                      Eliminar
+                    </button>
+                  )}
                   <button type="submit" className="btn btn-primary" disabled={loading}>
                     {loading ? 'Guardando...' : 'Guardar'}
                   </button>

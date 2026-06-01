@@ -219,4 +219,18 @@ public class AsignaturaService {
 
         return obtenerAsignaturaPorId(asignaturaId, docenteId);
     }
+
+    public void eliminarAsignatura(Long id, Long docenteId) {
+        Asignatura asignatura = asignaturaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Asignatura no encontrada con id: " + id));
+
+        if (!asignatura.getDocenteId().equals(docenteId)) {
+            throw new EntityNotFoundException("Asignatura no encontrada con id: " + id);
+        }
+
+        asignatura.getAlumnos().clear();
+        asignatura.getGrados().clear();
+
+        asignaturaRepository.delete(asignatura);
+    }
 }
