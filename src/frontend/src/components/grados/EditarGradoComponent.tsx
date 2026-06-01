@@ -36,22 +36,6 @@ export default function EditarGradoComponent() {
     }
   };
 
-  const handleGuardar = async () => {
-    if (!grado) return;
-    setSaving(true);
-    setError('');
-    try {
-      const updated = await gradosService.actualizarGrado(grado.id, { titulo, codigo });
-      setGrado(updated);
-      setTitulo(updated.titulo);
-      setCodigo(updated.codigo);
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Error al guardar los cambios');
-    } finally {
-      setSaving(false);
-    }
-  };
-
   const handleGuardarYSalir = async () => {
     if (!grado) return;
     setSaving(true);
@@ -148,7 +132,7 @@ export default function EditarGradoComponent() {
             <div className="card-body">
               {error && <div className="alert alert-danger">{error}</div>}
 
-              <form onSubmit={(e) => { e.preventDefault(); handleGuardar(); }}>
+              <form onSubmit={(e) => { e.preventDefault(); handleGuardarYSalir(); }}>
                 <div className="mb-3">
                   <label htmlFor="titulo" className="form-label">Título</label>
                   <input
@@ -178,9 +162,6 @@ export default function EditarGradoComponent() {
                 </div>
 
                 <div className="d-flex gap-2 mb-4">
-                  <button type="submit" className="btn btn-primary" disabled={saving}>
-                    {saving ? 'Guardando...' : 'Guardar cambios'}
-                  </button>
                   <button type="button" className="btn btn-success" onClick={handleGuardarYSalir} disabled={saving}>
                     Guardar y salir
                   </button>
