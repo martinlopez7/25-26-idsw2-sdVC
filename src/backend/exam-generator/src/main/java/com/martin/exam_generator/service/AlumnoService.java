@@ -4,8 +4,10 @@ import com.martin.exam_generator.dto.AlumnoCreateDTO;
 import com.martin.exam_generator.dto.AlumnoDTO;
 import com.martin.exam_generator.dto.AlumnoUpdateDTO;
 import com.martin.exam_generator.entities.Alumno;
+import com.martin.exam_generator.entities.Grado;
 import com.martin.exam_generator.repository.AlumnoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -33,6 +35,43 @@ public class AlumnoService {
         return alumnos.stream()
                 .map(AlumnoDTO::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    public List<AlumnoDTO> obtenerAlumnosPorGrado(Long gradoId) {
+        List<Alumno> alumnos = alumnoRepository.findByGradoId(gradoId);
+        return alumnos.stream().map(AlumnoDTO::fromEntity).collect(Collectors.toList());
+    }
+
+    public List<AlumnoDTO> obtenerAlumnosSinGrado(Long docenteId) {
+        List<Alumno> alumnos = alumnoRepository.findByDocenteIdAndGradoIsNull(docenteId);
+        return alumnos.stream().map(AlumnoDTO::fromEntity).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public AlumnoDTO anadirAlumnoAGrado(Long alumnoId, Long docenteId, Grado grado) {
+        Alumno alumno = alumnoRepository.findById(alumnoId)
+                .orElseThrow(() -> new EntityNotFoundException("Alumno no encontrado con id: " + alumnoId));
+
+        if (!alumno.getDocenteId().equals(docenteId)) {
+            throw new EntityNotFoundException("Alumno no encontrado con id: " + alumnoId);
+        }
+
+        alumno.setGrado(grado);
+        Alumno saved = alumnoRepository.save(alumno);
+        return AlumnoDTO.fromEntity(saved);
+    }
+
+    @Transactional
+    public void quitarAlumnoDeGrado(Long gradoId, Long alumnoId) {
+        Alumno alumno = alumnoRepository.findById(alumnoId)
+                .orElseThrow(() -> new EntityNotFoundException("Alumno no encontrado con id: " + alumnoId));
+
+        if (!gradoId.equals(alumno.getGrado() != null ? alumno.getGrado().getId() : null)) {
+            throw new IllegalArgumentException("El alumno no pertenece a este grado");
+        }
+
+        alumno.setGrado(null);
+        alumnoRepository.save(alumno);
     }
 
     public AlumnoDTO crearAlumno(AlumnoCreateDTO dto, Long docenteId) {

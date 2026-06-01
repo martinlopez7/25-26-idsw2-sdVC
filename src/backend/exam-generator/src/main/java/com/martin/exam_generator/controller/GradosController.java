@@ -76,9 +76,11 @@ public class GradosController {
 
     @PutMapping("/{gradoId}/alumnos/{alumnoId}")
     public ResponseEntity<AlumnoDTO> anadirAlumnoAGrado(
+            @RequestHeader("Authorization") String authHeader,
             @PathVariable Long gradoId,
             @PathVariable Long alumnoId) {
-        AlumnoDTO alumno = gradoService.anadirAlumnoAGrado(gradoId, alumnoId);
+        Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
+        AlumnoDTO alumno = gradoService.anadirAlumnoAGrado(gradoId, alumnoId, docenteId);
         return ResponseEntity.ok(alumno);
     }
 
