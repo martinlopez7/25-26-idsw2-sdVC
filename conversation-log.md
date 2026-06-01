@@ -960,3 +960,15 @@ El diseño siguió el patrón de verGrados() y verAlumnos(), filtrando automáti
 **Enlace:** [session-ses_17d7.md](conversations/session-ses_17d7.md)
 
 **Decisión:** Se aceptó la implementación de verAsignaturas.
+
+## [01/06/2026][12:07] Implementación de crearAsignatura()
+
+**Prompt:** empezar → me gustaria implementar el caso de uso crearAsignatura 
+
+**Resultado:** Se implementó crearAsignatura() generando:
+- Backend: AsignaturaCreateDTO.java (con validaciones @NotBlank, @Size), AsignaturaService - métodos crearAsignatura() y actualizarAsignatura(), AsignaturasController - endpoints POST /api/asignaturas y PUT /api/asignaturas/{id}
+- Frontend: asignaturasService - métodos crearAsignatura() y actualizarAsignatura(), AsignaturaFormComponent.tsx (formulario reutilizable para crear/editar), rutas /asignaturas/crear y /asignaturas/editar/:id en App.tsx
+
+**Enlace:** [session-ses_17d6.md](conversations/session-ses_17d6.md)
+
+**Decisión:** Se aceptó la implementación de crearAsignatura().

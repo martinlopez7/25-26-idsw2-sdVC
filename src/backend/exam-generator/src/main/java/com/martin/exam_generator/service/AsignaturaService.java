@@ -1,5 +1,6 @@
 package com.martin.exam_generator.service;
 
+import com.martin.exam_generator.dto.AsignaturaCreateDTO;
 import com.martin.exam_generator.dto.AsignaturaDTO;
 import com.martin.exam_generator.dto.GradoDTO;
 import com.martin.exam_generator.entities.Asignatura;
@@ -32,6 +33,22 @@ public class AsignaturaService {
                 .stream()
                 .map(AsignaturaDTO::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    public AsignaturaDTO crearAsignatura(AsignaturaCreateDTO dto, Long docenteId) {
+        Asignatura asignatura = new Asignatura();
+        asignatura.setTitulo(dto.getTitulo());
+        asignatura.setCodigo(dto.getCodigo());
+        asignatura.setCursoAcademico(dto.getCursoAcademico());
+        asignatura.setDocenteId(docenteId);
+
+        Asignatura guardada = asignaturaRepository.save(asignatura);
+        return AsignaturaDTO.fromEntity(guardada);
+    }
+
+    public boolean existsByCodigoAndDocenteId(String codigo, Long docenteId) {
+        return asignaturaRepository.findByDocenteId(docenteId).stream()
+                .anyMatch(a -> a.getCodigo().equalsIgnoreCase(codigo));
     }
 
 }
