@@ -68,20 +68,20 @@ loop Edición continua
         FE --> Docente: Mostrar modal con alumnos disponibles
         Docente -> FE: Selecciona alumno a añadir
         FE -> Controller: PUT /api/grados/{id}/alumnos/{alumnoId}\n(Header: Authorization: Bearer <token>)
-        Controller -> Service: añadirAlumnoAGrado(gradoId, alumnoId)
-        Service -> AlumnoService: añadirAlumnoAGrado(gradoId, alumnoId)
+        Controller -> Service: añadirAlumnoAGrado(gradoId, alumnoId, docenteId)
+        Service -> Repo: findById(gradoId)
+        activate Repo
+        Repo -> DB: SELECT * FROM grados WHERE id = ?
+        DB --> Repo: Optional<Grado>
+        deactivate Repo
+        Service -> AlumnoService: añadirAlumnoAGrado(alumnoId, docenteId, grado)
         activate AlumnoService
-        AlumnoService -> AlumnoService: verificarAlumnoPerteneceADocente(alumnoId, docenteId)
         AlumnoService -> AlumnoRepo: findById(alumnoId)
         activate AlumnoRepo
         AlumnoRepo -> DB: SELECT * FROM alumnos WHERE id = ?
         DB --> AlumnoRepo: Optional<Alumno>
         deactivate AlumnoRepo
-        AlumnoService -> Repo: findById(gradoId)
-        activate Repo
-        Repo -> DB: SELECT * FROM grados WHERE id = ?
-        DB --> Repo: Optional<Grado>
-        deactivate Repo
+        AlumnoService -> AlumnoService: verificarAlumnoPerteneceADocente(alumno, docenteId)
         AlumnoService -> AlumnoService: alumno.setGrado(grado)
         AlumnoService -> AlumnoRepo: save(alumno)
         activate AlumnoRepo
