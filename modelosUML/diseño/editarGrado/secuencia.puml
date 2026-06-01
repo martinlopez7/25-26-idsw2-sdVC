@@ -5,6 +5,7 @@ actor "Docente" as Docente
 participant "Frontend (React)" as FE
 participant "GradosController" as Controller
 participant "GradoService" as Service
+participant "AlumnoService" as AlumnoService
 participant "GradoRepository" as Repo
 participant "AlumnoRepository" as AlumnoRepo
 database "Base de Datos (PostgreSQL)" as DB
@@ -24,11 +25,15 @@ deactivate DB
 Repo --> Service: Optional<Grado>
 deactivate Repo
 alt Grado Existe
-    Service -> AlumnoRepo: findByGradoId(id)
+    Service -> AlumnoService: obtenerAlumnosPorGrado(id)
+    activate AlumnoService
+    AlumnoService -> AlumnoRepo: findByGradoId(id)
     activate AlumnoRepo
     AlumnoRepo -> DB: SELECT * FROM alumnos WHERE grado_id = ?
     DB --> AlumnoRepo: List<Alumno>
     deactivate AlumnoRepo
+    AlumnoService --> Service: List<AlumnoDTO>
+    deactivate AlumnoService
     Service --> Controller: GradoDTO (con lista de alumnos)
     Controller --> FE: 200 OK (GradoDTO JSON)
     FE --> Docente: Mostrar Formulario con datos precargados\n(nombre, código, lista de alumnos actuales)
@@ -48,29 +53,43 @@ loop Edición continua
     alt Añadir alumno
         FE -> Controller: GET /api/alumnos/sin-grado\n(Header: Authorization: Bearer <token>)
         activate Controller
-        Controller -> Service: obtenerAlumnosSinGrado()
-        Service -> AlumnoRepo: findByGradoIsNull()
+        Controller -> Service: obtenerAlumnosSinGrado(docenteId)
+        Service -> AlumnoService: obtenerAlumnosSinGrado(docenteId)
+        activate AlumnoService
+        AlumnoService -> AlumnoRepo: findByDocenteIdAndGradoIsNull(docenteId)
         activate AlumnoRepo
-        AlumnoRepo -> DB: SELECT * FROM alumnos WHERE grado_id IS NULL
+        AlumnoRepo -> DB: SELECT * FROM alumnos WHERE docente_id = ? AND grado_id IS NULL
         DB --> AlumnoRepo: List<Alumno>
         deactivate AlumnoRepo
+        AlumnoService --> Service: List<AlumnoDTO>
+        deactivate AlumnoService
         Service --> Controller: List<AlumnoDTO>
         Controller --> FE: 200 OK (Lista de alumnos disponibles)
         FE --> Docente: Mostrar modal con alumnos disponibles
         Docente -> FE: Selecciona alumno a añadir
         FE -> Controller: PUT /api/grados/{id}/alumnos/{alumnoId}\n(Header: Authorization: Bearer <token>)
         Controller -> Service: añadirAlumnoAGrado(gradoId, alumnoId)
-        Service -> AlumnoRepo: findById(alumnoId)
+        Service -> AlumnoService: añadirAlumnoAGrado(gradoId, alumnoId)
+        activate AlumnoService
+        AlumnoService -> AlumnoService: verificarAlumnoPerteneceADocente(alumnoId, docenteId)
+        AlumnoService -> AlumnoRepo: findById(alumnoId)
         activate AlumnoRepo
         AlumnoRepo -> DB: SELECT * FROM alumnos WHERE id = ?
         DB --> AlumnoRepo: Optional<Alumno>
         deactivate AlumnoRepo
-        Service -> Service: alumno.setGrado(grado); alumnoRepo.save(alumno)
-        Service -> AlumnoRepo: save(alumno)
+        AlumnoService -> Repo: findById(gradoId)
+        activate Repo
+        Repo -> DB: SELECT * FROM grados WHERE id = ?
+        DB --> Repo: Optional<Grado>
+        deactivate Repo
+        AlumnoService -> AlumnoService: alumno.setGrado(grado)
+        AlumnoService -> AlumnoRepo: save(alumno)
         activate AlumnoRepo
         AlumnoRepo -> DB: UPDATE alumnos SET grado_id = ? WHERE id = ?
         DB --> AlumnoRepo: Alumno actualizado
         deactivate AlumnoRepo
+        AlumnoService --> Service: AlumnoDTO
+        deactivate AlumnoService
         Service --> Controller: AlumnoDTO
         Controller --> FE: 200 OK (AlumnoDTO)
         FE -> FE: Mostrar Toast "Alumno añadido al grado"
@@ -83,17 +102,22 @@ loop Edición continua
         FE -> Controller: DELETE /api/grados/{id}/alumnos/{alumnoId}\n(Header: Authorization: Bearer <token>)
         activate Controller
         Controller -> Service: quitarAlumnoDeGrado(gradoId, alumnoId)
-        Service -> AlumnoRepo: findById(alumnoId)
+        Service -> AlumnoService: quitarAlumnoDeGrado(gradoId, alumnoId)
+        activate AlumnoService
+        AlumnoService -> AlumnoRepo: findById(alumnoId)
         activate AlumnoRepo
         AlumnoRepo -> DB: SELECT * FROM alumnos WHERE id = ?
         DB --> AlumnoRepo: Optional<Alumno>
         deactivate AlumnoRepo
-        Service -> Service: alumno.setGrado(null); alumnoRepo.save(alumno)
-        Service -> AlumnoRepo: save(alumno)
+        AlumnoService -> AlumnoService: verificarAlumnoPerteneceAGrado(alumno, gradoId)
+        AlumnoService -> AlumnoService: alumno.setGrado(null)
+        AlumnoService -> AlumnoRepo: save(alumno)
         activate AlumnoRepo
         AlumnoRepo -> DB: UPDATE alumnos SET grado_id = NULL WHERE id = ?
         DB --> AlumnoRepo: Alumno actualizado
         deactivate AlumnoRepo
+        AlumnoService --> Service: void
+        deactivate AlumnoService
         Service --> Controller: void
         Controller --> FE: 204 No Content
         deactivate Controller
@@ -111,7 +135,7 @@ loop Edición continua
     DB --> Repo: Optional<Grado>
     Repo --> Service: Optional<Grado>
     deactivate Repo
-    Service -> Service: validarUnicidadTituloYCodigo(id, titulo, codigo)
+    Service -> Service: validarUnicidadTituloYCodigo(id, titulo, codigo, docenteId)
     Service -> Service: actualizarCamposDesdeDTO(grado, dto)
     Service -> Repo: save(grado)
     activate Repo

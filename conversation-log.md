@@ -886,3 +886,7 @@ Tras probar, se detectó un bug: al eliminar un grado, los alumnos asociados man
 **Enlace:** [session-ses_1824.md](conversations/session-ses_1824.md)
 
 **Decisión:** La implementación de eliminarGrado() se aceptó.
+
+## [01/06/2026][10:05] Error de cohesión en el diseño e implementación de editarGrado
+
+**Decisión:** Analicé el diseño e implementación del caso de uso editarGrado desde el punto de vista de la cohesión. El hecho de que GradoService se comunique directamente con AlumnoRepository me parece poco cohesivo. Me parecería mejor que GradoService se comunicase con AlumnoService y que esta se comunicase con AlumnoRepository, por lo que se modificó el diseño del caso de uso.

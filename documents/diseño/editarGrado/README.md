@@ -22,9 +22,10 @@ Diseño técnico del caso de uso `editarGrado()` siguiendo el stack tecnológico
 | :--- | :--- | :--- |
 | **Frontend (React)** | Componente | Formulario de edición con datos precargados, modal para añadir alumnos, validación client-side |
 | **GradosController** | Controller | Recibe peticiones GET/PUT/DELETE, valida existencia, delega a servicio |
-| **GradoService** | Service | Lógica de negocio: validación de unicidad título/código, gestión de alumnos por grado |
+| **GradoService** | Service | Lógica de negocio: validación de unicidad título/código, gestión de alumnos por grado (delega a AlumnoService) |
+| **AlumnoService** | Service | Lógica de negocio para gestión de alumnos: obtener alumnos sin grado, añadir/quitar alumno de grado |
 | **GradoRepository** | Repository | Acceso a datos: findById, save para grados |
-| **AlumnoRepository** | Repository | Acceso a datos: findByGradoId, findByGradoIsNull, save para gestión de alumnos |
+| **AlumnoRepository** | Repository | Acceso a datos: findByGradoId, findByGradoIsNull, save (usado por AlumnoService) |
 | **Base de Datos (PostgreSQL)** | Entidad | Persistencia de entidades Grado y Alumno (con columna grado_id) |
 
 ## decisiones de diseño
