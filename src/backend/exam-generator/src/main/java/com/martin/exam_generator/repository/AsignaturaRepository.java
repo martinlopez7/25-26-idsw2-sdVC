@@ -18,4 +18,8 @@ public interface AsignaturaRepository extends JpaRepository<Asignatura, Long> {
            "LOWER(a.codigo) LIKE LOWER(CONCAT('%', :criterio, '%')) OR " +
            "LOWER(a.cursoAcademico) LIKE LOWER(CONCAT('%', :criterio, '%')))")
     List<Asignatura> findByDocenteIdAndCriterio(@Param("docenteId") Long docenteId, @Param("criterio") String criterio);
+
+    boolean existsByIdAndDocenteId(Long id, Long docenteId);
+
+    boolean existsByCodigoAndDocenteIdAndIdNot(String codigo, Long docenteId, Long id);
 }

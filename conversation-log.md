@@ -972,3 +972,15 @@ El diseño siguió el patrón de verGrados() y verAlumnos(), filtrando automáti
 **Enlace:** [session-ses_17d6.md](conversations/session-ses_17d6.md)
 
 **Decisión:** Se aceptó la implementación de crearAsignatura().
+
+## [01/06/2026][13:28] Implementación de editarAsignatura()
+
+**Prompt:** empezar → me gustaria implementar el caso de uso editarAsignatura
+
+**Resultado:** Se implementó editarAsignatura() generando:
+- Backend: GradoDTO.java y AlumnoDTO.java (nuevos), AsignaturaDTO.java actualizado con campos grados y alumnos, AsignaturaUpdateDTO.java (nuevo), Asignatura.java y Alumno.java con relación many-to-many para matriculación, AsignaturaRepository con métodos existsByIdAndDocenteId y existsByCodigoAndDocenteIdAndIdNot, AlumnoRepository con findAvailableAlumnosForAsignatura, AsignaturaService reescrito con métodos: obtenerAsignaturaPorId, actualizarAsignatura, getAlumnosDisponibles, addAlumno, removeAlumno, AsignaturasController con PUT /api/asignaturas/{id}, GET /api/asignaturas/{id}/alumnos-disponibles, POST /api/asignaturas/{id}/alumnos/{alumnoId}, DELETE /api/asignaturas/{id}/alumnos/{alumnoId}
+- Frontend: asignaturasService.ts ampliado con interfaces DTO y métodos para gestión de alumnos, AsignaturaFormComponent.tsx reescrito para soportar modo edición completo con gestión de grados y matriculación de alumnos (modal para matricular)
+
+**Enlace:** [session-ses_17d5.md](conversations/session-ses_17d5.md)
+
+**Decisión:** La implementación de editarAsignatura() se aceptó.

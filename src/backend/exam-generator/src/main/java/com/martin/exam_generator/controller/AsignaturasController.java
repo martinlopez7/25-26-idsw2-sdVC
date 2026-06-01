@@ -1,7 +1,10 @@
 package com.martin.exam_generator.controller;
 
+import com.martin.exam_generator.dto.AlumnoDTO;
 import com.martin.exam_generator.dto.AsignaturaCreateDTO;
 import com.martin.exam_generator.dto.AsignaturaDTO;
+import com.martin.exam_generator.dto.AsignaturaUpdateDTO;
+import com.martin.exam_generator.exception.EntityNotFoundException;
 import com.martin.exam_generator.security.JwtTokenProvider;
 import com.martin.exam_generator.service.AsignaturaService;
 import jakarta.validation.Valid;
@@ -47,17 +50,13 @@ public class AsignaturasController {
             @PathVariable Long id) {
 
         Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
-        List<AsignaturaDTO> asignaturas = asignaturaService.obtenerAsignaturasDelDocente(docenteId);
-        AsignaturaDTO asignatura = asignaturas.stream()
-                .filter(a -> a.getId().equals(id))
-                .findFirst()
-                .orElse(null);
 
-        if (asignatura == null) {
+        try {
+            AsignaturaDTO asignatura = asignaturaService.obtenerAsignaturaPorId(id, docenteId);
+            return ResponseEntity.ok(asignatura);
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
-
-        return ResponseEntity.ok(asignatura);
     }
 
     @PostMapping
@@ -74,5 +73,72 @@ public class AsignaturasController {
 
         AsignaturaDTO creada = asignaturaService.crearAsignatura(dto, docenteId);
         return ResponseEntity.status(HttpStatus.CREATED).body(creada);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarAsignatura(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable Long id,
+            @Valid @RequestBody AsignaturaUpdateDTO dto) {
+
+        Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
+
+        try {
+            AsignaturaDTO actualizada = asignaturaService.actualizarAsignatura(id, dto, docenteId);
+            return ResponseEntity.ok(actualizada);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/{id}/alumnos-disponibles")
+    public ResponseEntity<List<AlumnoDTO>> obtenerAlumnosDisponibles(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable Long id) {
+
+        Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
+
+        try {
+            List<AlumnoDTO> alumnos = asignaturaService.getAlumnosDisponibles(id, docenteId);
+            return ResponseEntity.ok(alumnos);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/{id}/alumnos/{alumnoId}")
+    public ResponseEntity<?> matricularAlumno(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable Long id,
+            @PathVariable Long alumnoId) {
+
+        Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
+
+        try {
+            AsignaturaDTO asignatura = asignaturaService.addAlumno(id, alumnoId, docenteId);
+            return ResponseEntity.ok(asignatura);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("/{id}/alumnos/{alumnoId}")
+    public ResponseEntity<?> desmatricularAlumno(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable Long id,
+            @PathVariable Long alumnoId) {
+
+        Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
+
+        try {
+            AsignaturaDTO asignatura = asignaturaService.removeAlumno(id, alumnoId, docenteId);
+            return ResponseEntity.ok(asignatura);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

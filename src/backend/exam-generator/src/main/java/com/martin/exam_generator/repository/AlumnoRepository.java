@@ -29,4 +29,12 @@ public interface AlumnoRepository extends JpaRepository<Alumno, Long> {
 
     @Query("SELECT a FROM Alumno a WHERE a.docenteId = :docenteId AND a.grado IS NULL")
     List<Alumno> findByDocenteIdAndGradoIsNull(@Param("docenteId") Long docenteId);
+
+    @Query("SELECT a FROM Alumno a WHERE a.docenteId = :docenteId " +
+           "AND a.grado.id IN :gradoIds " +
+           "AND a.id NOT IN " +
+           "(SELECT al.id FROM Alumno al JOIN al.asignaturas asig WHERE asig.id = :asignaturaId)")
+    List<Alumno> findAvailableAlumnosForAsignatura(@Param("docenteId") Long docenteId,
+                                                   @Param("asignaturaId") Long asignaturaId,
+                                                   @Param("gradoIds") List<Long> gradoIds);
 }

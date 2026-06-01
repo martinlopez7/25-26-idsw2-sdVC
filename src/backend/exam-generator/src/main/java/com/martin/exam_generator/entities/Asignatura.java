@@ -41,4 +41,8 @@ public class Asignatura {
     )
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Grado> grados = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "asignaturas")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Alumno> alumnos = new ArrayList<>();
 }

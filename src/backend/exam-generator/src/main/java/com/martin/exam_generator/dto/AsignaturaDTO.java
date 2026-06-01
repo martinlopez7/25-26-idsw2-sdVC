@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,13 +18,25 @@ public class AsignaturaDTO {
     private String titulo;
     private String codigo;
     private String cursoAcademico;
+    private List<GradoDTO> grados = new ArrayList<>();
+    private List<AlumnoDTO> alumnos = new ArrayList<>();
 
     public static AsignaturaDTO fromEntity(Asignatura asignatura) {
-        return new AsignaturaDTO(
+        AsignaturaDTO dto = new AsignaturaDTO(
                 asignatura.getId(),
                 asignatura.getTitulo(),
                 asignatura.getCodigo(),
-                asignatura.getCursoAcademico()
+                asignatura.getCursoAcademico(),
+                new ArrayList<>(),
+                new ArrayList<>()
         );
+
+        if (asignatura.getGrados() != null) {
+            dto.setGrados(asignatura.getGrados().stream()
+                    .map(GradoDTO::fromEntity)
+                    .collect(Collectors.toList()));
+        }
+
+        return dto;
     }
 }

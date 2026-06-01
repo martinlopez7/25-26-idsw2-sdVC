@@ -1,16 +1,38 @@
 import { api } from './api';
 
+export interface GradoDTO {
+  id: number;
+  titulo: string;
+  codigo: string;
+}
+
+export interface AlumnoDTO {
+  id: number;
+  nombre: string;
+  apellidos: string;
+  dni: string;
+}
+
 export interface AsignaturaDTO {
   id: number;
   titulo: string;
   codigo: string;
   cursoAcademico: string;
+  grados: GradoDTO[];
+  alumnos: AlumnoDTO[];
 }
 
 export interface AsignaturaCreateDTO {
   titulo: string;
   codigo: string;
   cursoAcademico: string;
+}
+
+export interface AsignaturaUpdateDTO {
+  titulo: string;
+  codigo: string;
+  cursoAcademico: string;
+  gradoIds: number[];
 }
 
 export const asignaturasService = {
@@ -30,8 +52,23 @@ export const asignaturasService = {
     return response.data;
   },
 
-  actualizarAsignatura: async (id: number, asignatura: AsignaturaCreateDTO): Promise<AsignaturaDTO> => {
+  actualizarAsignatura: async (id: number, asignatura: AsignaturaUpdateDTO): Promise<AsignaturaDTO> => {
     const response = await api.put<AsignaturaDTO>(`/asignaturas/${id}`, asignatura);
+    return response.data;
+  },
+
+  getAlumnosDisponibles: async (asignaturaId: number): Promise<AlumnoDTO[]> => {
+    const response = await api.get<AlumnoDTO[]>(`/asignaturas/${asignaturaId}/alumnos-disponibles`);
+    return response.data;
+  },
+
+  matricularAlumno: async (asignaturaId: number, alumnoId: number): Promise<AsignaturaDTO> => {
+    const response = await api.post<AsignaturaDTO>(`/asignaturas/${asignaturaId}/alumnos/${alumnoId}`);
+    return response.data;
+  },
+
+  desmatricularAlumno: async (asignaturaId: number, alumnoId: number): Promise<AsignaturaDTO> => {
+    const response = await api.delete<AsignaturaDTO>(`/asignaturas/${asignaturaId}/alumnos/${alumnoId}`);
     return response.data;
   },
 };

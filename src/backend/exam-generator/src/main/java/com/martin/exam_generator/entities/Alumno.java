@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "alumnos")
 @Data
@@ -34,4 +37,13 @@ public class Alumno {
     @JoinColumn(name = "grado_id")
     @OnDelete(action = OnDeleteAction.SET_NULL)
     private Grado grado;
+
+    @ManyToMany
+    @JoinTable(
+        name = "alumnos_asignaturas",
+        joinColumns = @JoinColumn(name = "alumno_id"),
+        inverseJoinColumns = @JoinColumn(name = "asignatura_id")
+    )
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Asignatura> asignaturas = new ArrayList<>();
 }

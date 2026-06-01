@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -15,13 +16,14 @@ public class GradoDTO {
     private Long id;
     private String titulo;
     private String codigo;
-    private List<AlumnoDTO> alumnos;
+    private List<AlumnoDTO> alumnos = new ArrayList<>();
 
     public static GradoDTO fromEntity(Grado grado) {
-        GradoDTO dto = new GradoDTO();
-        dto.setId(grado.getId());
-        dto.setTitulo(grado.getTitulo());
-        dto.setCodigo(grado.getCodigo());
-        return dto;
+        return new GradoDTO(
+                grado.getId(),
+                grado.getTitulo(),
+                grado.getCodigo(),
+                new ArrayList<>()
+        );
     }
 }
