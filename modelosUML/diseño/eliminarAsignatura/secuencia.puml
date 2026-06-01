@@ -1,0 +1,53 @@
+@startuml
+title Diagrama de Secuencia - Eliminar Asignatura (Spring Boot + React)
+
+actor "Docente" as Teacher
+participant "Frontend (React)" as FE
+participant "AsignaturasController" as Controller
+participant "AsignaturaService" as Service
+participant "AsignaturaRepository" as Repo
+database "Base de Datos (PostgreSQL)" as DB
+
+Teacher -> FE: Clic en "Eliminar" (asignaturaId)
+activate FE
+FE --> Teacher: Mostrar Modal de Confirmación\n(datos de la asignatura)
+Teacher -> FE: Confirma eliminación
+FE -> Controller: DELETE /api/asignaturas/{asignaturaId}\n(Header: Authorization: Bearer <token>)
+activate Controller
+Controller -> Service: eliminarAsignatura(asignaturaId)
+activate Service
+Service -> Repo: findById(asignaturaId)
+activate Repo
+Repo -> DB: SELECT * FROM asignaturas WHERE id = ?
+activate DB
+DB --> Repo: Optional<Asignatura>
+deactivate DB
+Repo --> Service: Optional<Asignatura>
+deactivate Repo
+alt Asignatura Existe
+    Service -> Service: extraer docenteId del JWT
+    Service -> Service: verificarAsignaturaPerteneceADocente(asignatura, docenteId)
+    Service -> Repo: deleteById(asignaturaId)
+    activate Repo
+    Repo -> DB: DELETE FROM asignaturas WHERE id = ?
+    activate DB
+    DB --> Repo: OK
+    deactivate DB
+    Repo --> Service: void
+    deactivate Repo
+    Service --> Controller: void
+    deactivate Service
+    Controller --> FE: 204 No Content
+    deactivate Controller
+    FE -> FE: Remover de la lista (actualizar vista)
+    FE --> Teacher: Notificación "Asignatura eliminada correctamente"
+else Asignatura No Existe o No Pertenece Al Docente
+    Service --> Controller: throw EntityNotFoundException
+    deactivate Service
+    Controller --> FE: 404 Not Found
+    deactivate Controller
+    FE --> Teacher: Mostrar Error "Asignatura no encontrada"
+end
+deactivate FE
+
+@enduml

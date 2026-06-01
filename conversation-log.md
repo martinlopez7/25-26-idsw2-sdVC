@@ -932,3 +932,17 @@ El diseño siguió el patrón "el gordo" (edición continua con múltiples ciclo
 **Enlace:** [session-ses_17d9.md](conversations/session-ses_17d9.md)
 
 **Decisión:** El diseño que realizó del caso de uso editarAsignatura se aceptó.
+
+## [01/06/2026][11:22] Diseño de eliminarAsignatura()
+
+**Prompt:** empezar → Diseña el caso de uso eliminarAsignatura
+
+**Resultado:** Se realizó el diseño MVC de eliminarAsignatura() generando:
+- documents/diseño/eliminarAsignatura/README.md
+- modelosUML/diseño/eliminarAsignatura/secuencia.puml
+
+El diseño siguió el patrón de eliminación segura con confirmación previa, identificando los participantes: Frontend (React) con modal de confirmación, AsignaturasController con endpoint DELETE /api/asignaturas/{id}, AsignaturaService con lógica de eliminación, validación de existencia y pertenencia al docente autenticado extraído del JWT, AsignaturaRepository y Base de Datos (PostgreSQL). Se incluyeron verificaciones de existencia del grado y manejo de integridad referencial (409 Conflict si tiene preguntas o exámenes asociadas).
+
+**Enlace:** [session-ses_17d8.md](conversations/session-ses_17d8.md)
+
+**Decisión:** Se aceptó el diseño del caso de uso eliminarAsignatura.
