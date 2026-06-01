@@ -14,7 +14,7 @@ FE --> Teacher: Mostrar Modal de Confirmación\n(datos de la asignatura)
 Teacher -> FE: Confirma eliminación
 FE -> Controller: DELETE /api/asignaturas/{asignaturaId}\n(Header: Authorization: Bearer <token>)
 activate Controller
-Controller -> Service: eliminarAsignatura(asignaturaId)
+Controller -> Service: eliminarAsignatura(asignaturaId, docenteId)
 activate Service
 Service -> Repo: findById(asignaturaId)
 activate Repo
@@ -24,10 +24,10 @@ DB --> Repo: Optional<Asignatura>
 deactivate DB
 Repo --> Service: Optional<Asignatura>
 deactivate Repo
-alt Asignatura Existe
-    Service -> Service: extraer docenteId del JWT
-    Service -> Service: verificarAsignaturaPerteneceADocente(asignatura, docenteId)
-    Service -> Repo: deleteById(asignaturaId)
+alt Asignatura Existe y Pertenece al Docente
+    Service -> Service: asignatura.getAlumnos().clear()
+    Service -> Service: asignatura.getGrados().clear()
+    Service -> Repo: delete(asignatura)
     activate Repo
     Repo -> DB: DELETE FROM asignaturas WHERE id = ?
     activate DB
