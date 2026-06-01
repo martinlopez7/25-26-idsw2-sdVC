@@ -946,3 +946,17 @@ El diseño siguió el patrón de eliminación segura con confirmación previa, i
 **Enlace:** [session-ses_17d8.md](conversations/session-ses_17d8.md)
 
 **Decisión:** Se aceptó el diseño del caso de uso eliminarAsignatura.
+
+## [01/06/2026][11:52] Implementación de verAsignaturas()
+
+**Prompt:** empezar → me gustaria implementar el caso de uso verAsignaturas
+
+**Resultado:** Se implementó verAsignaturas() generando:
+- Backend: Asignatura entity (campos id, titulo, codigo, cursoAcademico, docenteId, grados), AsignaturaDTO, AsignaturaRepository (findByDocenteId, findByDocenteIdAndCriterio con filtrado por titulo, codigo y cursoAcademico), AsignaturaService (obtenerAsignaturasDelDocente, filtrarAsignaturas), AsignaturasController GET /api/asignaturas/mias
+- Frontend: asignaturasService.getAsignaturas(), AsignaturasListComponent.tsx, ruta /asignaturas en App.tsx
+
+El diseño siguió el patrón de verGrados() y verAlumnos(), filtrando automáticamente por el `docenteId` extraído del JWT.
+
+**Enlace:** [session-ses_17d7.md](conversations/session-ses_17d7.md)
+
+**Decisión:** Se aceptó la implementación de verAsignaturas.
