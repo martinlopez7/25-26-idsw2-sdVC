@@ -32,5 +32,5 @@ Especificar el flujo para la eliminación física de un registro de asignatura, 
 - Verificación previa de existencia del ID (lanza `EntityNotFoundException` → 404).
 - Verificación de pertenencia al docente autenticado extraído del JWT.
 - Retorno de `204 No Content` al éxito (sin body en respuesta).
-- Manejo de integridad referencial: si asignatura tiene relaciones (preguntas, exámenes), JPA lanza `DataIntegrityViolationException` capturada por `@ControllerAdvice` → 409 Conflict.
+- Si asignatura tiene relaciones (tiene alumnos y grados asociados) y se elimina, estas entidades relacionadas dejarán de tener relación con la asignatura.
 - Respuesta al frontend sin contenido, actualización optimista de la lista.
