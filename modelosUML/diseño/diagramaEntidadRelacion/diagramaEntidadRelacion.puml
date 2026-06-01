@@ -24,13 +24,18 @@ entity "asignaturas" as asignaturas {
   * id : INT <<PK>>
   --
   * docente_id : INT <<FK>>
-  * grado_id : INT <<FK>>
 }
 
-' Tabla intermedia para la relación Many-to-Many
+' Tabla intermedia para la relación Many-to-Many (Alumnos - Asignaturas)
 entity "alumnos_asignaturas" as alumnos_asignaturas {
   * alumno_id : INT <<PK>> <<FK>>
   * asignatura_id : INT <<PK>> <<FK>>
+}
+
+' Nueva tabla intermedia para la relación Many-to-Many (Asignaturas - Grados)
+entity "asignatura_grado" as asignatura_grado {
+  * asignatura_id : INT <<PK>> <<FK>>
+  * grado_id : INT <<PK>> <<FK>>
 }
 
 entity "preguntas" as preguntas {
@@ -51,11 +56,14 @@ usuarios ||--o{ alumnos : "docente_id"
 grados ||--o{ alumnos : "grado_id"
 
 usuarios ||--o{ asignaturas : "docente_id"
-grados ||--o{ asignaturas : "grado_id"
 
-' Relación Many-to-Many explicada a través de la tabla intermedia
+' Relación Many-to-Many: Alumnos - Asignaturas
 alumnos ||--o{ alumnos_asignaturas : ""
 asignaturas ||--o{ alumnos_asignaturas : ""
+
+' Nueva Relación Many-to-Many: Asignaturas - Grados
+asignaturas ||--o{ asignatura_grado : ""
+grados ||--o{ asignatura_grado : ""
 
 asignaturas ||--o{ preguntas : "asignatura_id"
 preguntas ||--o{ respuestas : "pregunta_id"
