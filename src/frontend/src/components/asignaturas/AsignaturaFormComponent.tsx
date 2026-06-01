@@ -167,8 +167,8 @@ export default function AsignaturaFormComponent() {
           navigate('/asignaturas');
         }, 1500);
       } else {
-        await asignaturasService.crearAsignatura(formData);
-        navigate('/asignaturas');
+        const creada = await asignaturasService.crearAsignatura(formData);
+        navigate(`/asignaturas/editar/${creada.id}`);
       }
     } catch (err: any) {
       setError(err.response?.data?.error || 'Error al guardar la asignatura');
