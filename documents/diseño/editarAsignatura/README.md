@@ -22,15 +22,20 @@ Diseño técnico del caso de uso `editarAsignatura()` siguiendo el stack tecnol�
 | :--- | :--- | :--- |
 | **Frontend (React)** | Componente | Formulario de edición con datos precargados, modal para gestionar grados y alumnos, validación client-side |
 | **AsignaturasController** | Controller | Recibe peticiones GET/PUT, valida existencia, delega a servicio |
-| **AsignaturaService** | Service | Lógica de negocio: validación de unicidad título/código, gestión de grados y alumnos matriculados (delega a GradoService y AlumnoService) |
-| **GradoService** | Service | Lógica de negocio para gestión de grados: obtener grados por asignatura, añadir/quitar grado de asignatura |
-| **AlumnoService** | Service | Lógica de negocio para matriculación: obtener alumnos matriculables (que pertenezcan a algún grado de la asignatura), matricular/desmatricular alumno |
+| **AsignaturaService** | Service | Lógica de negocio: validación de unicidad título/código, gestión de grados y alumnos matriculados (delega a **GradoService** y **AlumnoService**) |
+| **GradoService** | Service | Lógica de negocio para gestión de grados: obtener grados por asignatura, verificar existencia de grado |
+| **AlumnoService** | Service | Lógica de negocio para gestión de alumnos: verificar pertenencia al grado, matricular/desmatricular alumno de asignatura |
 | **AsignaturaRepository** | Repository | Acceso a datos: findById, save para asignaturas |
-| **GradoRepository** | Repository | Acceso a datos: findByAsignaturaId |
-| **AlumnoRepository** | Repository | Acceso a datos: findByAsignaturaId, findByGradoId, save (usado por AlumnoService) |
 | **Base de Datos (PostgreSQL)** | Entidad | Persistencia de entidades Asignatura, Grado, Alumno (con relaciones a través de asignaturas.grado_id y alumnos_asignaturas) |
 
 ## decisiones de diseño
+
+### Cohesión entre servicios
+
+**Principio**: Cada servicio es responsable de su propio dominio de negocio. Para mantener la cohesión:
+
+- **AsignaturaService** delega en **GradoService** la obtención y validación de grados
+- **AsignaturaService** delega en **AlumnoService** la verificación de pertenencia de alumnos a grados y la matriculación/desmatriculación
 
 ### API Endpoints
 
@@ -42,7 +47,7 @@ Diseño técnico del caso de uso `editarAsignatura()` siguiendo el stack tecnol�
 
 ### DTOs
 
-- **AsignaturaDTO**: Incluye `id`, `titulo`, `codigo`, `cursoAcademico`, `bateriaPreguntasId`, `grados` (lista con id, titulo, codigo), `alumnos` (lista con id, nombre, apellidos, dni).
+- **AsignaturaDTO**: Incluye `id`, `titulo`, `codigo`, `cursoAcademico`, `grados` (lista con id, titulo, codigo), `alumnos` (lista con id, nombre, apellidos, dni).
 - **AsignaturaUpdateDTO**: Incluye `titulo`, `codigo` y `cursoAcademico` para actualización.
 - **GradoDTO**: Incluye `id`, `titulo`, `codigo`.
 - **AlumnoDTO**: Incluye `id`, `nombre`, `apellidos`, `dni`.

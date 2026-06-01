@@ -998,3 +998,7 @@ El diseño siguió el patrón de verGrados() y verAlumnos(), filtrando automáti
 **Enlace:** [session-ses_17d0.md](conversations/session-ses_17d0.md)
 
 **Decisión:** El diseño inicial no contemplaba el comportamiento de las relaciones al eliminar. S specificó que al eliminar una asignatura con alumnos y grados asociados, estas entidades relacionadas deben perder su relación con la asignatura pero no eliminarse. Se implementó limpiando las listas de alumnos y grados antes de llamar a delete(). Además se implementó el camino de eliminación desde la página de edición de asignatura.
+
+## [01/06/2026][20:49] Refactorización de editarAsignatura() para mejorar cohesión entre servicios
+
+Analicé el diseño e implementación del caso de uso editarAsignatura desde el punto de vista de la cohesión. El hecho de que AsignaturaService se comunique directamente con los repositorios de otras entidades (Grado y Alumno) me parece poco cohesivo. Me parecería mejor que los servicios se comunicasen entre ellos, por lo que se modificó el diseño del caso de uso.
