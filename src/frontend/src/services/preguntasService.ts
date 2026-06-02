@@ -6,6 +6,12 @@ export interface RespuestaDTO {
   esCorrecta: boolean;
 }
 
+export interface RespuestaUpdateDTO {
+  id?: number;
+  opcion: string;
+  esCorrecta: boolean;
+}
+
 export interface PreguntaDTO {
   id: number;
   enunciado: string;
@@ -21,6 +27,14 @@ export interface PreguntaCreateDTO {
   enunciado: string;
   tema: string;
   dificultad: 'FACIL' | 'MEDIO' | 'DIFICIL';
+}
+
+export interface PreguntaUpdateDTO {
+  enunciado: string;
+  tema: string;
+  dificultad: 'FACIL' | 'MEDIO' | 'DIFICIL';
+  habilitada: boolean;
+  respuestas?: RespuestaUpdateDTO[];
 }
 
 export const preguntasService = {
@@ -43,6 +57,11 @@ export const preguntasService = {
 
   getPreguntaById: async (id: number): Promise<PreguntaDTO> => {
     const response = await api.get<PreguntaDTO>(`/preguntas/${id}`);
+    return response.data;
+  },
+
+  actualizarPregunta: async (id: number, pregunta: PreguntaUpdateDTO): Promise<PreguntaDTO> => {
+    const response = await api.put<PreguntaDTO>(`/preguntas/${id}`, pregunta);
     return response.data;
   },
 };

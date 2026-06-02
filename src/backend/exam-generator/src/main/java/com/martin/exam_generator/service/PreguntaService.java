@@ -1,8 +1,8 @@
 package com.martin.exam_generator.service;
 
-import com.martin.exam_generator.dto.AsignaturaDTO;
 import com.martin.exam_generator.dto.PreguntaCreateDTO;
 import com.martin.exam_generator.dto.PreguntaDTO;
+import com.martin.exam_generator.dto.PreguntaUpdateDTO;
 import com.martin.exam_generator.entities.Pregunta;
 import com.martin.exam_generator.repository.PreguntaRepository;
 import org.springframework.stereotype.Service;
@@ -18,13 +18,14 @@ import java.util.stream.Collectors;
 public class PreguntaService {
 
     private final PreguntaRepository preguntaRepository;
-    private final AsignaturaService asignaturaService;
+    private final RespuestaService respuestaService;
 
-    public PreguntaService(PreguntaRepository preguntaRepository, AsignaturaService asignaturaService) {
+    public PreguntaService(PreguntaRepository preguntaRepository, RespuestaService respuestaService) {
         this.preguntaRepository = preguntaRepository;
-        this.asignaturaService = asignaturaService;
+        this.respuestaService = respuestaService;
     }
 
+    @Transactional
     public PreguntaDTO crearPregunta(PreguntaCreateDTO dto, Long docenteId) {
         if (preguntaRepository.existsByAsignaturaIdAndEnunciadoIgnoreCase(dto.getAsignaturaId(), dto.getEnunciado())) {
             throw new IllegalArgumentException("Ya existe una pregunta con este enunciado en la asignatura");
@@ -75,5 +76,32 @@ public class PreguntaService {
         Pregunta pregunta = preguntaRepository.findById(preguntaId)
                 .orElseThrow(() -> new EntityNotFoundException("Pregunta no encontrada con id: " + preguntaId));
         return pregunta.getDocenteId().equals(docenteId);
+    }
+
+    @Transactional
+    public PreguntaDTO actualizarPregunta(Long id, PreguntaUpdateDTO dto, Long docenteId) {
+        Pregunta pregunta = preguntaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Pregunta no encontrada con id: " + id));
+
+        if (!pregunta.getDocenteId().equals(docenteId)) {
+            throw new EntityNotFoundException("Pregunta no encontrada con id: " + id);
+        }
+
+        if (preguntaRepository.existsByAsignaturaIdAndEnunciadoIgnoreCaseAndIdNot(
+                pregunta.getAsignaturaId(), dto.getEnunciado(), id)) {
+            throw new IllegalArgumentException("Ya existe una pregunta con este enunciado en la asignatura");
+        }
+
+        pregunta.setEnunciado(dto.getEnunciado());
+        pregunta.setTema(dto.getTema());
+        pregunta.setDificultad(dto.getDificultad());
+        pregunta.setHabilitada(dto.getHabilitada());
+
+        if (dto.getRespuestas() != null && !dto.getRespuestas().isEmpty()) {
+            respuestaService.procesarRespuestas(id, dto.getRespuestas());
+        }
+
+        Pregunta guardada = preguntaRepository.save(pregunta);
+        return PreguntaDTO.fromEntity(guardada);
     }
 }

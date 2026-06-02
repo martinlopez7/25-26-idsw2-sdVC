@@ -32,4 +32,6 @@ public interface PreguntaRepository extends JpaRepository<Pregunta, Long> {
     List<Pregunta> findByAsignaturaIdAndDocenteId(Long asignaturaId, Long docenteId);
 
     boolean existsByAsignaturaIdAndEnunciadoIgnoreCase(Long asignaturaId, String enunciado);
+
+    boolean existsByAsignaturaIdAndEnunciadoIgnoreCaseAndIdNot(Long asignaturaId, String enunciado, Long id);
 }

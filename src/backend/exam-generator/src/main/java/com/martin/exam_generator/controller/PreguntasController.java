@@ -2,6 +2,7 @@ package com.martin.exam_generator.controller;
 
 import com.martin.exam_generator.dto.PreguntaCreateDTO;
 import com.martin.exam_generator.dto.PreguntaDTO;
+import com.martin.exam_generator.dto.PreguntaUpdateDTO;
 import com.martin.exam_generator.security.JwtTokenProvider;
 import com.martin.exam_generator.service.PreguntaService;
 import jakarta.validation.Valid;
@@ -70,5 +71,16 @@ public class PreguntasController {
     public ResponseEntity<PreguntaDTO> obtenerPregunta(@PathVariable Long id) {
         PreguntaDTO pregunta = preguntaService.obtenerPreguntaPorId(id);
         return ResponseEntity.ok(pregunta);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PreguntaDTO> actualizarPregunta(
+            @PathVariable Long id,
+            @Valid @RequestBody PreguntaUpdateDTO dto,
+            @RequestHeader("Authorization") String authHeader) {
+
+        Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
+        PreguntaDTO preguntaActualizada = preguntaService.actualizarPregunta(id, dto, docenteId);
+        return ResponseEntity.ok(preguntaActualizada);
     }
 }

@@ -1138,4 +1138,16 @@ pendiente: error 403 (Forbidden) al crear pregunta - indicar al usuario que veri
 
 **Enlace:** [session-ses_1780.md](conversations/session-ses_1780.md)
 
-**Decisión:** Se aceptó la implementación de crearPreguntaa
+**Decisión:** Se aceptó la implementación de crearPregunta
+
+## [02/06/2026][13:23] Implementación de editarPregunta()
+
+**Prompt:** me gustaria implementar el caso de uso editarPregunta
+
+**Resultado:** Se implementó el caso de uso editarPregunta() generando:
+- Backend: PreguntaUpdateDTO.java (con validaciones @NotBlank, @NotNull), RespuestaUpdateDTO.java, RespuestaService.java (procesarRespuestas con lógica de add/update/delete), actualización de PreguntaService.java (actualizarPregunta con validación de pertenencia al docente y verificación de unicidad de enunciado), actualización de PreguntaRepository.java (existsByAsignaturaIdAndEnunciadoIgnoreCaseAndIdNot), PreguntasController.java (PUT /api/preguntas/{id})
+- Frontend: preguntasService.ts (actualizarPregunta), PreguntaFormComponent.tsx (adaptado para modo edición con carga de datos, campo habilitada, botón Ver Respuestas)
+
+**Enlace:** [session-ses_177f.md](conversations/session-ses_177f.md)
+
+**Decisión:** Se aceptó la implementación de editarPregunta
