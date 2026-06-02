@@ -1,0 +1,78 @@
+@startuml
+title Diagrama de Secuencia - Eliminar Pregunta (Spring Boot + React)
+
+actor "Docente" as Teacher
+participant "Frontend (React)" as FE
+participant "PreguntasController" as Controller
+participant "PreguntaService" as Service
+participant "RespuestaService" as RespuestaService
+participant "PreguntaRepository" as PreguntaRepo
+participant "RespuestaRepository" as RespuestaRepo
+database "Base de Datos (PostgreSQL)" as DB
+
+Teacher -> FE: Clic en "Eliminar" (preguntaId)
+activate FE
+FE --> Teacher: Mostrar Modal de Confirmación\n(datos de la pregunta: enunciado, tema, dificultad,\nrespuestas asociadas y advertencia de eliminación)
+Teacher -> FE: Confirma eliminación
+FE -> Controller: DELETE /api/preguntas/{preguntaId}\n(Header: Authorization: Bearer <token>)
+activate Controller
+Controller -> Controller: extraer docenteId del JWT
+Controller -> Service: eliminarPregunta(preguntaId, docenteId)
+activate Service
+Service -> PreguntaRepo: findById(preguntaId)
+activate PreguntaRepo
+PreguntaRepo -> DB: SELECT * FROM preguntas WHERE id = ?
+activate DB
+DB --> PreguntaRepo: Optional<Pregunta>
+deactivate DB
+PreguntaRepo --> Service: Optional<Pregunta>
+deactivate PreguntaRepo
+alt Pregunta No Existe
+    Service --> Controller: throw EntityNotFoundException()
+    Controller --> FE: 404 Not Found
+    deactivate Controller
+    FE --> Teacher: Mostrar mensaje de error "Pregunta no encontrada"
+else Pregunta Existe
+    Service -> Service: Verificar pertenencia de pregunta\na docente autenticado (docenteId)
+    alt Pregunta No Pertenece al Docente
+        Service --> Controller: throw UnauthorizedException()
+        Controller --> FE: 403 Forbidden
+        deactivate Controller
+        FE --> Teacher: Mostrar mensaje de error "No tienes permiso para eliminar esta pregunta"
+    else Pregunta Pertenece al Docente
+        Service -> RespuestaService: eliminarRespuestasPorPregunta(preguntaId)
+        activate RespuestaService
+        RespuestaService -> RespuestaRepo: deleteByPreguntaId(preguntaId)
+        activate RespuestaRepo
+        RespuestaRepo -> DB: DELETE FROM respuestas WHERE pregunta_id = ?
+        activate DB
+        DB --> RespuestaRepo: OK
+        deactivate DB
+        RespuestaRepo --> RespuestaService: void
+        deactivate RespuestaRepo
+        RespuestaService --> Service: void
+        deactivate RespuestaService
+        Service -> PreguntaRepo: deleteById(preguntaId)
+        activate PreguntaRepo
+        PreguntaRepo -> DB: DELETE FROM preguntas WHERE id = ?
+        activate DB
+        DB --> PreguntaRepo: OK
+        deactivate DB
+        PreguntaRepo --> Service: void
+        deactivate PreguntaRepo
+        Service --> Controller: void
+        deactivate Service
+        Controller --> FE: 204 No Content
+        deactivate Controller
+        FE -> FE: Remover de la lista (actualizar vista)
+        FE --> Teacher: Notificación "Pregunta eliminada correctamente"
+    end
+end
+deactivate FE
+
+alt Docente Cancela
+    Teacher -> FE: Clic en "Cancelar" (modal)
+    FE --> Teacher: Cerrar modal\nMantener en lista de preguntas
+end
+
+@enduml

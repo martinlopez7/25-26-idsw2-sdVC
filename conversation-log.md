@@ -1041,3 +1041,14 @@ El diseño siguió la filosofía C→U (Create→Update), identificando los part
 **Enlace:** [session-ses_1788.md](conversations/session-ses_1788.md)
 
 **Decisión:** Se aceptó el diseño de editarPregunta
+
+## [02/06/2026][11:50] Diseño de caso de uso eliminarPregunta()
+
+**Prompt:** empezar → Quiero que se diseñe el casos de uso eliminarPregunta
+**Resultado:** Se realizó el diseño MVC de eliminarPregunta() generando:
+- documents/diseño/eliminarPregunta/README.md
+- modelosUML/diseño/eliminarPregunta/secuencia.puml
+
+**Enlace:** [session-ses_1788.md](conversations/session-ses_1788.md)
+
+**Decisión:** Se aceptó el diseño de eliminarPregunta
