@@ -1,12 +1,13 @@
 package com.martin.exam_generator.service;
 
+import com.martin.exam_generator.dto.PreguntaDTO;
 import com.martin.exam_generator.dto.RespuestaCreateDTO;
 import com.martin.exam_generator.dto.RespuestaDTO;
 import com.martin.exam_generator.dto.RespuestaUpdateDTO;
 import com.martin.exam_generator.entities.Pregunta;
 import com.martin.exam_generator.entities.Respuesta;
-import com.martin.exam_generator.repository.PreguntaRepository;
 import com.martin.exam_generator.repository.RespuestaRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,19 +22,20 @@ import java.util.stream.Collectors;
 public class RespuestaService {
 
     private final RespuestaRepository respuestaRepository;
-    private final PreguntaRepository preguntaRepository;
+    private final PreguntaService preguntaService;
 
-    public RespuestaService(RespuestaRepository respuestaRepository, PreguntaRepository preguntaRepository) {
+    public RespuestaService(RespuestaRepository respuestaRepository, @Lazy PreguntaService preguntaService) {
         this.respuestaRepository = respuestaRepository;
-        this.preguntaRepository = preguntaRepository;
+        this.preguntaService = preguntaService;
     }
 
     @Transactional
     public RespuestaDTO crearRespuesta(RespuestaCreateDTO dto, Long docenteId) {
-        Pregunta pregunta = preguntaRepository.findById(dto.getPreguntaId())
-                .orElseThrow(() -> new EntityNotFoundException("Pregunta no encontrada con id: " + dto.getPreguntaId()));
+        PreguntaDTO preguntaDTO = preguntaService.obtenerPreguntaPorId(dto.getPreguntaId());
+        Pregunta pregunta = new Pregunta();
+        pregunta.setId(preguntaDTO.getId());
 
-        if (!pregunta.getDocenteId().equals(docenteId)) {
+        if (!preguntaService.verificarPreguntaPerteneceADocente(dto.getPreguntaId(), docenteId)) {
             throw new EntityNotFoundException("Pregunta no encontrada con id: " + dto.getPreguntaId());
         }
 
@@ -60,8 +62,7 @@ public class RespuestaService {
 
     @Transactional
     public List<Respuesta> procesarRespuestas(Long preguntaId, List<RespuestaUpdateDTO> respuestasUpdate) {
-        Pregunta pregunta = preguntaRepository.findById(preguntaId)
-                .orElseThrow(() -> new EntityNotFoundException("Pregunta no encontrada con id: " + preguntaId));
+        Pregunta pregunta = preguntaService.obtenerPreguntaEntityPorId(preguntaId);
 
         List<Respuesta> respuestasActuales = new ArrayList<>(pregunta.getRespuestas());
 
@@ -96,5 +97,34 @@ public class RespuestaService {
         Respuesta respuesta = respuestaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Respuesta no encontrada con id: " + id));
         respuestaRepository.delete(respuesta);
+    }
+
+    public RespuestaDTO obtenerRespuestaPorId(Long id, Long docenteId) {
+        Respuesta respuesta = respuestaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Respuesta no encontrada con id: " + id));
+
+        Long preguntaId = respuesta.getPregunta().getId();
+        if (!preguntaService.verificarPreguntaPerteneceADocente(preguntaId, docenteId)) {
+            throw new EntityNotFoundException("Respuesta no encontrada con id: " + id);
+        }
+
+        return RespuestaDTO.fromEntity(respuesta);
+    }
+
+    @Transactional
+    public RespuestaDTO actualizarRespuesta(Long id, RespuestaUpdateDTO dto, Long docenteId) {
+        Respuesta respuesta = respuestaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Respuesta no encontrada con id: " + id));
+
+        Long preguntaId = respuesta.getPregunta().getId();
+        if (!preguntaService.verificarPreguntaPerteneceADocente(preguntaId, docenteId)) {
+            throw new EntityNotFoundException("Respuesta no encontrada con id: " + id);
+        }
+
+        respuesta.setOpcion(dto.getOpcion());
+        respuesta.setEsCorrecta(dto.getEsCorrecta());
+
+        Respuesta guardada = respuestaRepository.save(respuesta);
+        return RespuestaDTO.fromEntity(guardada);
     }
 }

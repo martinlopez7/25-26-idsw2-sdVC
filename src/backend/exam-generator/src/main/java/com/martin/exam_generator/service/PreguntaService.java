@@ -72,6 +72,11 @@ public class PreguntaService {
         return PreguntaDTO.fromEntity(pregunta);
     }
 
+    public Pregunta obtenerPreguntaEntityPorId(Long id) {
+        return preguntaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Pregunta no encontrada con id: " + id));
+    }
+
     public boolean verificarPreguntaPerteneceADocente(Long preguntaId, Long docenteId) {
         Pregunta pregunta = preguntaRepository.findById(preguntaId)
                 .orElseThrow(() -> new EntityNotFoundException("Pregunta no encontrada con id: " + preguntaId));

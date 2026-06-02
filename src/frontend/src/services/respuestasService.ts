@@ -12,6 +12,11 @@ export interface RespuestaCreateDTO {
   esCorrecta: boolean;
 }
 
+export interface RespuestaUpdateDTO {
+  opcion: string;
+  esCorrecta: boolean;
+}
+
 export const respuestasService = {
   getRespuestasPorPregunta: async (preguntaId: number, filtro?: string): Promise<RespuestaDTO[]> => {
     const url = filtro
@@ -23,6 +28,16 @@ export const respuestasService = {
 
   crearRespuesta: async (dto: RespuestaCreateDTO): Promise<RespuestaDTO> => {
     const response = await api.post<RespuestaDTO>('/respuestas', dto);
+    return response.data;
+  },
+
+  getRespuestaPorId: async (id: number): Promise<RespuestaDTO> => {
+    const response = await api.get<RespuestaDTO>(`/respuestas/${id}`);
+    return response.data;
+  },
+
+  actualizarRespuesta: async (id: number, dto: RespuestaUpdateDTO): Promise<RespuestaDTO> => {
+    const response = await api.put<RespuestaDTO>(`/respuestas/${id}`, dto);
     return response.data;
   },
 };

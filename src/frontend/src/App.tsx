@@ -68,6 +68,7 @@ function AppRoutes() {
       <Route path="/preguntas/asignatura/:id" element={<ProtectedRoute><PreguntasListComponent /></ProtectedRoute>} />
       <Route path="/preguntas/:id/respuestas" element={<ProtectedRoute><RespuestasListComponent /></ProtectedRoute>} />
       <Route path="/respuestas/crear/:preguntaId" element={<ProtectedRoute><RespuestaFormComponent /></ProtectedRoute>} />
+      <Route path="/respuestas/editar/:id" element={<ProtectedRoute><RespuestaFormComponent isEditing /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to={isAuthenticated ? (user?.tipoActor === 'ADMINISTRADOR_INSTITUCIONAL' ? "/menu-admin" : "/menu-docente") : "/login"} />} />
     </Routes>
   );

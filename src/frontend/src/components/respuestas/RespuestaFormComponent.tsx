@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { respuestasService, RespuestaCreateDTO, RespuestaDTO } from '../../services/respuestasService';
+import { respuestasService, RespuestaCreateDTO, RespuestaDTO, RespuestaUpdateDTO } from '../../services/respuestasService';
 
 interface RespuestaFormProps {
   respuesta?: RespuestaDTO;
@@ -23,14 +23,11 @@ export default function RespuestaFormComponent({ respuesta: respuestaProp, isEdi
   useEffect(() => {
     if (isEditing && !respuestaProp && respuestaId) {
       setLoadingData(true);
-      respuestasService.getRespuestasPorPregunta(respuestaId)
+      respuestasService.getRespuestaPorId(respuestaId)
         .then((data) => {
-          const found = data.find(r => r.id === respuestaId);
-          if (found) {
-            setRespuesta(found);
-            setOpcion(found.opcion);
-            setEsCorrecta(found.esCorrecta);
-          }
+          setRespuesta(data);
+          setOpcion(data.opcion);
+          setEsCorrecta(data.esCorrecta);
         })
         .catch((err: any) => setError(err.response?.data?.error || 'Error al cargar la respuesta'))
         .finally(() => setLoadingData(false));
@@ -44,8 +41,9 @@ export default function RespuestaFormComponent({ respuesta: respuestaProp, isEdi
 
     try {
       if (isEditing && respuesta?.id) {
-        await respuestasService.actualizarRespuesta && respuestasService.actualizarRespuesta(respuesta.id, { opcion, esCorrecta });
-        navigate(`/respuestas/editar/${respuesta.id}`);
+        const updateDto: RespuestaUpdateDTO = { opcion, esCorrecta };
+        await respuestasService.actualizarRespuesta(respuesta.id, updateDto);
+        navigate(`/preguntas/${respuesta.preguntaId}/respuestas`);
       } else if (preguntaId) {
         const dto: RespuestaCreateDTO = {
           preguntaId,

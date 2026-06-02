@@ -2,6 +2,7 @@ package com.martin.exam_generator.controller;
 
 import com.martin.exam_generator.dto.RespuestaCreateDTO;
 import com.martin.exam_generator.dto.RespuestaDTO;
+import com.martin.exam_generator.dto.RespuestaUpdateDTO;
 import com.martin.exam_generator.security.JwtTokenProvider;
 import com.martin.exam_generator.service.PreguntaService;
 import com.martin.exam_generator.service.RespuestaService;
@@ -55,5 +56,26 @@ public class RespuestasController {
         Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
         RespuestaDTO creada = respuestaService.crearRespuesta(dto, docenteId);
         return ResponseEntity.status(201).body(creada);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<RespuestaDTO> obtenerRespuesta(
+            @PathVariable Long id,
+            @RequestHeader("Authorization") String authHeader) {
+
+        Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
+        RespuestaDTO respuesta = respuestaService.obtenerRespuestaPorId(id, docenteId);
+        return ResponseEntity.ok(respuesta);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<RespuestaDTO> actualizarRespuesta(
+            @PathVariable Long id,
+            @Valid @RequestBody RespuestaUpdateDTO dto,
+            @RequestHeader("Authorization") String authHeader) {
+
+        Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
+        RespuestaDTO actualizada = respuestaService.actualizarRespuesta(id, dto, docenteId);
+        return ResponseEntity.ok(actualizada);
     }
 }

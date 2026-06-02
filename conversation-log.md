@@ -1193,3 +1193,20 @@ El flujo sigue la filosofía C→U (Create→Update): crear respuesta con datos 
 **Enlace:** [session-ses_177z.md](conversations/session-ses_177z.md)
 
 **Decisión:** La implementación del caso de uso crearRespuesta() se aceptó.
+
+## [02/06/2026][14:25] Implementación de editarRespuesta() y corrección de cohesión en verRespuestas() y crearRespuesta()
+
+**Prompt:** empezar → me gustaria implementar el caso de uso editarRespuesta
+
+**Resultado:** Se implementó el caso de uso editarRespuesta() generando:
+- Backend: RespuestaService.java (métodos obtenerRespuestaPorId(id, docenteId) y actualizarRespuesta(id, dto, docenteId) con verificación de pertenencia via PreguntaService), RespuestasController.java (endpoints GET /api/respuestas/{id} y PUT /api/respuestas/{id}), RespuestaDTO.java (añadido campo preguntaId), RespuestaUpdateDTO.java (ya existía con validaciones)
+- Frontend: respuestasService.ts (añadido RespuestaUpdateDTO, getRespuestaPorId, actualizarRespuesta), RespuestaFormComponent.tsx (corregido para usar getRespuestaPorId en lugar de getRespuestasPorPregunta, navegación post-guardado a listado), App.tsx (añadida ruta /respuestas/editar/:id)
+
+Correcciones realizadas durante la sesión:
+- Según el diseño, los servicios deben comunicarse entre ellos, no acceder a repositorios ajenos - Se refactorizó RespuestaService para usar PreguntaService en lugar de PreguntaRepository
+- Se añadió método obtenerPreguntaEntityPorId() en PreguntaService para retornar la entidad Pregunta (no el DTO) para uso interno de otros servicios
+- Se refactorizaron también crearRespuesta() y procesarRespuestas() para usar PreguntaService en lugar de PreguntaRepository
+
+**Enlace:** [session-ses_177c.md](conversations/session-ses_177c.md)
+
+**Decisión:** La implementación del caso de uso editarRespuesta() se aceptó. Se corrigieron errores de cohesión de servicios según el diseño: RespuestaService delega en PreguntaService para verificación de pertenencia, en lugar de acceder directamente a PreguntaRepository.

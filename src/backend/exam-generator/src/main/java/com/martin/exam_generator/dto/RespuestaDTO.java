@@ -13,12 +13,14 @@ public class RespuestaDTO {
     private Long id;
     private String opcion;
     private Boolean esCorrecta;
+    private Long preguntaId;
 
     public static RespuestaDTO fromEntity(Respuesta respuesta) {
         return new RespuestaDTO(
                 respuesta.getId(),
                 respuesta.getOpcion(),
-                respuesta.getEsCorrecta()
+                respuesta.getEsCorrecta(),
+                respuesta.getPregunta().getId()
         );
     }
 }
