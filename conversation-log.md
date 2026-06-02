@@ -1029,4 +1029,4 @@ El diseño siguió la filosofía C→U (Create→Update), identificando los part
 
 **Enlace:** [session-ses_1789.md](conversations/session-ses_1789.md)
 
-**Decisión:**
+**Decisión:** El diseño de crearPregunta tenóia un error de cohesión, ya que la clase PreguntaService colaboraba directamente con AsignaturaRepository, lo cual a mi parecer no es correcto. Se corrigió el diseño haciendo que PreguntaService colaborase con AsignaturaService y AsignaturaService con AsignaturaRepository

@@ -6,6 +6,7 @@ participant "Frontend (React)" as FE
 participant "PreguntasController" as Controller
 participant "PreguntaService" as Service
 participant "PreguntaRepository" as Repo
+participant "AsignaturaService" as AsignaturaService
 participant "AsignaturaRepository" as AsignaturaRepo
 database "Base de Datos (PostgreSQL)" as DB
 
@@ -18,14 +19,18 @@ FE -> Controller: POST /api/preguntas (PreguntaCreateDTO JSON)\n(Header: Authori
 activate Controller
 Controller -> Service: crearPregunta(preguntaCreateDTO, docenteId)
 activate Service
-Service -> AsignaturaRepo: findById(asignaturaId)
+Service -> AsignaturaService: obtenerAsignaturaPorId(asignaturaId)
+activate AsignaturaService
+AsignaturaService -> AsignaturaRepo: findById(asignaturaId)
 activate AsignaturaRepo
 AsignaturaRepo -> DB: SELECT * FROM asignaturas WHERE id = ?
 activate DB
 DB --> AsignaturaRepo: Asignatura (o empty si no existe)
 deactivate DB
-AsignaturaRepo --> Service: Asignatura
+AsignaturaRepo --> AsignaturaService: Asignatura
 deactivate AsignaturaRepo
+AsignaturaService -> Service: Asignatura 
+deactivate AsignaturaService
 alt Asignatura no existe
     Service --> Controller: throw new AsignaturaNotFoundException()
     Controller --> FE: 404 Not Found
