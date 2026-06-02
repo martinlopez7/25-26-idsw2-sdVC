@@ -40,4 +40,8 @@ export const respuestasService = {
     const response = await api.put<RespuestaDTO>(`/respuestas/${id}`, dto);
     return response.data;
   },
+
+  eliminarRespuesta: async (id: number): Promise<void> => {
+    await api.delete(`/respuestas/${id}`);
+  },
 };

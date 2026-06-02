@@ -1207,6 +1207,18 @@ Correcciones realizadas durante la sesión:
 - Se añadió método obtenerPreguntaEntityPorId() en PreguntaService para retornar la entidad Pregunta (no el DTO) para uso interno de otros servicios
 - Se refactorizaron también crearRespuesta() y procesarRespuestas() para usar PreguntaService en lugar de PreguntaRepository
 
-**Enlace:** [session-ses_177c.md](conversations/session-ses_177c.md)
+**Enlace:** [session-ses_XXXX.md](conversations/session-ses_XXXX.md)
 
 **Decisión:** La implementación del caso de uso editarRespuesta() se aceptó. Se corrigieron errores de cohesión de servicios según el diseño: RespuestaService delega en PreguntaService para verificación de pertenencia, en lugar de acceder directamente a PreguntaRepository.
+
+## [02/06/2026][14:33] Implementación de eliminarRespuesta()
+
+**Prompt:** empezar → me gustaria implementar el caso de uso eliminarRespuesta
+
+**Resultado:** Se implementó el caso de uso eliminarRespuesta() generando:
+- Backend: RespuestaService.eliminarRespuesta(Long id, Long docenteId) con verificación de pertenencia al docente via PreguntaService, RespuestasController DELETE /api/respuestas/{id}
+- Frontend: respuestasService.eliminarRespuesta(id), EliminarRespuestaComponent.tsx, Actualización de RespuestasListComponent.tsx para pasar preguntaId en navegación a eliminar, App.tsx con rutas /respuestas/eliminar/:id/:preguntaId y /respuestas/eliminar/:id
+
+**Enlace:** [session-ses_177b.md](conversations/session-ses_177b.md)
+
+**Decisión:** La implementación del caso de uso eliminarRespuesta() se aceptó

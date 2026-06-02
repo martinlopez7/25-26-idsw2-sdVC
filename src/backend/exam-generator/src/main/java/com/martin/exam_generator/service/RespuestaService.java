@@ -93,9 +93,15 @@ public class RespuestaService {
     }
 
     @Transactional
-    public void eliminarRespuesta(Long id) {
+    public void eliminarRespuesta(Long id, Long docenteId) {
         Respuesta respuesta = respuestaRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Respuesta no encontrada con id: " + id));
+
+        Long preguntaId = respuesta.getPregunta().getId();
+        if (!preguntaService.verificarPreguntaPerteneceADocente(preguntaId, docenteId)) {
+            throw new EntityNotFoundException("Respuesta no encontrada con id: " + id);
+        }
+
         respuestaRepository.delete(respuesta);
     }
 

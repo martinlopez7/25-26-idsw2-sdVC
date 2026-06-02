@@ -119,7 +119,7 @@ export default function RespuestasListComponent({ preguntaId: propsPreguntaId }:
                       </button>
                       <button
                         className="btn btn-sm btn-danger"
-                        onClick={() => navigate(`/respuestas/eliminar/${respuesta.id}`)}
+                        onClick={() => navigate(`/respuestas/eliminar/${respuesta.id}/${preguntaId}`)}
                       >
                         Eliminar
                       </button>

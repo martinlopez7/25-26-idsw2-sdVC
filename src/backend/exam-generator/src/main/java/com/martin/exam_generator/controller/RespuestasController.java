@@ -68,6 +68,16 @@ public class RespuestasController {
         return ResponseEntity.ok(respuesta);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarRespuesta(
+            @PathVariable Long id,
+            @RequestHeader("Authorization") String authHeader) {
+
+        Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
+        respuestaService.eliminarRespuesta(id, docenteId);
+        return ResponseEntity.noContent().build();
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<RespuestaDTO> actualizarRespuesta(
             @PathVariable Long id,
