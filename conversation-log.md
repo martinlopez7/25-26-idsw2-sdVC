@@ -1015,4 +1015,4 @@ El diseño siguió el patrón de verAlumnos() y verDocentes(), con endpoint `GET
 
 **Enlace:** [session-ses_178a.md](conversations/session-ses_178a.md)
 
-**Decisión:** 
+**Decisión:** El diseño del caso de uso verPreguntas se aceptó. Sin embargo, este caso de uso se puede ejecutar también desde el estado ASIGNATURA_ABIERTO, por lo que hay que crear un camino para mostrar todas las preguntas de una asignatura en concreto, por lo que se implementó.

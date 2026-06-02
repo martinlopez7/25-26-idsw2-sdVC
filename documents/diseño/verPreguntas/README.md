@@ -28,17 +28,23 @@ Detallar la interacción entre los componentes del sistema (Frontend React, Cont
 
 ## Participantes
 
-- **Frontend (React + TypeScript)**: Componente `PreguntasListComponent` que muestra la lista filtrada y campo de búsqueda.
-- **PreguntasController**: Endpoints REST `GET /api/preguntas/mias` y `GET /api/preguntas/mias?filtro={criterio}` protegido con JWT.
-- **PreguntaService**: Lógica de negocio para obtener preguntas del docente autenticado mediante `docenteId`.
-- **PreguntaRepository**: Interface Spring Data JPA con `findByDocenteId()` y métodos de búsqueda filtrada.
-- **Base de Datos (PostgreSQL)**: Consulta de preguntas donde `docente_id` coincide con el docente autenticado.
+- **Frontend (React + TypeScript)**: Componentes `PreguntasListComponent` (lista general) y `AsignaturaFormComponent` (acceso contextual).
+- **PreguntasController**: Endpoints REST protegidos con JWT:
+  - `GET /api/preguntas/mias` - Lista todas las preguntas del docente autenticado.
+  - `GET /api/preguntas/mias?filtro={criterio}` - Filtra preguntas generales.
+  - `GET /api/preguntas/asignatura/{asignaturaId}` - Lista preguntas de una asignatura concreta.
+  - `GET /api/preguntas/asignatura/{asignaturaId}?filtro={criterio}` - Filtra preguntas de una asignatura.
+- **PreguntaService**: Lógica de negocio para obtener preguntas del docente autenticado y por asignatura.
+- **PreguntaRepository**: Interface Spring Data JPA con `findByDocenteId()`, `findByDocenteIdAndCriterio()`, `findByAsignaturaId()` y `findByAsignaturaIdAndCriterio()`.
+- **Base de Datos (PostgreSQL)**: Consulta de preguntas filtradas por `docente_id` o por `asignatura_id`.
 
 ## Decisiones de diseño
 
-- El endpoint `GET /api/preguntas/mias` filtra automáticamente por el `docenteId` extraído del JWT.
-- Se usa `PreguntaRepository.findByDocenteId(profesorId)` para obtener solo las preguntas creadas por el docente.
-- Filtrado por enunciado, tema o dificultad mediante consulta con `Or` conditions (`findByDocenteIdAndEnunciadoContainingOr...`).
+- **Doble camino de acceso**:
+  - Desde `SISTEMA_DISPONIBLE`: `GET /api/preguntas/mias` → todas las preguntas del docente.
+  - Desde `ASIGNATURA_ABIERTO`: `GET /api/preguntas/asignatura/{id}` → preguntas de la asignatura seleccionada.
+- El endpoint de asignatura verifica que esta pertenece al docente autenticado (`asignaturaId` + `docenteId` del JWT).
+- Filtrado por enunciado, tema o dificultad mediante consulta con `Or` conditions.
 - Retorno de código HTTP `200 OK` con la lista de preguntas con sus respuestas asociadas.
 - Mapeo de `Pregunta` a `PreguntaDTO` incluyendo las respuestas asociadas para no exponer datos sensibles.
 - El filtrado es opcional y se realiza en el servidor para manejar grandes volúmenes de datos.

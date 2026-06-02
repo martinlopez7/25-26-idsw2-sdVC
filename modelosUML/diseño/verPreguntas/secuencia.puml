@@ -31,7 +31,7 @@ deactivate service
 controller --> view : 200 OK, Lista<PreguntaDTO>
 deactivate controller
 
-alt Filtrado solicitado
+alt Filtrado solicitado (general)
 
 view -> controller : GET /api/preguntas/mias?filtro={criterio}\n(Header: Authorization: Bearer <token>)
 activate controller
@@ -44,6 +44,64 @@ service -> repository : findByDocenteIdAndEnunciadoContainingOrTemaContainingOrD
 activate repository
 
 repository -> db : SELECT * FROM preguntas\nWHERE docente_id = ?\nAND (enunciado ILIKE %criterio% OR tema ILIKE %criterio% OR dificultad ILIKE %criterio%)
+activate db
+db --> repository : List<Pregunta>
+deactivate db
+
+repository --> service : List<Pregunta>
+deactivate repository
+
+service --> controller : Lista<PreguntaDTO>
+deactivate service
+
+controller --> view : 200 OK, Lista<PreguntaDTO>
+deactivate controller
+
+end
+
+' === Camino contextual: desde ASIGNATURA_ABIERTO ===
+
+alt Obtener preguntas de una asignatura (ASIGNATURA_ABIERTO)
+
+view -> controller : GET /api/preguntas/asignatura/{asignaturaId}\n(Header: Authorization: Bearer <token>)
+activate controller
+
+controller -> controller: extraer docenteId del JWT
+controller -> service : obtenerPreguntasPorAsignatura(asignaturaId, docenteId)
+activate service
+
+service -> repository : findByAsignaturaId(asignaturaId)
+activate repository
+
+repository -> db : SELECT * FROM preguntas WHERE asignatura_id = ?
+activate db
+db --> repository : List<Pregunta>
+deactivate db
+
+repository --> service : List<Pregunta>
+deactivate repository
+
+service --> controller : Lista<PreguntaDTO>
+deactivate service
+
+controller --> view : 200 OK, Lista<PreguntaDTO>
+deactivate controller
+
+end
+
+alt Filtrado solicitado (asignatura)
+
+view -> controller : GET /api/preguntas/asignatura/{asignaturaId}?filtro={criterio}\n(Header: Authorization: Bearer <token>)
+activate controller
+
+controller -> controller: extraer docenteId del JWT
+controller -> service : filtrarPreguntasPorAsignatura(asignaturaId, criterio)
+activate service
+
+service -> repository : findByAsignaturaIdAndEnunciadoContainingOrTemaContainingOrDificultadContaining(asignaturaId, criterio)
+activate repository
+
+repository -> db : SELECT * FROM preguntas\nWHERE asignatura_id = ?\nAND (enunciado ILIKE %criterio% OR tema ILIKE %criterio% OR dificultad ILIKE %criterio%)
 activate db
 db --> repository : List<Pregunta>
 deactivate db
