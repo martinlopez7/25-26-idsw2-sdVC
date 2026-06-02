@@ -42,12 +42,14 @@ entity "preguntas" as preguntas {
   * id : INT <<PK>>
   --
   * asignatura_id : INT <<FK>>
+  * docente_id : INT <<FK>>
 }
 
 entity "respuestas" as respuestas {
   * id : INT <<PK>>
   --
   * pregunta_id : INT <<FK>>
+  * docente_id : INT <<FK>>
 }
 
 ' Relaciones (Cardinalidades)
@@ -67,5 +69,9 @@ grados ||--o{ asignatura_grado : ""
 
 asignaturas ||--o{ preguntas : "asignatura_id"
 preguntas ||--o{ respuestas : "pregunta_id"
+
+' Nuevas relaciones a usuarios
+usuarios ||--o{ preguntas : "docente_id"
+usuarios ||--o{ respuestas : "docente_id"
 
 @enduml
