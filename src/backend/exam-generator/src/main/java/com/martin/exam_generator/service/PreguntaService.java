@@ -104,4 +104,16 @@ public class PreguntaService {
         Pregunta guardada = preguntaRepository.save(pregunta);
         return PreguntaDTO.fromEntity(guardada);
     }
+
+    @Transactional
+    public void eliminarPregunta(Long preguntaId, Long docenteId) {
+        Pregunta pregunta = preguntaRepository.findById(preguntaId)
+                .orElseThrow(() -> new EntityNotFoundException("Pregunta no encontrada con id: " + preguntaId));
+
+        if (!pregunta.getDocenteId().equals(docenteId)) {
+            throw new EntityNotFoundException("Pregunta no encontrada con id: " + preguntaId);
+        }
+
+        preguntaRepository.delete(pregunta);
+    }
 }

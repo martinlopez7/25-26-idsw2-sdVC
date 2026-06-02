@@ -1151,3 +1151,17 @@ pendiente: error 403 (Forbidden) al crear pregunta - indicar al usuario que veri
 **Enlace:** [session-ses_177f.md](conversations/session-ses_177f.md)
 
 **Decisión:** Se aceptó la implementación de editarPregunta
+
+## [02/06/2026][13:34] Implementación de eliminarPregunta()
+
+**Prompt:** empezar → me gustaria implementar el caso de uso eliminarPregunta 
+
+**Resultado:** Se implementó el caso de uso eliminarPregunta() generando:
+- Backend: PreguntaService.java (método eliminarPregunta(Long preguntaId, Long docenteId) con verificación de pertenencia), PreguntasController.java (endpoint DELETE /api/preguntas/{id} → 204 No Content)
+- Frontend: preguntasService.ts (eliminarPregunta), EliminarPreguntaComponent.tsx (componente con modal de confirmación mostrando enunciado, tema, dificultad y respuestas asociadas), App.tsx (ruta /preguntas/eliminar/:id), PreguntasListComponent.tsx (botón "Eliminar" en cada fila), PreguntaFormComponent.tsx (botón "Eliminar" en modo edición)
+
+El modal de confirmación muestra los datos completos de la pregunta incluyendo las respuestas asociadas, y la eliminación en cascada de respuestas está configurada en la entidad Pregunta mediante @OnDelete(action = OnDeleteAction.CASCADE).
+
+**Enlace:** [session-ses_177e.md](conversations/session-ses_177e.md)
+
+**Decisión:** Se aceptó la implementación de eliminarPregunta

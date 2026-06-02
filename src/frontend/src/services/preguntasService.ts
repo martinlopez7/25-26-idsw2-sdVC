@@ -64,4 +64,8 @@ export const preguntasService = {
     const response = await api.put<PreguntaDTO>(`/preguntas/${id}`, pregunta);
     return response.data;
   },
+
+  eliminarPregunta: async (id: number): Promise<void> => {
+    await api.delete(`/preguntas/${id}`);
+  },
 };

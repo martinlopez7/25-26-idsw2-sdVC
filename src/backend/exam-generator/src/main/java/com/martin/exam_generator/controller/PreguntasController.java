@@ -83,4 +83,14 @@ public class PreguntasController {
         PreguntaDTO preguntaActualizada = preguntaService.actualizarPregunta(id, dto, docenteId);
         return ResponseEntity.ok(preguntaActualizada);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarPregunta(
+            @PathVariable Long id,
+            @RequestHeader("Authorization") String authHeader) {
+
+        Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
+        preguntaService.eliminarPregunta(id, docenteId);
+        return ResponseEntity.noContent().build();
+    }
 }
