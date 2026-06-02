@@ -1074,3 +1074,14 @@ El diseño siguió la filosofía C→U (Create→Update), identificando los part
 **Enlace:** [session-ses_1788.md](conversations/session-ses_1788.md)
 
 **Decisión:** Se aceptó el diseño de crearRespuesta
+
+## [02/06/2026][12:17] Diseño de caso de uso editarRespuesta()
+
+**Prompt:** empezar → Quiero que se diseñe el caso de uso editarRespuesta
+**Resultado:** Se realizó el diseño MVC de editarRespuesta() generando:
+- documents/diseño/editarRespuesta/README.md
+- modelosUML/diseño/editarRespuesta/secuencia.puml
+
+**Enlace:** [session-ses_1788.md](conversations/session-ses_1788.md)
+
+**Decisión:** Se aceptó el diseño de editarRespuesta

@@ -1,0 +1,120 @@
+@startuml
+title Diagrama de Secuencia - Editar Respuesta (Spring Boot + React)
+
+actor "Docente" as Teacher
+participant "Frontend (React)\nRespuestaFormComponent" as FE
+participant "RespuestasController" as Controller
+participant "RespuestaService" as Service
+participant "PreguntaService" as PreguntaService
+participant "RespuestaRepository" as RespuestaRepo
+participant "PreguntaRepository" as PreguntaRepo
+database "Base de Datos (PostgreSQL)" as DB
+
+Teacher -> FE: Clic en "Editar" (respuestaId)
+activate FE
+FE -> Controller: GET /api/respuestas/{respuestaId}\n(Header: Authorization: Bearer <token>)
+activate Controller
+Controller -> Controller: extraer docenteId del JWT
+Controller -> Service: obtenerRespuestaPorId(respuestaId, docenteId)
+activate Service
+Service -> RespuestaRepo: findById(respuestaId)
+activate RespuestaRepo
+RespuestaRepo -> DB: SELECT * FROM respuestas WHERE id = ?
+activate DB
+DB --> RespuestaRepo: Optional<Respuesta>
+deactivate DB
+RespuestaRepo --> Service: Optional<Respuesta>
+deactivate RespuestaRepo
+alt Respuesta No Existe
+    Service --> Controller: throw EntityNotFoundException()
+    Controller --> FE: 404 Not Found
+    FE --> Teacher: Mostrar mensaje de error
+else Respuesta Existe
+    Service -> PreguntaService: verificarPertenciaPregunta(respuesta.preguntaId, docenteId)
+    activate PreguntaService
+    PreguntaService -> PreguntaRepo: findById(respuesta.preguntaId)
+    activate PreguntaRepo
+    PreguntaRepo -> DB: SELECT * FROM preguntas WHERE id = ?
+    activate DB
+    DB --> PreguntaRepo: Optional<Pregunta>
+    deactivate DB
+    PreguntaRepo --> PreguntaService: Optional<Pregunta>
+    deactivate PreguntaRepo
+    PreguntaService -> PreguntaService: Verificar pertenencia de pregunta\na docente autenticado (docenteId)
+    PreguntaService --> Service: void
+    deactivate PreguntaService
+    alt Pregunta No Existe o No Pertenece al Docente
+        Service --> Controller: throw UnauthorizedException()
+        Controller --> FE: 403 Forbidden
+        FE --> Teacher: Mostrar mensaje de error
+    else Pregunta Existe y Pertenece al Docente
+        Service --> Controller: RespuestaDTO
+        Controller --> FE: 200 OK (RespuestaDTO JSON)
+        FE --> Teacher: Mostrar Formulario de Edición\n(datos actuales de la respuesta)
+end
+
+loop Edición continua
+    Teacher -> FE: Modifica campos\n(contenido, esCorrecta)
+    FE -> FE: Validar formulario (client-side)
+    Teacher -> FE: Clic en "Guardar cambios"
+    FE -> Controller: PUT /api/respuestas/{respuestaId}\n(RespuestaUpdateDTO JSON)\n(Header: Authorization: Bearer <token>)
+    activate Controller
+    Controller -> Controller: extraer docenteId del JWT
+    Controller -> Service: actualizarRespuesta(respuestaId, respuestaUpdateDTO, docenteId)
+    activate Service
+    Service -> RespuestaRepo: findById(respuestaId)
+    activate RespuestaRepo
+    RespuestaRepo -> DB: SELECT * FROM respuestas WHERE id = ?
+    activate DB
+    DB --> RespuestaRepo: Respuesta
+    deactivate DB
+    RespuestaRepo --> Service: Respuesta
+    deactivate RespuestaRepo
+    Service -> PreguntaService: verificarPertenciaPregunta(respuesta.preguntaId, docenteId)
+    activate PreguntaService
+    PreguntaService -> PreguntaRepo: findById(respuesta.preguntaId)
+    activate PreguntaRepo
+    PreguntaRepo -> DB: SELECT * FROM preguntas WHERE id = ?
+    activate DB
+    DB --> PreguntaRepo: Optional<Pregunta>
+    deactivate DB
+    PreguntaRepo --> PreguntaService: Optional<Pregunta>
+    deactivate PreguntaRepo
+    PreguntaService -> PreguntaService: Verificar pertenencia de pregunta\na docente autenticado
+    PreguntaService --> Service: void
+    deactivate PreguntaService
+    alt Pregunta No Existe o No Pertenece al Docente
+        Service --> Controller: throw UnauthorizedException()
+        Controller --> FE: 403 Forbidden
+        FE --> Teacher: Mostrar mensaje de error
+    else Pregunta Existe y Pertenece al Docente
+        Service -> Service: Actualizar campos de la respuesta
+        Service -> RespuestaRepo: save(respuesta)
+        activate RespuestaRepo
+        RespuestaRepo -> DB: UPDATE respuestas SET contenido=?, es_correcta=? WHERE id = ?
+        activate DB
+        DB --> RespuestaRepo: Respuesta (actualizada)
+        deactivate DB
+        RespuestaRepo --> Service: Respuesta
+        deactivate RespuestaRepo
+        Service --> Controller: RespuestaDTO
+        deactivate Service
+        Controller --> FE: 200 OK (RespuestaDTO JSON)
+        deactivate Controller
+        FE -> FE: Mostrar Toast "Respuesta actualizada correctamente"
+        FE --> Teacher: Mantener Formulario de Edición\npara más modificaciones
+    end
+end
+
+Teacher -> FE: Clic en "Volver"
+FE --> Teacher: Redirigir a verRespuestas()
+
+alt Datos Inválidos
+    Controller --> FE: 400 Bad Request (validation errors)
+    deactivate Controller
+    FE --> Teacher: Mostrar errores de validación
+end
+
+deactivate FE
+
+@enduml
