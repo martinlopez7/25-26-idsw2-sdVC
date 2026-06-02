@@ -1052,3 +1052,14 @@ El diseño siguió la filosofía C→U (Create→Update), identificando los part
 **Enlace:** [session-ses_1788.md](conversations/session-ses_1788.md)
 
 **Decisión:** Se aceptó el diseño de eliminarPregunta
+
+## [02/06/2026][11:58] Diseño de caso de uso verRespuestas()
+
+**Prompt:** empezar → Quiero que se diseñe el caso de uso verRespuestas
+**Resultado:** Se realizó el diseño MVC de verRespuestas() generando:
+- documents/diseño/verRespuestas/README.md
+- modelosUML/diseño/verRespuestas/secuencia.puml
+
+**Enlace:** [session-ses_1788.md](conversations/session-ses_1788.md)
+
+**Decisión:** Se aceptó el diseño de verRespuestas

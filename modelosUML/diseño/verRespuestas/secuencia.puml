@@ -1,0 +1,95 @@
+@startuml
+title Diagrama de Secuencia - Ver Respuestas (Spring Boot + React)
+
+actor "Docente" as Teacher
+participant "Frontend (React)\nRespuestasListComponent" as FE
+participant "RespuestasController" as Controller
+participant "RespuestaService" as Service
+participant "PreguntaService" as PreguntaService
+participant "PreguntaRepository" as PreguntaRepo
+participant "RespuestaRepository" as RespuestaRepo
+database "Base de Datos (PostgreSQL)" as DB
+
+Teacher -> FE: Accede a ver respuestas\n(desde PREGUNTA_ABIERTO o RESPUESTA_ABIERTO)
+activate FE
+FE -> Controller: GET /api/respuestas/pregunta/{preguntaId}\n(Header: Authorization: Bearer <token>)
+activate Controller
+Controller -> Controller: extraer docenteId del JWT
+Controller -> Service: obtenerRespuestasPorPregunta(preguntaId, docenteId)
+activate Service
+Service -> PreguntaService: obtenerPreguntaPorId(preguntaId, docenteId)
+activate PreguntaService
+PreguntaService -> PreguntaRepo: findById(preguntaId)
+activate PreguntaRepo
+PreguntaRepo -> DB: SELECT * FROM preguntas WHERE id = ?
+activate DB
+DB --> PreguntaRepo: Optional<Pregunta>
+deactivate DB
+PreguntaRepo --> PreguntaService: Optional<Pregunta>
+deactivate PreguntaRepo
+PreguntaService -> PreguntaService: Verificar pertenencia de pregunta\na docente autenticado (docenteId)
+PreguntaService --> Service: Pregunta
+deactivate PreguntaService
+alt Pregunta No Existe o No Pertenece al Docente
+    Service --> Controller: throw UnauthorizedException()
+    Controller --> FE: 403 Forbidden
+    FE --> Teacher: Mostrar mensaje de error
+else Pregunta Existe y Pertenece al Docente
+    Service -> RespuestaRepo: findByPreguntaId(preguntaId)
+    activate RespuestaRepo
+    RespuestaRepo -> DB: SELECT * FROM respuestas WHERE pregunta_id = ? ORDER BY id
+    activate DB
+    DB --> RespuestaRepo: List<Respuesta>
+    deactivate DB
+    RespuestaRepo --> Service: List<Respuesta>
+    deactivate RespuestaRepo
+    Service --> Controller: List<RespuestaDTO>
+    Controller --> FE: 200 OK (List<RespuestaDTO> JSON)
+    deactivate Controller
+    FE --> Teacher: Mostrar lista de respuestas\n(contenido, esCorrecta)
+end
+
+alt Filtrar Respuestas
+    Teacher -> FE: Ingresa criterio de filtrado
+    FE -> Controller: GET /api/respuestas/pregunta/{preguntaId}?filtro={criterio}\n(Header: Authorization: Bearer <token>)
+    activate Controller
+    Controller -> Controller: extraer docenteId del JWT
+    Controller -> Service: filtrarRespuestasPorPregunta(preguntaId, criterio, docenteId)
+    activate Service
+    Service -> PreguntaService: obtenerPreguntaPorId(preguntaId, docenteId)
+    activate PreguntaService
+    PreguntaService -> PreguntaRepo: findById(preguntaId)
+    activate PreguntaRepo
+    PreguntaRepo -> DB: SELECT * FROM preguntas WHERE id = ?
+    activate DB
+    DB --> PreguntaRepo: Optional<Pregunta>
+    deactivate DB
+    PreguntaRepo --> PreguntaService: Optional<Pregunta>
+    deactivate PreguntaRepo
+    PreguntaService -> PreguntaService: Verificar pertenencia de pregunta\na docente autenticado
+    PreguntaService --> Service: Pregunta
+    deactivate PreguntaService
+    alt Pregunta No Existe o No Pertenece al Docente
+        Service --> Controller: throw UnauthorizedException()
+        Controller --> FE: 403 Forbidden
+        FE --> Teacher: Mostrar mensaje de error
+    else Pregunta Existe y Pertenece al Docente
+        Service -> RespuestaRepo: findByPreguntaIdAndContenidoContainingIgnoreCase(preguntaId, criterio)
+        activate RespuestaRepo
+        RespuestaRepo -> DB: SELECT * FROM respuestas WHERE pregunta_id = ? AND LOWER(contenido) LIKE '%' || LOWER(?) || '%'
+        activate DB
+        DB --> RespuestaRepo: List<Respuesta>
+        deactivate DB
+        RespuestaRepo --> Service: List<Respuesta>
+        deactivate RespuestaRepo
+        Service --> Controller: List<RespuestaDTO>
+        deactivate Service
+        Controller --> FE: 200 OK (List<RespuestaDTO> JSON)
+        deactivate Controller
+        FE --> Teacher: Mostrar lista filtrada de respuestas
+    end
+end
+
+deactivate FE
+
+@enduml
