@@ -1,0 +1,71 @@
+@startuml
+title Diagrama de Secuencia - Crear Pregunta (Spring Boot + React)
+
+actor "Docente" as Teacher
+participant "Frontend (React)" as FE
+participant "PreguntasController" as Controller
+participant "PreguntaService" as Service
+participant "PreguntaRepository" as Repo
+participant "AsignaturaRepository" as AsignaturaRepo
+database "Base de Datos (PostgreSQL)" as DB
+
+Teacher -> FE: Clic en "Nueva Pregunta"
+activate FE
+FE --> Teacher: Mostrar Formulario (datos mínimos)
+Teacher -> FE: Selecciona asignatura, ingresa enunciado, selecciona tema y dificultad
+FE -> FE: Validar formulario (client-side)
+FE -> Controller: POST /api/preguntas (PreguntaCreateDTO JSON)\n(Header: Authorization: Bearer <token>)
+activate Controller
+Controller -> Service: crearPregunta(preguntaCreateDTO, docenteId)
+activate Service
+Service -> AsignaturaRepo: findById(asignaturaId)
+activate AsignaturaRepo
+AsignaturaRepo -> DB: SELECT * FROM asignaturas WHERE id = ?
+activate DB
+DB --> AsignaturaRepo: Asignatura (o empty si no existe)
+deactivate DB
+AsignaturaRepo --> Service: Asignatura
+deactivate AsignaturaRepo
+alt Asignatura no existe
+    Service --> Controller: throw new AsignaturaNotFoundException()
+    Controller --> FE: 404 Not Found
+end
+Service -> Service: Verificar unicidad enunciado en asignatura
+Service -> Repo: existsByAsignaturaIdAndEnunciadoIgnoreCase(asignaturaId, enunciado)
+activate Repo
+Repo -> DB: SELECT COUNT(*) FROM preguntas WHERE asignatura_id = ? AND LOWER(enunciado) = LOWER(?)
+activate DB
+DB --> Repo: boolean (existe o no)
+deactivate DB
+Repo --> Service: boolean
+deactivate Repo
+alt Enunciado duplicado
+    Service --> Controller: throw new DuplicatedEnunciadoException()
+    Controller --> FE: 409 Conflict
+end
+Service -> Service: Mapear DTO a Entidad (habilitada=false)
+Service -> Repo: save(pregunta)
+activate Repo
+Repo -> DB: INSERT INTO preguntas (asignatura_id, docente_id, enunciado, tema, dificultad, habilitada) VALUES (?, ?, ?, ?, ?, ?)
+activate DB
+DB --> Repo: Pregunta (con ID generado)
+deactivate DB
+Repo --> Service: Pregunta
+deactivate Repo
+Service -> Service: Mapear Entidad a PreguntaDTO
+Service --> Controller: PreguntaDTO (201 Created)
+deactivate Service
+Controller --> FE: 201 Created (PreguntaDTO JSON)
+deactivate Controller
+FE -> FE: Mostrar Toast "Pregunta creada correctamente"
+FE -> FE: Redirigir a editarPregunta(preguntaNueva)
+FE --> Teacher: Mostrar Formulario de Edición
+deactivate FE
+
+alt Datos Inválidos
+    Controller --> FE: 400 Bad Request (validation errors)
+    deactivate Controller
+    FE --> Teacher: Mostrar errores de validación
+end
+
+@enduml

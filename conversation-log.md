@@ -1016,3 +1016,17 @@ El diseño siguió el patrón de verAlumnos() y verDocentes(), con endpoint `GET
 **Enlace:** [session-ses_178a.md](conversations/session-ses_178a.md)
 
 **Decisión:** El diseño del caso de uso verPreguntas se aceptó. Sin embargo, este caso de uso se puede ejecutar también desde el estado ASIGNATURA_ABIERTO, por lo que hay que crear un camino para mostrar todas las preguntas de una asignatura en concreto, por lo que se implementó.
+
+## [02/06/2026][10:18] Diseño de crearPregunta()
+
+**Prompt:** empezar → diseña el caso de uso crearPregunta
+
+**Resultado:** Se realizó el diseño MVC de crearPregunta() generando:
+- documents/diseño/crearPregunta/README.md
+- modelosUML/diseño/crearPregunta/secuencia.puml
+
+El diseño siguió la filosofía C→U (Create→Update), identificando los participantes: Frontend (React) con PreguntaFormComponent, PreguntasController con endpoint POST /api/preguntas, PreguntaService con lógica de creación y verificación de unicidad de enunciado, PreguntaRepository y AsignaturaRepository para persistencia. La pregunta se crea con datos mínimos (asignatura, enunciado, tema, dificultad) y se transfiere automáticamente a editarPregunta() tras la creación. Se verifica unicidad del enunciado dentro de la misma asignatura y la asociación de la pregunta al docente extraído del JWT.
+
+**Enlace:** [session-ses_1789.md](conversations/session-ses_1789.md)
+
+**Decisión:**
