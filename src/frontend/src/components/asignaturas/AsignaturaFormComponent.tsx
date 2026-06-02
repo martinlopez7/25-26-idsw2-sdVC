@@ -314,6 +314,15 @@ export default function AsignaturaFormComponent() {
                   {isEditing && (
                     <button
                       type="button"
+                      className="btn btn-info"
+                      onClick={() => navigate(`/preguntas/asignatura/${id}`)}
+                    >
+                      Ver Preguntas
+                    </button>
+                  )}
+                  {isEditing && (
+                    <button
+                      type="button"
                       className="btn btn-danger"
                       onClick={() => navigate(`/asignaturas/eliminar/${id}`)}
                     >

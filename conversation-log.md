@@ -1096,3 +1096,28 @@ El diseño siguió la filosofía C→U (Create→Update), identificando los part
 **Enlace:** [session-ses_1788.md](conversations/session-ses_1788.md)
 
 **Decisión:** Se aceptó el diseño de eliminarRespuesta
+
+## [02/06/2026][12:48] Implementación del caso de uso verPreguntas()
+
+**Prompt:** empezar → me gustaria implementar el caso de uso verPreguntas
+
+**Resultado:** Se implementó el caso de uso verPreguntas() generando:
+
+Backend:
+- entities/Pregunta.java (con enums Tema y Dificultad)
+- entities/Respuesta.java
+- repository/PreguntaRepository.java (con métodos de filtrado por docente y asignatura)
+- repository/RespuestaRepository.java
+- dto/PreguntaDTO.java, dto/RespuestaDTO.java
+- service/PreguntaService.java
+- controller/PreguntasController.java con endpoints GET /api/preguntas/mias, GET /api/preguntas/asignatura/{id}
+
+Frontend:
+- services/preguntasService.ts (con tipos PreguntaDTO y RespuestaDTO)
+- components/preguntas/PreguntasListComponent.tsx (soporta modo general y contextual)
+- App.tsx (rutas /preguntas y /preguntas/asignatura/:id)
+- AsignaturaFormComponent.tsx (botón "Ver Preguntas" en modo edición)
+
+**Enlace:** [session-ses_1782.md](conversations/session-ses_1782.md)
+
+**Decisión:** Se aceptó la implementación de verPreguntas
