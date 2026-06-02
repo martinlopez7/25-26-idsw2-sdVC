@@ -1030,3 +1030,14 @@ El diseño siguió la filosofía C→U (Create→Update), identificando los part
 **Enlace:** [session-ses_1789.md](conversations/session-ses_1789.md)
 
 **Decisión:** El diseño de crearPregunta tenóia un error de cohesión, ya que la clase PreguntaService colaboraba directamente con AsignaturaRepository, lo cual a mi parecer no es correcto. Se corrigió el diseño haciendo que PreguntaService colaborase con AsignaturaService y AsignaturaService con AsignaturaRepository
+
+## [02/06/2026][11:35] Diseño de casos de uso editarPregunta()
+
+**Prompt:** empezar → Quiero que se diseñe el casos de uso editarPregunta
+**Resultado:** Se realizó el diseño MVC de editarPregunta() generando:
+- documents/diseño/editarPregunta/README.md
+- modelosUML/diseño/editarPregunta/secuencia.puml
+
+**Enlace:** [session-ses_1788.md](conversations/session-ses_1788.md)
+
+**Decisión:** Se aceptó el diseño de editarPregunta

@@ -1,0 +1,117 @@
+@startuml
+title Diagrama de Secuencia - Editar Pregunta (Spring Boot + React)
+
+actor "Docente" as Teacher
+participant "Frontend (React)\nPreguntaFormComponent" as FE
+participant "PreguntasController" as Controller
+participant "PreguntaService" as Service
+participant "RespuestaService" as RespuestaService
+participant "PreguntaRepository" as PreguntaRepo
+participant "RespuestaRepository" as RespuestaRepo
+database "Base de Datos (PostgreSQL)" as DB
+
+Teacher -> FE: Clic en "Editar" (preguntaId)
+activate FE
+FE -> Controller: GET /api/preguntas/{preguntaId}\n(Header: Authorization: Bearer <token>)
+activate Controller
+Controller -> Controller: extraer docenteId del JWT
+Controller -> Service: obtenerPreguntaPorId(preguntaId, docenteId)
+activate Service
+Service -> PreguntaRepo: findById(preguntaId)
+activate PreguntaRepo
+PreguntaRepo -> DB: SELECT * FROM preguntas WHERE id = ?
+activate DB
+DB --> PreguntaRepo: Optional<Pregunta>
+deactivate DB
+PreguntaRepo --> Service: Optional<Pregunta>
+deactivate PreguntaRepo
+alt Pregunta No Existe
+    Service --> Controller: throw EntityNotFoundException()
+    Controller --> FE: 404 Not Found
+    FE --> Teacher: Mostrar mensaje de error
+else Pregunta Existe
+    Service -> Service: Verificar pertenencia de pregunta\na docente autenticado (docenteId)
+    alt Pregunta No Pertenece al Docente
+        Service --> Controller: throw UnauthorizedException()
+        Controller --> FE: 403 Forbidden
+        FE --> Teacher: Mostrar mensaje de error
+    else Pregunta Pertenece al Docente
+        Service --> Controller: PreguntaDTO
+        Controller --> FE: 200 OK (PreguntaDTO JSON)
+        FE --> Teacher: Mostrar Formulario de Edición\n(datos precargados: enunciado, tema, dificultad, respuestas, habilitada)
+end
+
+loop Edición continua
+    Teacher -> FE: Modifica campos\n(enunciado, tema, dificultad, respuestas, habilitada)
+    FE -> FE: Validar formulario (client-side)
+    Teacher -> FE: Clic en "Guardar cambios"
+    FE -> Controller: PUT /api/preguntas/{preguntaId}\n(PreguntaUpdateDTO JSON)\n(Header: Authorization: Bearer <token>)
+    activate Controller
+    Controller -> Controller: extraer docenteId del JWT
+    Controller -> Service: actualizarPregunta(preguntaId, preguntaUpdateDTO, docenteId)
+    activate Service
+    Service -> PreguntaRepo: findById(preguntaId)
+    activate PreguntaRepo
+    PreguntaRepo -> DB: SELECT * FROM preguntas WHERE id = ?
+    activate DB
+    DB --> PreguntaRepo: Pregunta
+    deactivate DB
+    PreguntaRepo --> Service: Pregunta
+    deactivate PreguntaRepo
+    Service -> Service: Verificar pertenencia de pregunta\na docente autenticado
+    alt Pregunta No Pertenece al Docente
+        Service --> Controller: throw UnauthorizedException()
+        Controller --> FE: 403 Forbidden
+        FE --> Teacher: Mostrar mensaje de error
+    else Pregunta Pertenece al Docente
+        Service -> Service: Verificar unicidad enunciado\n(en otra pregunta de la misma asignatura)
+        alt Enunciado Duplicado
+            Service --> Controller: throw DuplicatedEnunciadoException()
+            Controller --> FE: 409 Conflict
+            FE --> Teacher: Mostrar error de duplicado
+        else Enunciado No Duplicado
+            Service -> Service: Actualizar campos de la pregunta\n(enunciado, tema, dificultad, habilitada)
+            Service -> RespuestaService: procesarRespuestas(preguntaId, respuestasDTO)
+            activate RespuestaService
+            loop Para cada respuesta en el DTO
+                Service -> RespuestaRepo: save(respuesta)
+                activate RespuestaRepo
+                RespuestaRepo -> DB: INSERT/UPDATE/DELETE FROM respuestas WHERE id = ?
+                activate DB
+                DB --> RespuestaRepo: Respuesta guardada
+                deactivate DB
+                RespuestaRepo --> RespuestaService: Respuesta
+                deactivate RespuestaRepo
+            end
+            RespuestaService --> Service: void
+            deactivate RespuestaService
+            Service -> PreguntaRepo: save(pregunta)
+            activate PreguntaRepo
+            PreguntaRepo -> DB: UPDATE preguntas SET enunciado=?, tema=?, dificultad=?, habilitada=? WHERE id = ?
+            activate DB
+            DB --> PreguntaRepo: Pregunta (actualizada)
+            deactivate DB
+            PreguntaRepo --> Service: Pregunta
+            deactivate PreguntaRepo
+            Service --> Controller: PreguntaDTO
+            deactivate Service
+            Controller --> FE: 200 OK (PreguntaDTO JSON)
+            deactivate Controller
+            FE -> FE: Mostrar Toast "Pregunta actualizada correctamente"
+            FE --> Teacher: Mantener Formulario de Edición\npara más modificaciones
+        end
+    end
+end
+
+Teacher -> FE: Clic en "Volver"
+FE --> Teacher: Redirigir a verPreguntas()
+
+alt Datos Inválidos
+    Controller --> FE: 400 Bad Request (validation errors)
+    deactivate Controller
+    FE --> Teacher: Mostrar errores de validación
+end
+
+deactivate FE
+
+@enduml
