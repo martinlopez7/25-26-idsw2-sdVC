@@ -1085,3 +1085,14 @@ El diseño siguió la filosofía C→U (Create→Update), identificando los part
 **Enlace:** [session-ses_1788.md](conversations/session-ses_1788.md)
 
 **Decisión:** Se aceptó el diseño de editarRespuesta
+
+## [02/06/2026][12:24] Diseño de caso de uso eliminarRespuesta()
+
+**Prompt:** empezar → Quiero que se diseñe el caso de uso eliminarRespuesta
+**Resultado:** Se realizó el diseño MVC de eliminarRespuesta() generando:
+- documents/diseño/eliminarRespuesta/README.md
+- modelosUML/diseño/eliminarRespuesta/secuencia.puml
+
+**Enlace:** [session-ses_1788.md](conversations/session-ses_1788.md)
+
+**Decisión:** Se aceptó el diseño de eliminarRespuesta

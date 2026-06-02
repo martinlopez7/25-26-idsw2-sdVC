@@ -1,0 +1,65 @@
+@startuml
+title Diagrama de Secuencia - Eliminar Respuesta (Spring Boot + React)
+
+actor "Docente" as Teacher
+participant "Frontend (React)" as FE
+participant "RespuestasController" as Controller
+participant "RespuestaService" as Service
+participant "RespuestaRepository" as RespuestaRepo
+participant "PreguntaRepository" as PreguntaRepo
+database "Base de Datos (PostgreSQL)" as DB
+
+Teacher -> FE: Clic en "Eliminar" (respuestaId)
+activate FE
+FE --> Teacher: Mostrar Modal de Confirmación\n(datos de la respuesta: contenido, esCorrecta)
+Teacher -> FE: Confirma eliminación
+FE -> Controller: DELETE /api/respuestas/{respuestaId}\n(Header: Authorization: Bearer <token>)
+activate Controller
+Controller -> Controller: extraer docenteId del JWT
+Controller -> Service: eliminarRespuesta(respuestaId, docenteId)
+activate Service
+Service -> RespuestaRepo: findById(respuestaId)
+activate RespuestaRepo
+RespuestaRepo -> DB: SELECT * FROM respuestas WHERE id = ?
+activate DB
+DB --> RespuestaRepo: Optional<Respuesta>
+deactivate DB
+RespuestaRepo --> Service: Optional<Respuesta>
+deactivate RespuestaRepo
+alt Respuesta No Existe
+    Service --> Controller: throw EntityNotFoundException()
+    Controller --> FE: 404 Not Found
+    deactivate Controller
+    FE --> Teacher: Mostrar mensaje de error "Respuesta no encontrada"
+else Respuesta Existe
+    Service -> Service: Verificar pertenencia de respuesta\na docente autenticado (docenteId)
+    alt Respuesta No Pertenece al Docente
+        Service --> Controller: throw UnauthorizedException()
+        Controller --> FE: 403 Forbidden
+        deactivate Controller
+        FE --> Teacher: Mostrar mensaje de error "No tienes permiso para eliminar esta respuesta"
+    else Respuesta Pertenece al Docente
+        Service -> RespuestaRepo: deleteById(respuestaId)
+        activate RespuestaRepo
+        RespuestaRepo -> DB: DELETE FROM respuestas WHERE id = ?
+        activate DB
+        DB --> RespuestaRepo: OK
+        deactivate DB
+        RespuestaRepo --> Service: void
+        deactivate RespuestaRepo
+        Service --> Controller: void
+        deactivate Service
+        Controller --> FE: 204 No Content
+        deactivate Controller
+        FE -> FE: Remover de la lista (actualizar vista)
+        FE --> Teacher: Notificación "Respuesta eliminada correctamente"
+    end
+end
+deactivate FE
+
+alt Docente Cancela
+    Teacher -> FE: Clic en "Cancelar" (modal)
+    FE --> Teacher: Cerrar modal\nMantener en lista de respuestas
+end
+
+@enduml
