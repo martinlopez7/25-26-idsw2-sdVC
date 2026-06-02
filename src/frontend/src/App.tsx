@@ -19,6 +19,7 @@ import AsignaturasListComponent from './components/asignaturas/AsignaturasListCo
 import AsignaturaFormComponent from './components/asignaturas/AsignaturaFormComponent';
 import EliminarAsignaturaComponent from './components/asignaturas/EliminarAsignaturaComponent';
 import PreguntasListComponent from './components/preguntas/PreguntasListComponent';
+import PreguntaFormComponent from './components/preguntas/PreguntaFormComponent';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth();
@@ -57,6 +58,9 @@ function AppRoutes() {
       <Route path="/asignaturas/editar/:id" element={<ProtectedRoute><AsignaturaFormComponent /></ProtectedRoute>} />
       <Route path="/asignaturas/eliminar/:id" element={<ProtectedRoute><EliminarAsignaturaComponent /></ProtectedRoute>} />
       <Route path="/preguntas" element={<ProtectedRoute><PreguntasListComponent /></ProtectedRoute>} />
+      <Route path="/preguntas/crear/:asignaturaId" element={<ProtectedRoute><PreguntaFormComponent /></ProtectedRoute>} />
+      <Route path="/preguntas/crear" element={<ProtectedRoute><PreguntaFormComponent /></ProtectedRoute>} />
+      <Route path="/preguntas/editar/:id" element={<ProtectedRoute><PreguntaFormComponent isEditing /></ProtectedRoute>} />
       <Route path="/preguntas/asignatura/:id" element={<ProtectedRoute><PreguntasListComponent /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to={isAuthenticated ? (user?.tipoActor === 'ADMINISTRADOR_INSTITUCIONAL' ? "/menu-admin" : "/menu-docente") : "/login"} />} />
     </Routes>

@@ -32,7 +32,7 @@ public class PreguntaDTO {
         return new PreguntaDTO(
                 pregunta.getId(),
                 pregunta.getEnunciado(),
-                pregunta.getTema().name(),
+                pregunta.getTema(),
                 pregunta.getDificultad().name(),
                 pregunta.getHabilitada(),
                 pregunta.getAsignaturaId(),

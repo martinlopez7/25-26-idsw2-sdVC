@@ -48,17 +48,6 @@ export default function PreguntasListComponent({ asignaturaId: propsAsignaturaId
     cargarPreguntas();
   };
 
-  const getTemaDisplay = (tema: string) => {
-    const temas: Record<string, string> = {
-      'TEMA_1': 'Tema 1',
-      'TEMA_2': 'Tema 2',
-      'TEMA_3': 'Tema 3',
-      'TEMA_4': 'Tema 4',
-      'TEMA_5': 'Tema 5',
-    };
-    return temas[tema] || tema;
-  };
-
   const getDificultadDisplay = (dificultad: string) => {
     const dificultades: Record<string, string> = {
       'FACIL': 'Fácil',
@@ -110,7 +99,7 @@ export default function PreguntasListComponent({ asignaturaId: propsAsignaturaId
       ) : (
         <>
           <div className="mb-3">
-            <button className="btn btn-success me-2" onClick={() => navigate('/preguntas/crear')}>
+            <button className="btn btn-success me-2" onClick={() => navigate(asignaturaId ? `/preguntas/crear/${asignaturaId}` : '/preguntas/crear')}>
               Crear Pregunta
             </button>
           </div>
@@ -132,7 +121,7 @@ export default function PreguntasListComponent({ asignaturaId: propsAsignaturaId
                 {preguntas.map((pregunta) => (
                   <tr key={pregunta.id}>
                     <td>{pregunta.enunciado}</td>
-                    <td>{getTemaDisplay(pregunta.tema)}</td>
+                    <td>{pregunta.tema}</td>
                     <td>{getDificultadDisplay(pregunta.dificultad)}</td>
                     <td>{pregunta.respuestas?.length || 0}</td>
                     <td>

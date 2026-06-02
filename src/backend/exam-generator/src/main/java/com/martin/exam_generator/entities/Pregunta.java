@@ -24,9 +24,8 @@ public class Pregunta {
     @Column(nullable = false)
     private String enunciado;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Tema tema;
+    private String tema;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -44,14 +43,6 @@ public class Pregunta {
     @OneToMany(mappedBy = "pregunta", cascade = CascadeType.ALL, orphanRemoval = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Respuesta> respuestas = new ArrayList<>();
-
-    public enum Tema {
-        TEMA_1,
-        TEMA_2,
-        TEMA_3,
-        TEMA_4,
-        TEMA_5
-    }
 
     public enum Dificultad {
         FACIL,

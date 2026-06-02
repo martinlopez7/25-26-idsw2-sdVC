@@ -1,8 +1,11 @@
 package com.martin.exam_generator.controller;
 
+import com.martin.exam_generator.dto.PreguntaCreateDTO;
 import com.martin.exam_generator.dto.PreguntaDTO;
 import com.martin.exam_generator.security.JwtTokenProvider;
 import com.martin.exam_generator.service.PreguntaService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +21,16 @@ public class PreguntasController {
     public PreguntasController(PreguntaService preguntaService, JwtTokenProvider jwtTokenProvider) {
         this.preguntaService = preguntaService;
         this.jwtTokenProvider = jwtTokenProvider;
+    }
+
+    @PostMapping
+    public ResponseEntity<PreguntaDTO> crearPregunta(
+            @Valid @RequestBody PreguntaCreateDTO dto,
+            @RequestHeader("Authorization") String authHeader) {
+
+        Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
+        PreguntaDTO preguntaCreada = preguntaService.crearPregunta(dto, docenteId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(preguntaCreada);
     }
 
     @GetMapping("/mias")

@@ -1121,3 +1121,21 @@ Frontend:
 **Enlace:** [session-ses_1782.md](conversations/session-ses_1782.md)
 
 **Decisión:** Se aceptó la implementación de verPreguntas
+
+## [02/06/2026][13:12] Implementación de crearPregunta()
+
+**Prompt:** empezar → me gustaría implementar el caso de uso crearPregunta
+
+**Resultado:** Se implementó el caso de uso crearPregunta() generando:
+- Backend: PreguntaCreateDTO.java (con validaciones @NotBlank, @Size), actualización de PreguntaRepository.java (existsByAsignaturaIdAndEnunciadoIgnoreCase), PreguntaService.java (crearPregunta con verificación de asignatura y unicidad del enunciado), PreguntasController.java (POST /api/preguntas con 201 Created)
+- Frontend: preguntasService.ts (crearPregunta), PreguntaFormComponent.tsx (formulario con datos mínimos: asignatura, enunciado, tema texto libre, dificultad), App.tsx (rutas /preguntas/crear y /preguntas/crear/:asignaturaId)
+
+Correcciones realizadas durante la sesión:
+- Tema es texto libre (no enum TEMA_1-5): se modificó Pregunta.java (String), PreguntaCreateDTO.java y PreguntaFormComponent.tsx (input text)
+- Asignatura pre-seleccionada cuando se accede desde contexto de asignatura: se reordenó el orden de rutas en App.tsx (/preguntas/crear/:asignaturaId antes de /preguntas/crear), se actualizó PreguntasListComponent.tsx para navegar a /preguntas/crear/:asignaturaId
+
+pendiente: error 403 (Forbidden) al crear pregunta - indicar al usuario que verifique que el token JWT es válido y está presente en el header Authorization
+
+**Enlace:** [session-ses_1780.md](conversations/session-ses_1780.md)
+
+**Decisión:** Se aceptó la implementación de crearPreguntaa

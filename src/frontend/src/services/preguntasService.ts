@@ -16,7 +16,19 @@ export interface PreguntaDTO {
   respuestas: RespuestaDTO[];
 }
 
+export interface PreguntaCreateDTO {
+  asignaturaId: number;
+  enunciado: string;
+  tema: string;
+  dificultad: 'FACIL' | 'MEDIO' | 'DIFICIL';
+}
+
 export const preguntasService = {
+  crearPregunta: async (pregunta: PreguntaCreateDTO): Promise<PreguntaDTO> => {
+    const response = await api.post<PreguntaDTO>('/preguntas', pregunta);
+    return response.data;
+  },
+
   getPreguntas: async (filtro?: string): Promise<PreguntaDTO[]> => {
     const url = filtro ? `/preguntas/mias?filtro=${encodeURIComponent(filtro)}` : '/preguntas/mias';
     const response = await api.get<PreguntaDTO[]>(url);

@@ -1,5 +1,7 @@
 package com.martin.exam_generator.service;
 
+import com.martin.exam_generator.dto.AsignaturaDTO;
+import com.martin.exam_generator.dto.PreguntaCreateDTO;
 import com.martin.exam_generator.dto.PreguntaDTO;
 import com.martin.exam_generator.entities.Pregunta;
 import com.martin.exam_generator.repository.PreguntaRepository;
@@ -16,9 +18,23 @@ import java.util.stream.Collectors;
 public class PreguntaService {
 
     private final PreguntaRepository preguntaRepository;
+    private final AsignaturaService asignaturaService;
 
-    public PreguntaService(PreguntaRepository preguntaRepository) {
+    public PreguntaService(PreguntaRepository preguntaRepository, AsignaturaService asignaturaService) {
         this.preguntaRepository = preguntaRepository;
+        this.asignaturaService = asignaturaService;
+    }
+
+    public PreguntaDTO crearPregunta(PreguntaCreateDTO dto, Long docenteId) {
+        if (preguntaRepository.existsByAsignaturaIdAndEnunciadoIgnoreCase(dto.getAsignaturaId(), dto.getEnunciado())) {
+            throw new IllegalArgumentException("Ya existe una pregunta con este enunciado en la asignatura");
+        }
+
+        Pregunta pregunta = dto.toEntity();
+        pregunta.setDocenteId(docenteId);
+
+        Pregunta guardada = preguntaRepository.save(pregunta);
+        return PreguntaDTO.fromEntity(guardada);
     }
 
     public List<PreguntaDTO> obtenerPreguntasDelDocente(Long docenteId) {
