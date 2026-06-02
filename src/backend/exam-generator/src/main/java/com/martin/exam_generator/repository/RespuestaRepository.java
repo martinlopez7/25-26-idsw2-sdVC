@@ -10,4 +10,6 @@ import java.util.List;
 public interface RespuestaRepository extends JpaRepository<Respuesta, Long> {
 
     List<Respuesta> findByPreguntaId(Long preguntaId);
+
+    List<Respuesta> findByPreguntaIdAndOpcionContainingIgnoreCase(Long preguntaId, String opcion);
 }

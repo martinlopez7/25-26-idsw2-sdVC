@@ -1,0 +1,17 @@
+import { api } from './api';
+
+export interface RespuestaDTO {
+  id: number;
+  opcion: string;
+  esCorrecta: boolean;
+}
+
+export const respuestasService = {
+  getRespuestasPorPregunta: async (preguntaId: number, filtro?: string): Promise<RespuestaDTO[]> => {
+    const url = filtro
+      ? `/respuestas/pregunta/${preguntaId}?filtro=${encodeURIComponent(filtro)}`
+      : `/respuestas/pregunta/${preguntaId}`;
+    const response = await api.get<RespuestaDTO[]>(url);
+    return response.data;
+  },
+};

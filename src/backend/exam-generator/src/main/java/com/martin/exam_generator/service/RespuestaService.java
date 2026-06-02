@@ -33,6 +33,12 @@ public class RespuestaService {
                 .collect(Collectors.toList());
     }
 
+    public List<RespuestaDTO> filtrarRespuestasPorPregunta(Long preguntaId, String criterio) {
+        return respuestaRepository.findByPreguntaIdAndOpcionContainingIgnoreCase(preguntaId, criterio).stream()
+                .map(RespuestaDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public List<Respuesta> procesarRespuestas(Long preguntaId, List<RespuestaUpdateDTO> respuestasUpdate) {
         Pregunta pregunta = preguntaRepository.findById(preguntaId)

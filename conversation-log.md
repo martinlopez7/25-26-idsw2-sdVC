@@ -1165,3 +1165,17 @@ El modal de confirmación muestra los datos completos de la pregunta incluyendo 
 **Enlace:** [session-ses_177e.md](conversations/session-ses_177e.md)
 
 **Decisión:** Se aceptó la implementación de eliminarPregunta
+
+## [02/06/2026][13:51] Implementación de verRespuestas()
+
+**Prompt:** me gustaria implementar el caso de uso verRespuestas
+
+**Resultado:** Se implementó el caso de uso verRespuestas() generando:
+- Backend: RespuestaRepository (añadido método findByPreguntaIdAndOpcionContainingIgnoreCase), RespuestaService (añadido método filtrarRespuestasPorPregunta), RespuestasController (nuevo controller con GET /api/respuestas/pregunta/{preguntaId}?filtro={criterio})
+- Frontend: respuestasService.ts (nuevo servicio con getRespuestasPorPregunta), RespuestasListComponent.tsx (nuevo componente para listar respuestas), corrección de routing en App.tsx (añadida ruta /preguntas/:id/respuestas)
+
+El diagnóstico inicial reveló que faltaba la ruta en App.tsx para la navegación desde "Ver Respuestas" en el formulario de edición de pregunta. Se añadió la ruta correspondiente y se configuró el componente para obtener el preguntaId de los parámetros URL.
+
+**Enlace:** [session-ses_177d.md](conversations/session-ses_177d.md)
+
+**Decisión:** Se aceptó la implementación de verRespuestas

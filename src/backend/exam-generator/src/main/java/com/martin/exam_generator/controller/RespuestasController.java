@@ -1,0 +1,47 @@
+package com.martin.exam_generator.controller;
+
+import com.martin.exam_generator.dto.RespuestaDTO;
+import com.martin.exam_generator.security.JwtTokenProvider;
+import com.martin.exam_generator.service.PreguntaService;
+import com.martin.exam_generator.service.RespuestaService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/respuestas")
+public class RespuestasController {
+
+    private final RespuestaService respuestaService;
+    private final PreguntaService preguntaService;
+    private final JwtTokenProvider jwtTokenProvider;
+
+    public RespuestasController(RespuestaService respuestaService, PreguntaService preguntaService, JwtTokenProvider jwtTokenProvider) {
+        this.respuestaService = respuestaService;
+        this.preguntaService = preguntaService;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
+
+    @GetMapping("/pregunta/{preguntaId}")
+    public ResponseEntity<List<RespuestaDTO>> listarRespuestasPorPregunta(
+            @PathVariable Long preguntaId,
+            @RequestHeader("Authorization") String authHeader,
+            @RequestParam(required = false) String filtro) {
+
+        Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
+
+        if (!preguntaService.verificarPreguntaPerteneceADocente(preguntaId, docenteId)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<RespuestaDTO> respuestas;
+        if (filtro != null && !filtro.isEmpty()) {
+            respuestas = respuestaService.filtrarRespuestasPorPregunta(preguntaId, filtro);
+        } else {
+            respuestas = respuestaService.obtenerRespuestasPorPregunta(preguntaId);
+        }
+
+        return ResponseEntity.ok(respuestas);
+    }
+}
