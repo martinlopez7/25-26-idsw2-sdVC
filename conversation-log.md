@@ -1002,3 +1002,17 @@ El diseño siguió el patrón de verGrados() y verAlumnos(), filtrando automáti
 ## [01/06/2026][20:49] Refactorización de editarAsignatura() para mejorar cohesión entre servicios
 
 Analicé el diseño e implementación del caso de uso editarAsignatura desde el punto de vista de la cohesión. El hecho de que AsignaturaService se comunique directamente con los repositorios de otras entidades (Grado y Alumno) me parece poco cohesivo. Me parecería mejor que los servicios se comunicasen entre ellos, por lo que se modificó el diseño del caso de uso.
+
+## [02/06/2026][10:05] Diseño de verPreguntas()
+
+**Prompt:** empezar → Diseña el caso de uso verPreguntas
+
+**Resultado:** Se realizó el diseño MVC de verPreguntas() generando:
+- documents/diseño/verPreguntas/README.md
+- modelosUML/diseño/verPreguntas/secuencia.puml
+
+El diseño siguió el patrón de verAlumnos() y verDocentes(), con endpoint `GET /api/preguntas/mias` que filtra automáticamente por el `docenteId` extraído del JWT. Los criterios de filtrado son enunciado, tema y dificultad.
+
+**Enlace:** [session-ses_178a.md](conversations/session-ses_178a.md)
+
+**Decisión:** 
