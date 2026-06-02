@@ -1,9 +1,11 @@
 package com.martin.exam_generator.controller;
 
+import com.martin.exam_generator.dto.RespuestaCreateDTO;
 import com.martin.exam_generator.dto.RespuestaDTO;
 import com.martin.exam_generator.security.JwtTokenProvider;
 import com.martin.exam_generator.service.PreguntaService;
 import com.martin.exam_generator.service.RespuestaService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +45,15 @@ public class RespuestasController {
         }
 
         return ResponseEntity.ok(respuestas);
+    }
+
+    @PostMapping
+    public ResponseEntity<RespuestaDTO> crearRespuesta(
+            @Valid @RequestBody RespuestaCreateDTO dto,
+            @RequestHeader("Authorization") String authHeader) {
+
+        Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
+        RespuestaDTO creada = respuestaService.crearRespuesta(dto, docenteId);
+        return ResponseEntity.status(201).body(creada);
     }
 }

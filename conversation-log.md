@@ -1179,3 +1179,17 @@ El diagnóstico inicial reveló que faltaba la ruta en App.tsx para la navegaci�
 **Enlace:** [session-ses_177d.md](conversations/session-ses_177d.md)
 
 **Decisión:** Se aceptó la implementación de verRespuestas
+
+## [02/06/2026][14:02] Implementación de crearRespuesta()
+
+**Prompt:** empezar → me gustaria implementar el caso de uso crearRespuesta
+
+**Resultado:** Se implementó el caso de uso crearRespuesta() generando:
+- Backend: RespuestaCreateDTO.java (con validaciones @NotBlank, @NotNull), RespuestaService.java (método crearRespuesta(dto, docenteId) con verificación de pertenencia de pregunta al docente), RespuestasController.java (endpoint POST /api/respuestas → 201 Created)
+- Frontend: respuestasService.ts (añadido método crearRespuesta y tipo RespuestaCreateDTO), RespuestaFormComponent.tsx (nuevo componente con formulario mínimo: opcion, esCorrecta, transferencia C→U a editar), App.tsx (ruta /respuestas/crear/:preguntaId)
+
+El flujo sigue la filosofía C→U (Create→Update): crear respuesta con datos mínimos (opcion, esCorrecta) y transferir automáticamente a editarRespuesta() usando navigate(`/respuestas/editar/${created.id}`).
+
+**Enlace:** [session-ses_177z.md](conversations/session-ses_177z.md)
+
+**Decisión:** La implementación del caso de uso crearRespuesta() se aceptó.

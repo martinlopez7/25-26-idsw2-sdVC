@@ -1,5 +1,6 @@
 package com.martin.exam_generator.service;
 
+import com.martin.exam_generator.dto.RespuestaCreateDTO;
 import com.martin.exam_generator.dto.RespuestaDTO;
 import com.martin.exam_generator.dto.RespuestaUpdateDTO;
 import com.martin.exam_generator.entities.Pregunta;
@@ -25,6 +26,24 @@ public class RespuestaService {
     public RespuestaService(RespuestaRepository respuestaRepository, PreguntaRepository preguntaRepository) {
         this.respuestaRepository = respuestaRepository;
         this.preguntaRepository = preguntaRepository;
+    }
+
+    @Transactional
+    public RespuestaDTO crearRespuesta(RespuestaCreateDTO dto, Long docenteId) {
+        Pregunta pregunta = preguntaRepository.findById(dto.getPreguntaId())
+                .orElseThrow(() -> new EntityNotFoundException("Pregunta no encontrada con id: " + dto.getPreguntaId()));
+
+        if (!pregunta.getDocenteId().equals(docenteId)) {
+            throw new EntityNotFoundException("Pregunta no encontrada con id: " + dto.getPreguntaId());
+        }
+
+        Respuesta respuesta = new Respuesta();
+        respuesta.setOpcion(dto.getOpcion());
+        respuesta.setEsCorrecta(dto.getEsCorrecta());
+        respuesta.setPregunta(pregunta);
+
+        Respuesta guardada = respuestaRepository.save(respuesta);
+        return RespuestaDTO.fromEntity(guardada);
     }
 
     public List<RespuestaDTO> obtenerRespuestasPorPregunta(Long preguntaId) {
