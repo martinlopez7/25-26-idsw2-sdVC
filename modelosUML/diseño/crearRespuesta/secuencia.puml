@@ -1,0 +1,67 @@
+@startuml
+title Diagrama de Secuencia - Crear Respuesta (Spring Boot + React)
+
+actor "Docente" as Teacher
+participant "Frontend (React)\nRespuestaFormComponent" as FE
+participant "RespuestasController" as Controller
+participant "RespuestaService" as Service
+participant "PreguntaService" as PreguntaService
+participant "PreguntaRepository" as PreguntaRepo
+participant "RespuestaRepository" as RespuestaRepo
+database "Base de Datos (PostgreSQL)" as DB
+
+Teacher -> FE: Accede a crear respuesta\n(desde RESPUESTAS_ABIERTO o RESPUESTAS_CONTEXTUALES_ABIERTO)
+activate FE
+FE --> Teacher: Mostrar formulario de creación\n(datos mínimos: contenido, esCorrecta)
+Teacher -> FE: Ingresa datos y clic en "Crear"
+FE -> FE: Validar formulario (client-side)
+FE -> Controller: POST /api/respuestas\n(RespuestaCreateDTO JSON)\n(Header: Authorization: Bearer <token>)
+activate Controller
+Controller -> Controller: extraer docenteId del JWT
+Controller -> Service: crearRespuesta(respuestaCreateDTO, docenteId)
+activate Service
+Service -> PreguntaService: obtenerPreguntaPorId(preguntaId, docenteId)
+activate PreguntaService
+PreguntaService -> PreguntaRepo: findById(preguntaId)
+activate PreguntaRepo
+PreguntaRepo -> DB: SELECT * FROM preguntas WHERE id = ?
+activate DB
+DB --> PreguntaRepo: Optional<Pregunta>
+deactivate DB
+PreguntaRepo --> PreguntaService: Optional<Pregunta>
+deactivate PreguntaRepo
+PreguntaService -> PreguntaService: Verificar pertenencia de pregunta\na docente autenticado (docenteId)
+PreguntaService --> Service: Pregunta
+deactivate PreguntaService
+alt Pregunta No Existe o No Pertenece al Docente
+    Service --> Controller: throw UnauthorizedException()
+    Controller --> FE: 403 Forbidden
+    FE --> Teacher: Mostrar mensaje de error
+else Pregunta Existe y Pertenece al Docente
+    Service -> Service: Mapear DTO a Entidad
+    Service -> RespuestaRepo: save(respuesta)
+    activate RespuestaRepo
+    RespuestaRepo -> DB: INSERT INTO respuestas (contenido, es_correcta, pregunta_id, docente_id) VALUES (?, ?, ?, ?)
+    activate DB
+    DB --> RespuestaRepo: Respuesta (creada)
+    deactivate DB
+    RespuestaRepo --> Service: Respuesta
+    deactivate RespuestaRepo
+    Service --> Controller: RespuestaDTO
+    deactivate Service
+    Controller --> FE: 201 Created (RespuestaDTO JSON)
+    deactivate Controller
+    FE --> Teacher: Mostrar Toast\n"Respuesta creada correctamente"
+    FE -> FE: Redirigir a editarRespuesta(nuevaRespuesta)
+    FE --> Teacher: Mostrar Formulario de Edición
+end
+
+alt Datos Inválidos
+    Controller --> FE: 400 Bad Request (validation errors)
+    deactivate Controller
+    FE --> Teacher: Mostrar errores de validación
+end
+
+deactivate FE
+
+@enduml

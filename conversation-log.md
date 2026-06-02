@@ -1063,3 +1063,14 @@ El diseño siguió la filosofía C→U (Create→Update), identificando los part
 **Enlace:** [session-ses_1788.md](conversations/session-ses_1788.md)
 
 **Decisión:** Se aceptó el diseño de verRespuestas
+
+## [02/06/2026][12:08] Diseño de caso de uso crearRespuesta()
+
+**Prompt:** empezar → Quiero que se diseñe el caso de uso crearRespuesta
+**Resultado:** Se realizó el diseño MVC de crearRespuesta() generando:
+- documents/diseño/crearRespuesta/README.md
+- modelosUML/diseño/crearRespuesta/secuencia.puml
+
+**Enlace:** [session-ses_1788.md](conversations/session-ses_1788.md)
+
+**Decisión:** Se aceptó el diseño de crearRespuesta
