@@ -1,0 +1,89 @@
+@startuml
+title Diagrama de Secuencia - Exportar Configuración Global (Spring Boot + React)
+
+actor "Docente" as Teacher
+participant "Frontend (React)" as FE
+participant "ConfiguracionController" as Controller
+participant "ConfiguracionService" as Service
+participant "GradoRepository" as GradoRepo
+participant "AsignaturaRepository" as AsignaturaRepo
+participant "AlumnoRepository" as AlumnoRepo
+participant "PreguntaRepository" as PreguntaRepo
+participant "RespuestaRepository" as RespuestaRepo
+database "Base de Datos (PostgreSQL)" as DB
+
+Teacher -> FE: Clic en "Exportar Configuración Global"
+activate FE
+FE --> Teacher: Mostrar Diálogo de Confirmación\n( "¿Exportar toda la configuración?\n  Esto incluirá grados, asignaturas,\n  alumnos y preguntas." )
+Teacher -> FE: Confirmar Exportación
+FE -> Controller: GET /api/configuracion/exportar\n(Header: Authorization: Bearer <token>)
+activate Controller
+Controller -> Controller: extraer docenteId del JWT
+activate Controller
+Controller -> Service: exportarConfiguracionGlobal(docenteId)
+activate Service
+
+Service -> GradoRepo: findByDocenteId(docenteId)
+activate GradoRepo
+GradoRepo -> DB: SELECT * FROM grados WHERE docente_id = ?
+activate DB
+DB --> GradoRepo: List<Grado>
+deactivate DB
+GradoRepo --> Service: List<GradoDTO>
+deactivate GradoRepo
+
+Service -> AsignaturaRepo: findByDocenteId(docenteId)
+activate AsignaturaRepo
+AsignaturaRepo -> DB: SELECT * FROM asignaturas WHERE docente_id = ?
+activate DB
+DB --> AsignaturaRepo: List<Asignatura>
+deactivate DB
+AsignaturaRepo --> Service: List<AsignaturaDTO>
+deactivate AsignaturaRepo
+
+Service -> AlumnoRepo: findByDocenteId(docenteId)
+activate AlumnoRepo
+AlumnoRepo -> DB: SELECT * FROM alumnos WHERE docente_id = ?
+activate DB
+DB --> AlumnoRepo: List<Alumno>
+deactivate DB
+AlumnoRepo --> Service: List<AlumnoDTO>
+deactivate AlumnoRepo
+
+Service -> PreguntaRepo: findByDocenteId(docenteId)
+activate PreguntaRepo
+PreguntaRepo -> DB: SELECT * FROM preguntas WHERE docente_id = ?
+activate DB
+DB --> PreguntaRepo: List<Pregunta>
+deactivate DB
+PreguntaRepo --> Service: List<Pregunta>
+deactivate PreguntaRepo
+
+loop Para cada pregunta, obtener respuestas asociadas
+    Service -> RespuestaRepo: findByPreguntaId(preguntaId)
+    activate RespuestaRepo
+    RespuestaRepo -> DB: SELECT * FROM respuestas WHERE pregunta_id = ?
+    activate DB
+    DB --> RespuestaRepo: List<Respuesta>
+    deactivate DB
+    RespuestaRepo --> Service: List<RespuestaDTO>
+    deactivate RespuestaRepo
+end
+
+Service -> Service: Construir ConfiguracionExportDTO\n(versión, fecha, docenteOrigen,\n grados, asignaturas, alumnos, preguntas con respuestas)
+Service --> Controller: ConfiguracionExportDTO
+deactivate Service
+deactivate Controller
+Controller --> FE: 200 OK (ConfiguracionExportDTO JSON)\n+ Header: Content-Disposition: attachment;\n  filename="configuracion_[fecha].json"
+deactivate Controller
+FE -> FE: Convertir JSON a Blob
+FE -> FE: Trigger download en navegador
+FE --> Teacher: Mostrar Toast "Exportación completada"
+deactivate FE
+
+alt Cancelar Exportación
+    Teacher -> FE: Cancelar
+    FE --> Teacher: Cerrar diálogo sin acción
+end
+
+@enduml

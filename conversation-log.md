@@ -1222,3 +1222,17 @@ Correcciones realizadas durante la sesión:
 **Enlace:** [session-ses_177b.md](conversations/session-ses_177b.md)
 
 **Decisión:** La implementación del caso de uso eliminarRespuesta() se aceptó
+
+## [03/06/2026][09:30] Diseño de exportarConfiguracionGlobal()
+
+**Prompt:** empezar → me gustaria que diseñaras el caso de uso exportarConfiguracionGlobal, pero primero dime que entiendes de este caso de uso → yo lo que quiero es que con el archivo que se exporte otro docente cualquiera pueda importarlo y tener exactamente los mismos datos. ese archivo de exportación como sería? → procede con el diseño, quiero que sea cohesivo → creo que te has olvidado de las respuestas
+
+**Resultado:** Se realizó el diseño MVC de exportarConfiguracionGlobal() generando:
+- documents/diseño/exportarConfiguracionGlobal/README.md
+- modelosUML/diseño/exportarConfiguracionGlobal/secuencia.puml
+
+El diseño utiliza un archivo JSON con estructura jerárquica por dependencias (Grados → Asignaturas → Alumnos → Preguntas con respuestas). Se añadió RespuestaRepository y un loop en el diagrama de secuencia para obtener las respuestas de cada pregunta (composición 1:*).
+
+**Enlace:** [session-ses_173a.md](conversations/session-ses_173a.md)
+
+**Decisión:** El diseño del caso de uso exportarConfiguracionGlobal() se aceptó
