@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { configuracionService } from '../../services/configuracionService';
 
-export default function ExportarConfiguracionGlobalComponent() {
+export default function ExportarConfiguracionComponent() {
   const [loading, setLoading] = useState(false);
   const [mostrarDialogo, setMostrarDialogo] = useState(true);
   const [error, setError] = useState('');
@@ -51,7 +51,7 @@ export default function ExportarConfiguracionGlobalComponent() {
           </div>
 
           <p className="text-muted">
-            Esta acción no se puede deshacer y el archivo generado podrá ser importado en otro sistema.
+            El archivo generado podrá ser importado en otro sistema.
           </p>
 
           <div className="d-flex gap-2 justify-content-end">

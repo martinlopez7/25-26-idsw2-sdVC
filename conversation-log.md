@@ -1264,3 +1264,7 @@ El flujo: docente pulsa "Configurar" → /configuracion → diálogo con element
 **Enlace:** [session-ses_1738.md](conversations/session-ses_1738.md)
 
 **Decisión:** Se aceptó la implementación de exportarConfiguracionGlobal.
+
+## [03/06/2026][10:15] Corrección de exportarConfiguracionGlobal()
+
+**Decisión:** Me he dado cuenta de un error. Según el diagrama de contexto, los casos de uso exportarConfiguracionGlobal e importarConfiguracionGlobal se pueden ejecutar directamente desde el estado SISTEMA_DISPONIBLE, por lo que en vez de tener un botón para los dos casos de uso (el cual resultará en otro menú), he añadido un botón para cada caso de uso.

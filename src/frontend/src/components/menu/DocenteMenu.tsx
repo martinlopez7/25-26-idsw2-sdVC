@@ -96,13 +96,13 @@ export default function DocenteMenu() {
         <div className="col-md-4 mb-3">
           <div className="card">
             <div className="card-body">
-              <h5 className="card-title">Corregir Exámenes</h5>
-              <p className="card-text">Corregir exámenes realizados</p>
+              <h5 className="card-title">Exportar</h5>
+              <p className="card-text">Exportar configuración global</p>
               <button
-                className="btn btn-warning w-100"
-                onClick={() => handleNavigation('/examenes/corregir')}
+                className="btn btn-info w-100"
+                onClick={() => handleNavigation('/configuracion/exportar')}
               >
-                Corregir
+                Exportar
               </button>
             </div>
           </div>
@@ -111,13 +111,28 @@ export default function DocenteMenu() {
         <div className="col-md-4 mb-3">
           <div className="card">
             <div className="card-body">
-              <h5 className="card-title">Configuración</h5>
-              <p className="card-text">Importar/Exportar configuración</p>
+              <h5 className="card-title">Importar</h5>
+              <p className="card-text">Importar configuración global</p>
               <button
                 className="btn btn-info w-100"
-                onClick={() => handleNavigation('/configuracion')}
+                onClick={() => handleNavigation('/configuracion/importar')}
               >
-                Configurar
+                Importar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-md-4 mb-3">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">Corregir Exámenes</h5>
+              <p className="card-text">Corregir exámenes realizados</p>
+              <button
+                className="btn btn-warning w-100"
+                onClick={() => handleNavigation('/examenes/corregir')}
+              >
+                Corregir
               </button>
             </div>
           </div>
