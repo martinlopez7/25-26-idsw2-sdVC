@@ -43,9 +43,13 @@ Detallar la interacción entre los componentes del sistema (Frontend React, Cont
 - Verificación de pertenencia al docente autenticado extraído del JWT.
 - Retorno de `204 No Content` al éxito (sin body en respuesta).
 - **Eliminación en cascada suave**: Al eliminar un grado:
-  1. Se obtienen las asignaturas asociadas al grado
-  2. Por cada asignatura, se desmatriculan los alumnos que pertenecen a ese grado (un alumno solo pertenece a un grado) usando **AlumnoService.desmatricularAlumnoDeAsignatura()**
-  3. Se elimina la relación entre el grado y la asignatura usando **AsignaturaService.eliminarRelacionGrado()**
+  1. Se verifican existencia y pertenencia del grado
+  2. Se obtiene las asignaturas asociadas a este grado mediante **AsignaturaService.obtenerAsignaturasPorGrado()** (la relación está solo en el lado Asignatura)
+  3. Por cada asignatura:
+     - Se iteran los alumnos de la asignatura
+     - Por cada alumno, se comprueba si pertenece al grado que se va a eliminar
+     - Si pertenece, se desmatricula de la asignatura usando **AlumnoService.desmatricularAlumnoDeAsignatura()**
+     - Se elimina la relación entre el grado y la asignatura usando **AsignaturaService.eliminarRelacionGrado()**
   4. Finalmente se elimina el grado
 - La eliminación de grado NO elimina las asignaturas ni sus preguntas asociadas (estas siguen existiendo)
 - Respuesta al frontend sin contenido, actualización optimista de la lista.

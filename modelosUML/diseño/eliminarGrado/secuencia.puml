@@ -8,6 +8,7 @@ participant "GradoService" as Service
 participant "AlumnoService" as AlumnoService
 participant "AsignaturaService" as AsignaturaService
 participant "GradoRepository" as Repo
+participant "AsignaturaRepository" as AsignaturaRepo
 database "Base de Datos (PostgreSQL)" as DB
 
 Teacher -> FE: Clic en "Eliminar" (en una fila)
@@ -27,15 +28,26 @@ deactivate DB
 Repo --> Service: Optional<Grado>
 deactivate Repo
 alt Grado Existe y Pertenece al Docente
-    Service -> Service: grado.getAsignaturas()
-    loop Para cada asignatura del grado
-        Service -> Service: grado.getAlumnos()
-        loop Para cada alumno del grado
-            Service -> AlumnoService: desmatricularAlumnoDeAsignatura(alumnoId, asignaturaId)
-            activate AlumnoService
-            AlumnoService -> DB: UPDATE alumno_asignatura\n(remover relación)
-            AlumnoService --> Service: void
-            deactivate AlumnoService
+    Service -> AsignaturaService: obtenerAsignaturasPorGrado(gradoId)
+    activate AsignaturaService
+    AsignaturaService -> AsignaturaRepo: findByGradosId(gradoId)
+    activate AsignaturaRepo
+    AsignaturaRepo -> DB: SELECT * FROM asignaturas WHERE grado_id = ?
+    AsignaturaRepo --> AsignaturaService: List<Asignatura>
+    deactivate AsignaturaRepo
+    AsignaturaService --> Service: List<Asignatura>
+    deactivate AsignaturaService
+    loop Para cada asignatura
+        Service -> Service: asignatura.getAlumnos()
+        loop Para cada alumno de la asignatura
+            Service -> Service: alumno.getGrado().getId().equals(gradoId)?
+            alt Alumno pertenece al grado
+                Service -> AlumnoService: desmatricularAlumnoDeAsignatura(alumnoId, asignaturaId)
+                activate AlumnoService
+                AlumnoService -> DB: UPDATE alumno_asignatura\n(remover relación)
+                AlumnoService --> Service: void
+                deactivate AlumnoService
+            end
         end
         Service -> AsignaturaService: eliminarRelacionGrado(gradoId, asignaturaId)
         activate AsignaturaService
