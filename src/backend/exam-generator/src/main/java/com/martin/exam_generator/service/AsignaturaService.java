@@ -211,6 +211,14 @@ public class AsignaturaService {
         asignaturaRepository.save(asignatura);
     }
 
+    @Transactional
+    public void eliminarAsignaturasPorDocenteId(Long docenteId) {
+        List<Asignatura> asignaturas = asignaturaRepository.findByDocenteId(docenteId);
+        for (Asignatura asignatura : asignaturas) {
+            eliminarAsignatura(asignatura.getId(), docenteId);
+        }
+    }
+
     public void procesarEliminacionGrado(Long gradoId) {
         List<Asignatura> asignaturas = asignaturaRepository.findByGradosId(gradoId);
         for (Asignatura asignatura : asignaturas) {

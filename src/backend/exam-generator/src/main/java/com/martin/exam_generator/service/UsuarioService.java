@@ -8,6 +8,7 @@ import com.martin.exam_generator.exception.EntityNotFoundException;
 import com.martin.exam_generator.repository.UsuarioRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,10 +18,23 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PreguntaService preguntaService;
+    private final AsignaturaService asignaturaService;
+    private final AlumnoService alumnoService;
+    private final GradoService gradoService;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository usuarioRepository,
+                         PasswordEncoder passwordEncoder,
+                         PreguntaService preguntaService,
+                         AsignaturaService asignaturaService,
+                         AlumnoService alumnoService,
+                         GradoService gradoService) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
+        this.preguntaService = preguntaService;
+        this.asignaturaService = asignaturaService;
+        this.alumnoService = alumnoService;
+        this.gradoService = gradoService;
     }
 
     public List<UsuarioDTO> obtenerTodosLosDocentes() {
@@ -101,10 +115,17 @@ public class UsuarioService {
         return UsuarioDTO.fromEntity(saved);
     }
 
+    @Transactional
     public void eliminarDocente(Long id) {
         Usuario docente = usuarioRepository.findById(id)
                 .filter(u -> u.getTipoActor() == Usuario.TipoActor.DOCENTE)
                 .orElseThrow(() -> new EntityNotFoundException("Docente no encontrado con id: " + id));
+
+        preguntaService.eliminarPreguntasPorDocenteId(id);
+        asignaturaService.eliminarAsignaturasPorDocenteId(id);
+        alumnoService.eliminarAlumnosPorDocenteId(id);
+        gradoService.eliminarGradosPorDocenteId(id);
+
         usuarioRepository.deleteById(docente.getId());
     }
 }

@@ -184,4 +184,9 @@ public class AlumnoService {
                 .orElseThrow(() -> new EntityNotFoundException("Alumno no encontrado con id: " + alumnoId));
         return alumno.getGrado() != null && gradoIds.contains(alumno.getGrado().getId());
     }
+
+    @Transactional
+    public void eliminarAlumnosPorDocenteId(Long docenteId) {
+        alumnoRepository.deleteByDocenteId(docenteId);
+    }
 }

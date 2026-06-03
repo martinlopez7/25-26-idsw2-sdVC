@@ -167,4 +167,9 @@ public class GradoService {
         return gradoRepository.findById(gradoId)
                 .orElseThrow(() -> new EntityNotFoundException("Grado no encontrado con id: " + gradoId));
     }
+
+    @Transactional
+    public void eliminarGradosPorDocenteId(Long docenteId) {
+        gradoRepository.deleteByDocenteId(docenteId);
+    }
 }

@@ -130,4 +130,9 @@ public class PreguntaService {
             preguntaRepository.delete(pregunta);
         }
     }
+
+    @Transactional
+    public void eliminarPreguntasPorDocenteId(Long docenteId) {
+        preguntaRepository.deleteByDocenteId(docenteId);
+    }
 }
