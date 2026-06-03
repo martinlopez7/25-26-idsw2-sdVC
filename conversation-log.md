@@ -1268,3 +1268,26 @@ El flujo: docente pulsa "Configurar" → /configuracion → diálogo con element
 ## [03/06/2026][10:15] Corrección de exportarConfiguracionGlobal()
 
 **Decisión:** Me he dado cuenta de un error. Según el diagrama de contexto, los casos de uso exportarConfiguracionGlobal e importarConfiguracionGlobal se pueden ejecutar directamente desde el estado SISTEMA_DISPONIBLE, por lo que en vez de tener un botón para los dos casos de uso (el cual resultará en otro menú), he añadido un botón para cada caso de uso.
+
+## [03/06/2026][11:02] Implementación de importarConfiguracionGlobal()
+
+**Prompt:** empezar → me gustaria implementar el caso de uso importarConfiguracionGlobal, ten en cuenta que exportarConfiguracionGlobal ya está implementado y diseñado
+
+**Resultado:** Se implementó importarConfiguracionGlobal() generando:
+
+Backend:
+- Repositorios: añadidos métodos `deleteByDocenteId(Long docenteId)` a GradoRepository, AsignaturaRepository, AlumnoRepository, PreguntaRepository
+- ConfiguracionService.java: nuevo método `importarConfiguracionGlobal()` con lógica de eliminación en orden inverso (preguntas → asignaturas → alumnos → grados) e importación en orden directo (grados → asignaturas → alumnos → preguntas), usando Map<Long, Long> para tracking de IDs originales a nuevos
+- ConfiguracionController.java: nuevo endpoint POST /api/configuracion/importar que acepta multipart/form-data con archivo JSON
+
+Frontend:
+- configuracionService.ts: añadido método `importarConfiguracionGlobal(archivo: File)`
+- ImportarConfiguracionComponent.tsx: implementado con selector de archivo, validación JSON, diálogo de confirmación y navegación post-importación
+
+Errores corregidos durante la sesión:
+- "duplicate key value violates unique constraint" para DNI: se identificó que la constraint era global y no por docente
+- "null value in column asignatura_id": se corrigió la lógica de mapeo usando Map<Long, Long> para tracking ID_original → ID_nuevo en lugar de usar índice del array
+
+**Enlace:** [session-ses_1737.md](conversations/session-ses_1737.md)
+
+**Decisión:** La implementación del caso de uso importarConfiguracionGlobal() se aceptó tras corregir varios errores de mapeo de IDs.

@@ -37,4 +37,6 @@ public interface AlumnoRepository extends JpaRepository<Alumno, Long> {
     List<Alumno> findAvailableAlumnosForAsignatura(@Param("docenteId") Long docenteId,
                                                    @Param("asignaturaId") Long asignaturaId,
                                                    @Param("gradoIds") List<Long> gradoIds);
+
+    void deleteByDocenteId(Long docenteId);
 }

@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "alumnos")
+@Table(name = "alumnos", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"docente_id", "dni"})
+})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,7 +29,7 @@ public class Alumno {
     @Column(nullable = false)
     private String apellidos;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String dni;
 
     @Column(nullable = false)

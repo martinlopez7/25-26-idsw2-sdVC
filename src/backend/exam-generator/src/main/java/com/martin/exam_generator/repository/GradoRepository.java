@@ -20,4 +20,6 @@ public interface GradoRepository extends JpaRepository<Grado, Long> {
                                            @Param("criterio") String criterio);
 
     boolean existsByDocenteIdAndCodigo(Long docenteId, String codigo);
+
+    void deleteByDocenteId(Long docenteId);
 }

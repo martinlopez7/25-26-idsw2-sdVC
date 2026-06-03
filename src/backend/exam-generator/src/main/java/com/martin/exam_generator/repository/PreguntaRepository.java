@@ -34,4 +34,6 @@ public interface PreguntaRepository extends JpaRepository<Pregunta, Long> {
     boolean existsByAsignaturaIdAndEnunciadoIgnoreCase(Long asignaturaId, String enunciado);
 
     boolean existsByAsignaturaIdAndEnunciadoIgnoreCaseAndIdNot(Long asignaturaId, String enunciado, Long id);
+
+    void deleteByDocenteId(Long docenteId);
 }

@@ -63,4 +63,14 @@ export const configuracionService = {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   },
+
+  importarConfiguracionGlobal: async (archivo: File): Promise<void> => {
+    const formData = new FormData();
+    formData.append('archivo', archivo);
+    await api.post('/configuracion/importar', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
 };
