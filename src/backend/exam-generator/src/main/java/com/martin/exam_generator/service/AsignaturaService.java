@@ -25,13 +25,16 @@ public class AsignaturaService {
     private final AsignaturaRepository asignaturaRepository;
     private final GradoService gradoService;
     private final AlumnoService alumnoService;
+    private final PreguntaService preguntaService;
 
     public AsignaturaService(AsignaturaRepository asignaturaRepository,
                             GradoService gradoService,
-                            AlumnoService alumnoService) {
+                            AlumnoService alumnoService,
+                            PreguntaService preguntaService) {
         this.asignaturaRepository = asignaturaRepository;
         this.gradoService = gradoService;
         this.alumnoService = alumnoService;
+        this.preguntaService = preguntaService;
     }
 
     public List<AsignaturaDTO> obtenerAsignaturasDelDocente(Long docenteId) {
@@ -189,6 +192,8 @@ public class AsignaturaService {
         if (!asignatura.getDocenteId().equals(docenteId)) {
             throw new EntityNotFoundException("Asignatura no encontrada con id: " + id);
         }
+
+        preguntaService.eliminarPreguntasPorAsignatura(id);
 
         asignatura.getAlumnos().clear();
         asignatura.getGrados().clear();

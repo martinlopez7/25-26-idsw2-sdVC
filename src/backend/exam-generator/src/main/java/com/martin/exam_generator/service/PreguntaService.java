@@ -121,4 +121,13 @@ public class PreguntaService {
 
         preguntaRepository.delete(pregunta);
     }
+
+    @Transactional
+    public void eliminarPreguntasPorAsignatura(Long asignaturaId) {
+        List<Pregunta> preguntas = preguntaRepository.findByAsignaturaId(asignaturaId);
+        for (Pregunta pregunta : preguntas) {
+            pregunta.getRespuestas().clear();
+            preguntaRepository.delete(pregunta);
+        }
+    }
 }

@@ -84,7 +84,7 @@ export default function EliminarAsignaturaComponent() {
           </table>
 
           <div className="alert alert-warning">
-            <strong>Advertencia:</strong> Los alumnos y grados asociados perderán su relación con esta asignatura.
+            <strong>Advertencia:</strong> Perderás las preguntas asociadas y los alumnos y grados asociados perderán su relación con esta asignatura.
           </div>
 
           <div className="d-flex gap-2 justify-content-end">
