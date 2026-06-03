@@ -1250,3 +1250,17 @@ El diseño siguió la misma estructura que exportarConfiguracionGlobal pero en s
 **Enlace:** [session-ses_1739.md](conversations/session-ses_1739.md)
 
 **Decisión:** El diseño que realizó del caso de uso importarConfiguracionGlobal se aceptó. La corrección que se hizo fue eliminar la validación de versión del JSON ya que no tiene sentido en el sistema (es solo metadata informativa).
+
+## [03/06/2026][9:59] Implementación de exportarConfiguracionGlobal()
+
+**Prompt:** empezar → me gustaría implementar el caso de uso exportarConfiguracionGlobal
+
+**Resultado:** Se implementó exportarConfiguracionGlobal() generando:
+- Backend: ConfiguracionExportDTO (con estructura jerárquica: version, fechaExportacion, docenteOrigen, elementos), ConfiguracionService (orchestrates exportación siguiendo orden: Grados → Asignaturas → Alumnos → Preguntas), ConfiguracionController (GET /api/configuracion/exportar protegido con JWT)
+- Frontend: configuracionService.ts (llama al endpoint y convierte respuesta a blob para descarga), ExportarConfiguracionGlobalComponent.tsx (diálogo de confirmación con lista de elementos a exportar), integración en App.tsx con ruta /configuracion protegida
+
+El flujo: docente pulsa "Configurar" → /configuracion → diálogo con elementos a exportar → confirmar → GET /api/configuracion/exportar → backend extrae docenteId del JWT y obtiene todos sus elementos → frontend recibe JSON y trigger descarga.
+
+**Enlace:** [session-ses_1738.md](conversations/session-ses_1738.md)
+
+**Decisión:** Se aceptó la implementación de exportarConfiguracionGlobal.
