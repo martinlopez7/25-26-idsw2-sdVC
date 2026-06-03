@@ -1,0 +1,141 @@
+@startuml
+title Diagrama de Secuencia - Importar Configuración Global (Spring Boot + React)
+
+actor "Docente" as Teacher
+participant "Frontend (React)" as FE
+participant "ConfiguracionController" as Controller
+participant "ConfiguracionService" as Service
+participant "PreguntaRepository" as PreguntaRepo
+participant "RespuestaRepository" as RespuestaRepo
+participant "AsignaturaRepository" as AsignaturaRepo
+participant "AlumnoRepository" as AlumnoRepo
+participant "GradoRepository" as GradoRepo
+database "Base de Datos (PostgreSQL)" as DB
+
+Teacher -> FE: Clic en "Importar Configuración Global"
+activate FE
+FE --> Teacher: Mostrar Diálogo de Selección de Archivo\n(Selector de archivo JSON)
+Teacher -> FE: Seleccionar archivo JSON
+FE -> FE: Validar estructura básica del JSON\n(mime type, extensión)
+alt JSON inválido
+    FE --> Teacher: Mostrar Error "Archivo no válido"
+else JSON válido
+    FE --> Teacher: Mostrar Diálogo de Confirmación\n( "⚠️ Atención: Se borrarán todos tus\n  datos actuales y se importarán\n  los nuevos. ¿Continuar?" )
+    Teacher -> FE: Confirmar Importación
+    FE -> Controller: POST /api/configuracion/importar\n(Content-Type: multipart/form-data)\n(Header: Authorization: Bearer <token>)
+    activate Controller
+    Controller -> Controller: extraer docenteId del JWT
+    activate Controller
+    Controller -> Service: importarConfiguracionGlobal(json, docenteId)
+    activate Service
+
+    group ELIMINACIÓN EN ORDEN INVERSO (Reemplazar todo)
+        Service -> PreguntaRepo: deleteByDocenteId(docenteId)
+        activate PreguntaRepo
+        PreguntaRepo -> DB: DELETE FROM preguntas WHERE docente_id = ?
+        activate DB
+        DB --> PreguntaRepo: rows deleted
+        deactivate DB
+        PreguntaRepo --> Service: void
+        deactivate PreguntaRepo
+
+        Service -> AsignaturaRepo: deleteByDocenteId(docenteId)
+        activate AsignaturaRepo
+        AsignaturaRepo -> DB: DELETE FROM asignaturas WHERE docente_id = ?
+        activate DB
+        DB --> AsignaturaRepo: rows deleted
+        deactivate DB
+        AsignaturaRepo --> Service: void
+        deactivate AsignaturaRepo
+
+        Service -> AlumnoRepo: deleteByDocenteId(docenteId)
+        activate AlumnoRepo
+        AlumnoRepo -> DB: DELETE FROM alumnos WHERE docente_id = ?
+        activate DB
+        DB --> AlumnoRepo: rows deleted
+        deactivate DB
+        AlumnoRepo --> Service: void
+        deactivate AlumnoRepo
+
+        Service -> GradoRepo: deleteByDocenteId(docenteId)
+        activate GradoRepo
+        GradoRepo -> DB: DELETE FROM grados WHERE docente_id = ?
+        activate DB
+        DB --> GradoRepo: rows deleted
+        deactivate DB
+        GradoRepo --> Service: void
+        deactivate GradoRepo
+    end
+
+    group IMPORTACIÓN EN ORDEN (Reconstruir datos)
+        loop Para cada grado en elementos.grados
+            Service -> GradoRepo: save(grado)
+            activate GradoRepo
+            GradoRepo -> DB: INSERT INTO grados ...
+            activate DB
+            DB --> GradoRepo: Grado guardado
+            deactivate DB
+            GradoRepo --> Service: Grado
+            deactivate GradoRepo
+        end
+
+        loop Para cada asignatura en elementos.asignaturas
+            Service -> AsignaturaRepo: save(asignatura)
+            activate AsignaturaRepo
+            AsignaturaRepo -> DB: INSERT INTO asignaturas ...
+            activate DB
+            DB --> AsignaturaRepo: Asignatura guardada
+            deactivate DB
+            AsignaturaRepo --> Service: Asignatura
+            deactivate AsignaturaRepo
+        end
+
+        loop Para cada alumno en elementos.alumnos
+            Service -> AlumnoRepo: save(alumno)
+            activate AlumnoRepo
+            AlumnoRepo -> DB: INSERT INTO alumnos ...
+            activate DB
+            DB --> AlumnoRepo: Alumno guardado
+            deactivate DB
+            AlumnoRepo --> Service: Alumno
+            deactivate AlumnoRepo
+        end
+
+        loop Para cada pregunta en elementos.preguntas
+            Service -> PreguntaRepo: save(pregunta)
+            activate PreguntaRepo
+            PreguntaRepo -> DB: INSERT INTO preguntas ...
+            activate DB
+            DB --> PreguntaRepo: Pregunta guardada
+            deactivate DB
+            PreguntaRepo --> Service: Pregunta
+            deactivate PreguntaRepo
+
+            loop Para cada respuesta en pregunta.respuestas
+                Service -> RespuestaRepo: save(respuesta)
+                activate RespuestaRepo
+                RespuestaRepo -> DB: INSERT INTO respuestas ...
+                activate DB
+                DB --> RespuestaRepo: Respuesta guardada
+                deactivate DB
+                RespuestaRepo --> Service: Respuesta
+                deactivate RespuestaRepo
+            end
+        end
+    end
+
+    Service --> Controller: void
+    deactivate Service
+    deactivate Controller
+    Controller --> FE: 200 OK\n( "Importación completada" )
+    deactivate Controller
+    FE --> Teacher: Mostrar Toast "Importación completada\n correctamene"
+    deactivate FE
+
+    alt Cancelar Importación
+        Teacher -> FE: Cancelar
+        FE --> Teacher: Cerrar diálogo sin acción
+    end
+end
+
+@enduml

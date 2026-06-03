@@ -1236,3 +1236,17 @@ El diseño utiliza un archivo JSON con estructura jerárquica por dependencias (
 **Enlace:** [session-ses_173a.md](conversations/session-ses_173a.md)
 
 **Decisión:** El diseño del caso de uso exportarConfiguracionGlobal() se aceptó
+
+## [03/06/2026][9:43] Diseño de importarConfiguracionGlobal()
+
+**Prompt:** empezar → diseña el caso de uso importarConfiguracionGlobal, pero antes échale un ojo al caso de uso exportarConfiguracionGlobal que ya está diseñado
+
+**Resultado:** Se diseñó el caso de uso importarConfiguracionGlobal() generando:
+- documents/diseño/importarConfiguracionGlobal/README.md
+- modelosUML/diseño/importarConfiguracionGlobal/secuencia.puml
+
+El diseño siguió la misma estructura que exportarConfiguracionGlobal pero en sentido inverso. Se usó la estrategia "Reemplazar todo" (eliminar datos existentes → importar nuevos) confirmada por el usuario. El orden de eliminación es inverso (preguntas → asignaturas → alumnos → grados) y el de importación es directo (grados → asignaturas → alumnos → preguntas). Se eliminó la validación de versión del JSON tras feedback del usuario.
+
+**Enlace:** [session-ses_1739.md](conversations/session-ses_1739.md)
+
+**Decisión:** El diseño que realizó del caso de uso importarConfiguracionGlobal se aceptó. La corrección que se hizo fue eliminar la validación de versión del JSON ya que no tiene sentido en el sistema (es solo metadata informativa).
