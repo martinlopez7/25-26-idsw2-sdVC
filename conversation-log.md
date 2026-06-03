@@ -1291,3 +1291,7 @@ Errores corregidos durante la sesión:
 **Enlace:** [session-ses_1737.md](conversations/session-ses_1737.md)
 
 **Decisión:** La implementación del caso de uso importarConfiguracionGlobal() se aceptó tras corregir varios errores de mapeo de IDs.
+
+## [03/06/2026][11:21] Corrección de eliminarAsignatura()
+
+**Decisión:** Siguiendo el modelo de dominio me he dado cuenta de que cuando una asignatura se elimina, las preguntas asociadas a ella no se eliminan (cosa que debería ocurrir), por lo que se corrigió el diseño e implementación.

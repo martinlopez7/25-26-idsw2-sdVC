@@ -5,7 +5,9 @@ actor "Docente" as Teacher
 participant "Frontend (React)" as FE
 participant "AsignaturasController" as Controller
 participant "AsignaturaService" as Service
+participant "PreguntaService" as PreguntaService
 participant "AsignaturaRepository" as Repo
+participant "PreguntaRepository" as PreguntaRepo
 database "Base de Datos (PostgreSQL)" as DB
 
 Teacher -> FE: Clic en "Eliminar" (asignaturaId)
@@ -27,6 +29,23 @@ deactivate Repo
 alt Asignatura Existe y Pertenece al Docente
     Service -> Service: asignatura.getAlumnos().clear()
     Service -> Service: asignatura.getGrados().clear()
+    Service -> PreguntaService: eliminarPreguntasPorAsignatura(asignaturaId)
+    activate PreguntaService
+    PreguntaService -> PreguntaRepo: findByAsignaturaId(asignaturaId)
+    activate PreguntaRepo
+    PreguntaRepo -> DB: SELECT * FROM preguntas WHERE asignatura_id = ?
+    PreguntaRepo --> PreguntaService: List<Pregunta>
+    deactivate PreguntaRepo
+    loop Para cada pregunta
+        PreguntaService -> PreguntaService: pregunta.getRespuestas().clear()
+        PreguntaService -> PreguntaRepo: delete(pregunta)
+        activate PreguntaRepo
+        PreguntaRepo -> DB: DELETE FROM preguntas WHERE id = ?
+        PreguntaRepo --> PreguntaService: void
+        deactivate PreguntaRepo
+    end
+    PreguntaService --> Service: void
+    deactivate PreguntaService
     Service -> Repo: delete(asignatura)
     activate Repo
     Repo -> DB: DELETE FROM asignaturas WHERE id = ?
