@@ -93,8 +93,11 @@ public class GradosController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarGrado(@PathVariable Long id) {
-        gradoService.eliminarGrado(id);
+    public ResponseEntity<Void> eliminarGrado(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable Long id) {
+        Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
+        gradoService.eliminarGrado(id, docenteId);
         return ResponseEntity.noContent().build();
     }
 }

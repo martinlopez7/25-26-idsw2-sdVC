@@ -9,6 +9,7 @@ import com.martin.exam_generator.entities.Alumno;
 import com.martin.exam_generator.entities.Asignatura;
 import com.martin.exam_generator.entities.Grado;
 import com.martin.exam_generator.repository.AsignaturaRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,18 +24,18 @@ import java.util.stream.Collectors;
 public class AsignaturaService {
 
     private final AsignaturaRepository asignaturaRepository;
-    private final GradoService gradoService;
     private final AlumnoService alumnoService;
     private final PreguntaService preguntaService;
+    private final GradoService gradoService;
 
     public AsignaturaService(AsignaturaRepository asignaturaRepository,
-                            GradoService gradoService,
                             AlumnoService alumnoService,
-                            PreguntaService preguntaService) {
+                            PreguntaService preguntaService,
+                            @Lazy GradoService gradoService) {
         this.asignaturaRepository = asignaturaRepository;
-        this.gradoService = gradoService;
         this.alumnoService = alumnoService;
         this.preguntaService = preguntaService;
+        this.gradoService = gradoService;
     }
 
     public List<AsignaturaDTO> obtenerAsignaturasDelDocente(Long docenteId) {
@@ -199,5 +200,28 @@ public class AsignaturaService {
         asignatura.getGrados().clear();
 
         asignaturaRepository.delete(asignatura);
+    }
+
+    @Transactional
+    public void eliminarRelacionGrado(Long gradoId, Long asignaturaId) {
+        Asignatura asignatura = asignaturaRepository.findById(asignaturaId)
+                .orElseThrow(() -> new EntityNotFoundException("Asignatura no encontrada con id: " + asignaturaId));
+
+        asignatura.getGrados().removeIf(grado -> grado.getId().equals(gradoId));
+        asignaturaRepository.save(asignatura);
+    }
+
+    public void procesarEliminacionGrado(Long gradoId) {
+        List<Asignatura> asignaturas = asignaturaRepository.findByGradosId(gradoId);
+        for (Asignatura asignatura : asignaturas) {
+            List<Alumno> alumnos = new ArrayList<>(asignatura.getAlumnos());
+            for (Alumno alumno : alumnos) {
+                if (alumno.getGrado() != null && alumno.getGrado().getId().equals(gradoId)) {
+                    alumnoService.desmatricularAlumnoDeAsignatura(alumno.getId(), asignatura.getId());
+                    alumnoService.quitarAlumnoDeGrado(gradoId, alumno.getId());
+                }
+            }
+            eliminarRelacionGrado(gradoId, asignatura.getId());
+        }
     }
 }

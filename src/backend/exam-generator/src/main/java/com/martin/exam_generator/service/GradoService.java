@@ -4,14 +4,18 @@ import com.martin.exam_generator.dto.AlumnoDTO;
 import com.martin.exam_generator.dto.GradoCreateDTO;
 import com.martin.exam_generator.dto.GradoDTO;
 import com.martin.exam_generator.dto.GradoUpdateDTO;
+import com.martin.exam_generator.entities.Alumno;
+import com.martin.exam_generator.entities.Asignatura;
 import com.martin.exam_generator.entities.Grado;
 import com.martin.exam_generator.repository.GradoRepository;
 import com.martin.exam_generator.repository.AsignaturaRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,13 +25,16 @@ public class GradoService {
     private final GradoRepository gradoRepository;
     private final AsignaturaRepository asignaturaRepository;
     private final AlumnoService alumnoService;
+    private final AsignaturaService asignaturaService;
 
-    public GradoService(GradoRepository gradoRepository, 
+    public GradoService(GradoRepository gradoRepository,
                         AsignaturaRepository asignaturaRepository,
-                        AlumnoService alumnoService) {
+                        AlumnoService alumnoService,
+                        @Lazy AsignaturaService asignaturaService) {
         this.gradoRepository = gradoRepository;
         this.asignaturaRepository = asignaturaRepository;
         this.alumnoService = alumnoService;
+        this.asignaturaService = asignaturaService;
     }
 
     public List<GradoDTO> obtenerGradosDelDocente(Long docenteId) {
@@ -115,15 +122,17 @@ public class GradoService {
     }
 
     @Transactional
-    public void eliminarGrado(Long id) {
-        if (!gradoRepository.existsById(id)) {
-            throw new IllegalArgumentException("Grado no encontrado");
+    public void eliminarGrado(Long id, Long docenteId) {
+        Grado grado = gradoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Grado no encontrado con id: " + id));
+
+        if (!grado.getDocenteId().equals(docenteId)) {
+            throw new EntityNotFoundException("Grado no encontrado con id: " + id);
         }
-        List<AlumnoDTO> alumnos = alumnoService.obtenerAlumnosPorGrado(id);
-        for (AlumnoDTO alumno : alumnos) {
-            alumnoService.quitarAlumnoDeGrado(id, alumno.getId());
-        }
-        gradoRepository.deleteById(id);
+
+        asignaturaService.procesarEliminacionGrado(id);
+
+        gradoRepository.delete(grado);
     }
 
     public List<Long> obtenerGradoIdsDeAsignatura(Long asignaturaId) {

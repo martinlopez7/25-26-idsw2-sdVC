@@ -23,5 +23,7 @@ public interface AsignaturaRepository extends JpaRepository<Asignatura, Long> {
 
     boolean existsByCodigoAndDocenteIdAndIdNot(String codigo, Long docenteId, Long id);
 
+    List<Asignatura> findByGradosId(Long gradoId);
+
     void deleteByDocenteId(Long docenteId);
 }
