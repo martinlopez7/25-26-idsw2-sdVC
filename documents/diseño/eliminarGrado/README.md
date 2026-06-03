@@ -30,14 +30,22 @@ Detallar la interacción entre los componentes del sistema (Frontend React, Cont
 
 - **Frontend (React + TypeScript)**: Modal de confirmación de eliminación con datos del grado (nombre, código, alumnos enlistados).
 - **GradosController**: Endpoint REST `DELETE /api/grados/{id}` protegido.
-- **GradoService**: Lógica de eliminación con validación de existencia.
+- **GradoService**: Lógica de eliminación con validación de existencia y pertenencia al docente. Colabora con **AlumnoService** para desmatricular alumnos y con **AsignaturaService** para eliminar relaciones grado-asignatura.
+- **AsignaturaService**: Servicio que gestiona la eliminación de la relación entre grado y asignatura (método `eliminarRelacionGrado`).
+- **AlumnoService**: Servicio que gestiona la desmatriculación de alumnos de asignaturas (método `desmatricularAlumnoDeAsignatura` ya existente).
 - **GradoRepository**: Interface Spring Data JPA para persistencia de grados.
-- **Base de Datos (PostgreSQL)**: Eliminación física del grado.
+- **Base de Datos (PostgreSQL)**: Eliminación física del grado y actualizaciones en cascada de relaciones.
 
 ## Decisiones de diseño
 
 - Confirmación explícita del usuario mediante modal de React.
 - Verificación previa de existencia del ID (lanza `EntityNotFoundException` → 404).
+- Verificación de pertenencia al docente autenticado extraído del JWT.
 - Retorno de `204 No Content` al éxito (sin body en respuesta).
-- Si el grado tiene asignaturas o alumnos asociados, al eliminarlo los alumnos y/o asignaturas dejarán de tener referencia a ese grado (es decir, grado_id = null).
+- **Eliminación en cascada suave**: Al eliminar un grado:
+  1. Se obtienen las asignaturas asociadas al grado
+  2. Por cada asignatura, se desmatriculan los alumnos que pertenecen a ese grado (un alumno solo pertenece a un grado) usando **AlumnoService.desmatricularAlumnoDeAsignatura()**
+  3. Se elimina la relación entre el grado y la asignatura usando **AsignaturaService.eliminarRelacionGrado()**
+  4. Finalmente se elimina el grado
+- La eliminación de grado NO elimina las asignaturas ni sus preguntas asociadas (estas siguen existiendo)
 - Respuesta al frontend sin contenido, actualización optimista de la lista.

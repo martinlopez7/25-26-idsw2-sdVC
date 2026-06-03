@@ -1295,3 +1295,7 @@ Errores corregidos durante la sesión:
 ## [03/06/2026][11:21] Corrección de eliminarAsignatura()
 
 **Decisión:** Siguiendo el modelo de dominio me he dado cuenta de que cuando una asignatura se elimina, las preguntas asociadas a ella no se eliminan (cosa que debería ocurrir), por lo que se corrigió el diseño e implementación.
+
+## [03/06/2026][12:10] Corrección de eliminarGrado()
+
+**Decisión:** Me he dado cuenta de que cuando un grado se elimina, se debería de desmatricular a los alumnos de las asignaturas que esten asociadas a ese grado y luego desasociar las asignaturas del grado en cuestión, por lo que se corrigió el diseño e implementación.

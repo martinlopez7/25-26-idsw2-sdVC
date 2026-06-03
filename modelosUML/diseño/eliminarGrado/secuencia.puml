@@ -5,6 +5,8 @@ actor "Docente" as Teacher
 participant "Frontend (React)" as FE
 participant "GradosController" as Controller
 participant "GradoService" as Service
+participant "AlumnoService" as AlumnoService
+participant "AsignaturaService" as AsignaturaService
 participant "GradoRepository" as Repo
 database "Base de Datos (PostgreSQL)" as DB
 
@@ -14,7 +16,7 @@ FE --> Teacher: Mostrar Diálogo de Confirmación (Modal)\ncon datos del grado
 Teacher -> FE: Confirma eliminación
 FE -> Controller: DELETE /api/grados/{id}\n(Header: Authorization: Bearer <token>)
 activate Controller
-Controller -> Service: eliminarGrado(id)
+Controller -> Service: eliminarGrado(id, docenteId)
 activate Service
 Service -> Repo: findById(id)
 activate Repo
@@ -24,7 +26,23 @@ DB --> Repo: Optional<Grado>
 deactivate DB
 Repo --> Service: Optional<Grado>
 deactivate Repo
-alt Grado Existe
+alt Grado Existe y Pertenece al Docente
+    Service -> Service: grado.getAsignaturas()
+    loop Para cada asignatura del grado
+        Service -> Service: grado.getAlumnos()
+        loop Para cada alumno del grado
+            Service -> AlumnoService: desmatricularAlumnoDeAsignatura(alumnoId, asignaturaId)
+            activate AlumnoService
+            AlumnoService -> DB: UPDATE alumno_asignatura\n(remover relación)
+            AlumnoService --> Service: void
+            deactivate AlumnoService
+        end
+        Service -> AsignaturaService: eliminarRelacionGrado(gradoId, asignaturaId)
+        activate AsignaturaService
+        AsignaturaService -> DB: UPDATE asignatura_grado\n(remover relación)
+        AsignaturaService --> Service: void
+        deactivate AsignaturaService
+    end
     Service -> Repo: deleteById(id)
     activate Repo
     Repo -> DB: DELETE FROM grados WHERE id = ?
@@ -39,7 +57,7 @@ alt Grado Existe
     deactivate Controller
     FE -> FE: Remover de la lista (actualizar vista)
     FE --> Teacher: Notificación "Grado eliminado correctamente"
-else Grado No Existe
+else Grado No Existe o No Pertenece al Docente
     Service --> Controller: throw EntityNotFoundException
     deactivate Service
     Controller --> FE: 404 Not Found
