@@ -8,13 +8,13 @@
 - **Proyecto**: Sistema de Generación de Exámenes Universitarios
 - **Fase RUP**: Elaboración
 - **Disciplina**: Diseño
-- **Versión**: 1.0 (Spring Boot + React)
-- **Fecha**: 2026-05-28
+- **Versión**: 2.0 (Spring Boot + React)
+- **Fecha**: 2026-06-03
 - **Autor**: Equipo de desarrollo
 
 ## Propósito
 
-Detallar la interacción entre los componentes del sistema (Frontend React, Controller, Service, Repository) para la eliminación segura de un docente existente, incluyendo confirmación previa y manejo de errores.
+Detallar la interacción entre los componentes del sistema (Frontend React, Controller, Services, Repositories) para la eliminación segura de un docente existente, incluyendo la eliminación en cascada de todos sus datos asociados (alumnos, grados, asignaturas, preguntas, respuestas).
 
 ## Diagrama de secuencia de diseño
 
@@ -30,15 +30,23 @@ Detallar la interacción entre los componentes del sistema (Frontend React, Cont
 
 - **Frontend (React + TypeScript)**: Modal de confirmación de eliminación con datos del docente.
 - **DocentesController**: Endpoint REST `DELETE /api/docentes/{id}` protegido.
-- **UsuarioService**: Lógica de eliminación con validación de existencia.
-- **UsuarioRepository**: Interface Spring Data JPA para persistencia de usuarios.
-- **Base de Datos (PostgreSQL)**: Eliminación física del usuario con campo discriminatorio `tipo='DOCENTE'`.
+- **UsuarioService**: Orquesta la eliminación en cascada, delega en servicios específicos.
+- **PreguntaService**: Elimina preguntas del docente (respuestas en cascada por JPA).
+- **AsignaturaService**: Elimina asignaturas del docente (limpia relaciones con grados y alumnos).
+- **AlumnoService**: Elimina alumnos del docente.
+- **GradoService**: Elimina grados del docente.
+- **Base de Datos (PostgreSQL)**: Eliminación física de entidades con integridad referencial.
 
 ## Decisiones de diseño
 
 - Confirmación explícita del usuario mediante modal de React.
 - Verificación previa de existencia del ID (lanza `EntityNotFoundException` → 404).
+- Eliminación en cascada ordenada para mantener integridad referencial:
+  1. **Preguntas** → respuestas se eliminan en cascada (cascade ALL en entidad)
+  2. **Asignaturas** → limpia relaciones con grados y alumnos
+  3. **Alumnos**
+  4. **Grados**
+  5. **Usuario** (docente)
 - Retorno de `204 No Content` al éxito (sin body en respuesta).
-- Si el docente tiene entidades asociadas (alumnos, grados, asignaturas, etc...), estas se eliminarán también.
-- El docente se elimina de `UsuarioRepository` (compartido con iniciarSesion).
-- Respuesta al frontend sin contenido, actualización optimista de la lista.
+- Diseño cohesivo: UsuarioService delega en servicios específicos (PreguntaService, AsignaturaService, AlumnoService, GradoService) siguiendo el principio de responsabilidad única.
+- Cada servicio elimina solo sus entidades, evitando accesos directos a repositorios ajenos.

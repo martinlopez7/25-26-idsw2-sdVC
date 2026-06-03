@@ -1299,3 +1299,7 @@ Errores corregidos durante la sesión:
 ## [03/06/2026][12:10] Corrección de eliminarGrado()
 
 **Decisión:** Me he dado cuenta de que cuando un grado se elimina, se debería de desmatricular a los alumnos de las asignaturas que esten asociadas a ese grado y luego desasociar las asignaturas del grado en cuestión, por lo que se corrigió el diseño e implementación.
+
+## [03/06/2026][13:35] Corrección de eliminarDocente()
+
+**Decisión:** Me he dado cuenta de un error: en el análisis está especificado que cuando el administrador institucional elimina un docente, también se eliminan todos los datos de este (alumnos, grados, asignaturas, preguntas y respuestas), sin embargo esto no ocurría actualmente, por lo que se corrigió el diseño e implementación de este caso de uso.

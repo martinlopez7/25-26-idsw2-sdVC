@@ -5,7 +5,10 @@ actor "Administrador Institucional" as Admin
 participant "Frontend (React)" as FE
 participant "DocentesController" as Controller
 participant "UsuarioService" as Service
-participant "UsuarioRepository" as Repo
+participant "PreguntaService" as PreguntaService
+participant "AsignaturaService" as AsignaturaService
+participant "AlumnoService" as AlumnoService
+participant "GradoService" as GradoService
 database "Base de Datos (PostgreSQL)" as DB
 
 Admin -> FE: Clic en "Eliminar" (docenteId)
@@ -16,29 +19,48 @@ FE -> Controller: DELETE /api/docentes/{docenteId}\n(Header: Authorization: Bear
 activate Controller
 Controller -> Service: eliminarDocente(docenteId)
 activate Service
-Service -> Repo: findById(docenteId)
-activate Repo
-Repo -> DB: SELECT * FROM usuarios WHERE id = ? AND tipo = 'DOCENTE'
-activate DB
-DB --> Repo: Optional<Usuario>
-deactivate DB
-Repo --> Service: Optional<Usuario>
-deactivate Repo
+
+Service -> Service: verificarExistencia(docenteId)
+
 alt Docente Existe
-    Service -> Repo: deleteById(docenteId)
-    activate Repo
-    Repo -> DB: DELETE FROM usuarios WHERE id = ?
-    activate DB
-    DB --> Repo: OK
-    deactivate DB
-    Repo --> Service: void
-    deactivate Repo
+
+    Service -> PreguntaService: eliminarPreguntasPorDocenteId(docenteId)
+    activate PreguntaService
+    PreguntaService -> DB: DELETE FROM preguntas WHERE docente_id = ?\n(CASCADE elimina respuestas en cascada)
+    DB --> PreguntaService: OK
+    PreguntaService --> Service: void
+    deactivate PreguntaService
+
+    Service -> AsignaturaService: eliminarAsignaturasPorDocenteId(docenteId)
+    activate AsignaturaService
+    AsignaturaService -> DB: DELETE FROM asignaturas WHERE docente_id = ?\n(Limpia relaciones con grados y alumnos)
+    DB --> AsignaturaService: OK
+    AsignaturaService --> Service: void
+    deactivate AsignaturaService
+
+    Service -> AlumnoService: eliminarAlumnosPorDocenteId(docenteId)
+    activate AlumnoService
+    AlumnoService -> DB: DELETE FROM alumnos WHERE docente_id = ?
+    DB --> AlumnoService: OK
+    AlumnoService --> Service: void
+    deactivate AlumnoService
+
+    Service -> GradoService: eliminarGradosPorDocenteId(docenteId)
+    activate GradoService
+    GradoService -> DB: DELETE FROM grados WHERE docente_id = ?
+    GradoService --> Service: void
+    deactivate GradoService
+
+    Service -> DB: DELETE FROM usuarios WHERE id = ?
+    DB --> Service: OK
+
     Service --> Controller: void
     deactivate Service
     Controller --> FE: 204 No Content
     deactivate Controller
     FE -> FE: Remover de la lista (actualizar vista)
     FE --> Admin: Notificación "Docente eliminado correctamente"
+
 else Docente No Existe
     Service --> Controller: throw EntityNotFoundException
     deactivate Service
@@ -47,3 +69,5 @@ else Docente No Existe
     FE --> Admin: Mostrar Error "Docente no encontrado"
 end
 deactivate FE
+
+@enduml
