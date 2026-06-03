@@ -30,9 +30,9 @@ Detallar la interacción entre los componentes del sistema (Frontend React, Cont
 
 - **Frontend (React + TypeScript)**: Modal de confirmación de eliminación con datos del grado (nombre, código, alumnos enlistados).
 - **GradosController**: Endpoint REST `DELETE /api/grados/{id}` protegido.
-- **GradoService**: Lógica de eliminación con validación de existencia y pertenencia al docente. Colabora con **AlumnoService** para desmatricular alumnos y con **AsignaturaService** para eliminar relaciones grado-asignatura.
-- **AsignaturaService**: Servicio que gestiona la eliminación de la relación entre grado y asignatura (método `eliminarRelacionGrado`).
-- **AlumnoService**: Servicio que gestiona la desmatriculación de alumnos de asignaturas (método `desmatricularAlumnoDeAsignatura` ya existente).
+- **GradoService**: Lógica de eliminación con validación de existencia y pertenencia al docente. Colabora con **AsignaturaService** para procesar la eliminación en cascada.
+- **AsignaturaService**: Servicio que gestiona el procesamiento de eliminación de un grado (método `procesarEliminacionGrado`). Desmatricula alumnos y elimina relaciones grado-asignatura.
+- **AlumnoService**: Servicio que gestiona la desmatriculación de alumnos de asignaturas (método `desmatricularAlumnoDeAsignatura`) y la desvinculación de alumnos de un grado (método `quitarAlumnoDeGrado`).
 - **GradoRepository**: Interface Spring Data JPA para persistencia de grados.
 - **Base de Datos (PostgreSQL)**: Eliminación física del grado y actualizaciones en cascada de relaciones.
 
@@ -44,12 +44,12 @@ Detallar la interacción entre los componentes del sistema (Frontend React, Cont
 - Retorno de `204 No Content` al éxito (sin body en respuesta).
 - **Eliminación en cascada suave**: Al eliminar un grado:
   1. Se verifican existencia y pertenencia del grado
-  2. Se obtiene las asignaturas asociadas a este grado mediante **AsignaturaService.obtenerAsignaturasPorGrado()** (la relación está solo en el lado Asignatura)
-  3. Por cada asignatura:
-     - Se iteran los alumnos de la asignatura
-     - Por cada alumno, se comprueba si pertenece al grado que se va a eliminar
-     - Si pertenece, se desmatricula de la asignatura usando **AlumnoService.desmatricularAlumnoDeAsignatura()**
-     - Se elimina la relación entre el grado y la asignatura usando **AsignaturaService.eliminarRelacionGrado()**
-  4. Finalmente se elimina el grado
+  2. Se llama a **AsignaturaService.procesarEliminacionGrado(gradoId)** que:
+     - Obtiene las asignaturas asociadas a este grado
+     - Por cada asignatura, por cada alumno que pertenece al grado:
+       - **AlumnoService.desmatricularAlumnoDeAsignatura()** → elimina relación con la asignatura
+       - **AlumnoService.quitarAlumnoDeGrado()** → limpia la referencia al grado
+     - **AsignaturaService.eliminarRelacionGrado()** → elimina la relación entre el grado y la asignatura
+  3. Finalmente se elimina el grado
 - La eliminación de grado NO elimina las asignaturas ni sus preguntas asociadas (estas siguen existiendo)
 - Respuesta al frontend sin contenido, actualización optimista de la lista.

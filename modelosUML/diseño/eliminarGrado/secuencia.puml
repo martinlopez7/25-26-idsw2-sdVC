@@ -5,10 +5,9 @@ actor "Docente" as Teacher
 participant "Frontend (React)" as FE
 participant "GradosController" as Controller
 participant "GradoService" as Service
-participant "AlumnoService" as AlumnoService
 participant "AsignaturaService" as AsignaturaService
+participant "AlumnoService" as AlumnoService
 participant "GradoRepository" as Repo
-participant "AsignaturaRepository" as AsignaturaRepo
 database "Base de Datos (PostgreSQL)" as DB
 
 Teacher -> FE: Clic en "Eliminar" (en una fila)
@@ -28,29 +27,26 @@ deactivate DB
 Repo --> Service: Optional<Grado>
 deactivate Repo
 alt Grado Existe y Pertenece al Docente
-    Service -> AsignaturaService: obtenerAsignaturasPorGrado(gradoId)
+    Service -> AsignaturaService: procesarEliminacionGrado(gradoId)
     activate AsignaturaService
-    AsignaturaService -> AsignaturaRepo: findByGradosId(gradoId)
-    activate AsignaturaRepo
-    AsignaturaRepo -> DB: SELECT * FROM asignaturas WHERE grado_id = ?
-    AsignaturaRepo --> AsignaturaService: List<Asignatura>
-    deactivate AsignaturaRepo
+    AsignaturaService -> AsignaturaService: asignaturaRepository.findByGradosId(gradoId)
     AsignaturaService --> Service: List<Asignatura>
-    deactivate AsignaturaService
     loop Para cada asignatura
-        Service -> Service: asignatura.getAlumnos()
         loop Para cada alumno de la asignatura
-            Service -> Service: alumno.getGrado().getId().equals(gradoId)?
             alt Alumno pertenece al grado
-                Service -> AlumnoService: desmatricularAlumnoDeAsignatura(alumnoId, asignaturaId)
+                AsignaturaService -> AlumnoService: desmatricularAlumnoDeAsignatura(alumnoId, asignaturaId)
                 activate AlumnoService
                 AlumnoService -> DB: UPDATE alumno_asignatura\n(remover relación)
-                AlumnoService --> Service: void
+                AlumnoService --> AsignaturaService: void
+                deactivate AlumnoService
+                AsignaturaService -> AlumnoService: quitarAlumnoDeGrado(gradoId, alumnoId)
+                activate AlumnoService
+                AlumnoService -> DB: UPDATE alumnos SET grado_id = null\n(donde grado_id = ?)
+                AlumnoService --> AsignaturaService: void
                 deactivate AlumnoService
             end
         end
-        Service -> AsignaturaService: eliminarRelacionGrado(gradoId, asignaturaId)
-        activate AsignaturaService
+        AsignaturaService -> AsignaturaService: eliminarRelacionGrado(gradoId, asignaturaId)
         AsignaturaService -> DB: UPDATE asignatura_grado\n(remover relación)
         AsignaturaService --> Service: void
         deactivate AsignaturaService
