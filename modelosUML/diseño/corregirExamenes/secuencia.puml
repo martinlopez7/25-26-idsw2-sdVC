@@ -1,0 +1,108 @@
+@startuml
+title Diagrama de Secuencia - Corregir Exámenes (Simplificado) - Spring Boot + React
+
+actor "Docente" as Teacher
+participant "Frontend (React)" as FE
+participant "ExamenesController" as Controller
+participant "ExamenService" as Service
+participant "ExamenSessionService" as SessionService
+participant "CorreccionService" as CorreccionService
+database "HttpSession" as Session
+
+== FLUJO PRINCIPAL: CORREGIR EXÁMENES ==
+
+Teacher -> FE: Clic en "Corregir Exámenes"
+activate FE
+
+FE -> Controller: GET /api/examenes/asignados
+activate Controller
+Controller -> Service: obtenerExamenesAsignados()
+activate Service
+Service -> SessionService: obtenerExamenesAsignados()
+activate SessionService
+SessionService -> Session: getAttribute("plantillasExamenes")
+Session --> SessionService: List<PlantillaExamen>
+SessionService --> Service: List<PlantillaExamenDTO>
+deactivate SessionService
+Service --> Controller: List<ExamenAsignadoDTO>
+deactivate Service
+Controller --> FE: 200 OK (Lista de exámenes asignados)
+deactivate Controller
+FE --> Teacher: Mostrar exámenes pendientes de corrección\n(alumno, clave corrección, fecha)
+
+alt NO HAY EXÁMENES EN SESIÓN
+    FE --> Teacher: Mensaje "No hay exámenes\npendientes de corrección"
+end
+
+Teacher -> FE: Selecciona PDFs con exámenes resueltos
+FE -> FE: Validar formato PDF
+
+Teacher -> FE: Clic en "Corregir"
+FE -> Controller: POST /api/examenes/corregir\n(multipart/form-data: pdfs[])
+activate Controller
+Controller -> Service: procesarCorreccion(pdfs)
+activate Service
+
+loop PARA CADA PDF
+    Service -> CorreccionService: procesarPdf(pdf)
+    activate CorreccionService
+    CorreccionService --> Service: ResultadoCorreccion
+    deactivate CorreccionService
+
+    Service -> Service: generarNotaAleatoria()
+    activate Service
+    Service --> Service: nota : int (1-10)
+    deactivate Service
+
+    Service -> SessionService: marcarComoCorregido(plantillaId)
+    activate SessionService
+    SessionService -> Session: actualizar attribute
+    SessionService --> Service: void
+    deactivate SessionService
+end
+
+Service --> Controller: List<ResultadoCorreccionDTO>
+deactivate Service
+Controller --> FE: 200 OK (resultados con notas)
+deactivate Controller
+FE --> Teacher: Mostrar resultados\n(alumno, nota 1-10)
+
+note right of CorreccionService
+**Corrección simplificada:**
+- Procesa el PDF (simulado)
+- Asigna nota aleatoria 1-10
+- No hace reconocimiento de imagen
+- No compara respuestas con clave
+end note
+
+== FLUJO ALTERNATIVO: LIMPIAR SESIÓN ==
+
+Teacher -> FE: Clic en "Limpiar y salir"
+FE -> Controller: DELETE /api/examenes/asignados
+activate Controller
+Controller -> Service: limpiarExamenesAsignados()
+activate Service
+Service -> SessionService: limpiarPlantillas()
+activate SessionService
+SessionService -> Session: removeAttribute("plantillasExamenes")
+Session --> SessionService: void
+deactivate SessionService
+Service --> Controller: void
+deactivate Service
+Controller --> FE: 204 No Content
+deactivate Controller
+FE --> Teacher: Redirigir a menú
+
+== FLUJO ALTERNATIVO: CANCELAR ==
+
+Teacher -> FE: Clic en "Cancelar"
+FE --> Teacher: Volver a SISTEMA_DISPONIBLE\nsin modificar sesión
+
+alt No hay exámenes en sesión
+    Controller --> FE: 400 Bad Request
+    FE --> Teacher: Mostrar error
+end
+
+deactivate FE
+
+@enduml

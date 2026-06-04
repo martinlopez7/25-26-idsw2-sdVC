@@ -1,0 +1,142 @@
+@startuml
+title Diagrama de Secuencia - Asignar Exámenes (Ephemeral) - Spring Boot + React
+
+actor "Docente" as Teacher
+participant "Frontend (React)" as FE
+participant "ExamenesController" as Controller
+participant "ExamenService" as Service
+participant "AlumnoService" as AlumnoService
+participant "ExamenSessionService" as SessionService
+participant "PdfGenerationService" as PdfService
+database "HttpSession" as Session
+
+== FLUJO PRINCIPAL: ASIGNAR Y DESCARGAR ==
+
+Teacher -> FE: Accede a asignarExamenes()
+activate FE
+
+FE -> Controller: GET /api/examenes/plantillas
+activate Controller
+Controller -> SessionService: obtenerPlantillas()
+activate SessionService
+SessionService -> Session: getAttribute("plantillasExamenes")
+Session --> SessionService: List<PlantillaExamen>
+deactivate SessionService
+Controller --> FE: List<PlantillaExamenDTO>
+deactivate Controller
+FE --> Teacher: Mostrar plantillas generadas
+
+FE -> Controller: GET /api/examenes/alumnos-por-grado?asignaturaId={id}
+activate Controller
+Controller -> Service: obtenerAlumnosPorGrado(asignaturaId)
+activate Service
+Service -> AlumnoService: obtenerAlumnosPorGrado(asignaturaId, docenteId)
+activate AlumnoService
+AlumnoService -> SessionService: (solo lectura, no necesita sesión)
+deactivate AlumnoService
+Service --> Controller: Map<GradoDTO, List<AlumnoDTO>>
+deactivate Service
+Controller --> FE: Map<GradoDTO, List<AlumnoDTO>>
+deactivate Controller
+FE --> Teacher: Mostrar formulario con alumnos por grado
+
+loop PARA CADA ASIGNACIÓN
+    Teacher -> FE: Selecciona plantilla y alumno destinatario
+    FE -> Controller: POST /api/examenes/asignar\n(AsignarRequest: plantillaId, alumnoId)
+    activate Controller
+    Controller -> Service: asignarExamen(plantillaId, alumnoId)
+    activate Service
+
+    Service -> SessionService: obtenerPlantilla(plantillaId)
+    activate SessionService
+    SessionService -> Session: getAttribute("plantillasExamenes")
+    Session --> SessionService: List<PlantillaExamen>
+    SessionService --> Service: PlantillaExamen
+    deactivate SessionService
+
+    Service -> Service: generarClaveCorreccion(plantilla, alumnoId)
+    activate Service
+    note right
+    **Clave de corrección:**
+    hashMD5(pregunta1.id + respuestaCorrecta1 +
+            pregunta2.id + respuestaCorrecta2 + ... +
+            alumno.id)
+    end note
+    Service --> Service: claveCorreccion : String
+    deactivate Service
+
+    Service -> SessionService: actualizarPlantilla(plantillaActualizada)
+    activate SessionService
+    SessionService -> Session: setAttribute("plantillasExamenes", plantillas)
+    Session --> SessionService: void
+    deactivate SessionService
+
+    Service --> Controller: PlantillaAsignadaDTO
+    deactivate Service
+    Controller --> FE: 200 OK
+    deactivate Controller
+    FE --> Teacher: Mostrar confirmación de asignación
+end
+
+Teacher -> FE: Clic en "Descargar PDFs"
+FE -> Controller: GET /api/examenes/asignados/pdf-lote
+activate Controller
+Controller -> Service: generarTodosLosPdfs()
+activate Service
+
+loop PARA CADA PLANTILLA ASIGNADA
+    Service -> SessionService: obtenerPlantilla(plantillaId)
+    activate SessionService
+    SessionService -> Session: getAttribute("plantillasExamenes")
+    Session --> SessionService: PlantillaExamen
+    deactivate SessionService
+
+    Service -> PdfService: generarPdf(plantilla, alumno, claveCorreccion)
+    activate PdfService
+    PdfService --> Service: byte[] pdf
+    deactivate PdfService
+
+    Service -> Service: agregarAZip(pdf, nombreFichero)
+end
+
+Service --> Controller: byte[] zip
+deactivate Service
+Controller --> FE: 200 OK (application/zip)
+deactivate Controller
+
+FE -> FE: Trigger descarga del ZIP
+FE --> Teacher: Descarga iniciada
+
+note right of Service
+**Arquitectura efímera:**
+- Plantillas en HttpSession
+- Clave de corrección se genera aquí (no en generarExamenes)
+- PDF contiene clave para corrección posterior
+- Al finalizar, plantillas quedan en sesión para corregirExamenes()
+end note
+
+== FLUJO ALTERNATIVO: CANCELAR ==
+
+Teacher -> FE: Clic en "Cancelar"
+FE -> Controller: DELETE /api/examenes/plantillas
+activate Controller
+Controller -> SessionService: limpiarPlantillas()
+activate SessionService
+SessionService -> Session: removeAttribute("plantillasExamenes")
+Session --> SessionService: void
+deactivate SessionService
+Controller --> FE: 204 No Content
+deactivate Controller
+FE --> Teacher: Redirigir a menú
+
+alt Datos Inválidos
+    Controller --> FE: 400 Bad Request
+    FE --> Teacher: Mostrar errores de validación
+else Alumno ya asignado
+    Controller --> FE: 409 Conflict
+    FE --> Teacher: Mostrar error "Este alumno ya tiene\nun examen asignado"
+end
+
+deactivate FE
+
+@enduml

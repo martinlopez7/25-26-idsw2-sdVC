@@ -1314,6 +1314,48 @@ Errores corregidos durante la sesión:
 
 El diseño contempla la arquitectura efímera del sistema: los exámenes no se persisten en BD, solo existen en memoria (HttpSession) durante la generación. El diseño initial fue modificado para ser más cohesivo: ExamenService no accede a repositorios directamente, sino que collaborate con AsignaturaService, PreguntaService y ExamenSessionService.
 
-**Enlace:** [session-ses_172f.md](conversations/session-ses_172f.md)
+**Enlace:** [session-ses_16e8.md](conversations/session-ses_16e8.md)
 
 **Decisión:** Se aceptó el diseño de generarExamenes
+
+## [04/06/2026][09:51] Diseño de asignarExamenes()
+
+**Prompt:** empezar → ahora quiero que diseñes el caso de uso asignarExamenes basandote en lo que hemos hablado
+
+**Resultado:** Se realizó el diseño MVC de asignarExamenes() generando:
+- documents/diseño/asignarExamenes/README.md
+- modelosUML/diseño/asignarExamenes/secuencia.puml
+
+El diseño es coherente con generarExamenes(): recibe plantillas de la sesión, asigna alumnos, genera clave de corrección (hash con preguntas + respuestas + alumno), y permite descarga de PDFs. La colaboración entre servicios es cohesiva: ExamenService orquesta y delega en AlumnoService, ExamenSessionService y PdfGenerationService.
+
+**Enlace:** [session-ses_16e8.md](conversations/session-ses_16e8.md)
+
+**Decisión:** Se aceptó el diseño de asignarExamenes
+
+## [04/06/2026][09:57] Diseño de cancelarGeneracion()
+
+**Prompt:** empezar → diseña el caso de uso cancelarGeneracion
+
+**Resultado:** Se realizó el diseño MVC de cancelarGeneracion() generando:
+- documents/diseño/cancelarGeneracion/README.md
+- modelosUML/diseño/cancelarGeneracion/secuencia.puml
+
+El diseño simplemente limpia las plantillas de la HttpSession via ExamenSessionService.limpiarPlantillas(). Endpoint DELETE /api/examenes/generar/cancelar → 204 No Content.
+
+**Enlace:** [session-ses_16e8.md](conversations/session-ses_16e8.md)
+
+**Decisión:** Se aceptó el diseño de cancelarGeneracion
+
+## [04/06/2026][10:02] Diseño de corregirExamenes()
+
+**Prompt:** empezar → ahora diseña el caso de uso corregirExamenes
+
+**Resultado:** Se realizó el diseño MVC de corregirExamenes() generando:
+- documents/diseño/corregirExamenes/README.md
+- modelosUML/diseño/corregirExamenes/secuencia.puml
+
+El diseño sigue la corrección simplificada indicada por el profesor: el docente sube PDFs resueltos y el sistema devuelve notas aleatorias del 1 al 10. Usa ExamenSessionService para recuperar exámenes de la sesión y CorreccionService para procesar y generar notas.
+
+**Enlace:** [session-ses_16e8.md](conversations/session-ses_16e8.md)
+
+**Decisión:** Se aceptó el diseño de corregirExamenes

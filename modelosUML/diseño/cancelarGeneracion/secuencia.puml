@@ -1,0 +1,43 @@
+@startuml
+title Diagrama de Secuencia - Cancelar Generación - Spring Boot + React
+
+actor "Docente" as Teacher
+participant "Frontend (React)" as FE
+participant "ExamenesController" as Controller
+participant "ExamenService" as Service
+participant "ExamenSessionService" as SessionService
+database "HttpSession" as Session
+
+Teacher -> FE: Clic en "Cancelar Generación"
+activate FE
+FE --> Teacher: Mostrar diálogo de confirmación\n"¿Desea cancelar la generación?"
+activate Teacher
+
+alt CONFIRMA CANCELACIÓN
+
+    Teacher -> FE: Confirmar cancelación
+    FE -> Controller: DELETE /api/examenes/generar/cancelar\n(Header: Authorization: Bearer <token>)
+    activate Controller
+    Controller -> Service: cancelarGeneracion()
+    activate Service
+    Service -> SessionService: limpiarPlantillas()
+    activate SessionService
+    SessionService -> Session: removeAttribute("plantillasExamenes")
+    Session --> SessionService: void
+    deactivate SessionService
+    Service --> Controller: void
+    deactivate Service
+    Controller --> FE: 204 No Content
+    deactivate Controller
+    FE --> Teacher: Redirigir según contexto\n(SISTEMA_DISPONIBLE o ASIGNATURA_ABIERTO)
+
+else DENIEGA CANCELACIÓN
+
+    Teacher -> FE: Denegar cancelación
+    FE --> Teacher: Mantener estado actual\n(EXAMENES_GENERADOS o EXAMENES_GENERADOS_CONTEXTUALES)
+
+end
+
+deactivate FE
+
+@enduml
