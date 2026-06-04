@@ -29,6 +29,7 @@ public class PlantillaExamen implements Serializable {
     private String claveCorreccion;
     private Boolean asignada;
     private LocalDateTime fechaGeneracion;
+    private Long gradoId;
 
     @Data
     @NoArgsConstructor
@@ -59,7 +60,7 @@ public class PlantillaExamen implements Serializable {
     }
 
     public static PlantillaExamen crear(Long asignaturaId, String tituloAsignatura, EvaluacionExamen evaluacion,
-                                         List<PreguntaSeleccionada> preguntas) {
+                                         List<PreguntaSeleccionada> preguntas, Long gradoId) {
         PlantillaExamen plantilla = new PlantillaExamen();
         plantilla.setId(UUID.randomUUID().toString());
         plantilla.setAsignaturaId(asignaturaId);
@@ -69,6 +70,7 @@ public class PlantillaExamen implements Serializable {
         plantilla.setClavePendiente(true);
         plantilla.setAsignada(false);
         plantilla.setFechaGeneracion(LocalDateTime.now());
+        plantilla.setGradoId(gradoId);
         return plantilla;
     }
 }

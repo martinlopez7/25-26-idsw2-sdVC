@@ -14,13 +14,19 @@ public class AlumnoDTO {
     private String nombre;
     private String apellidos;
     private String dni;
+    private Long gradoId;
+    private String gradoNombre;
 
     public static AlumnoDTO fromEntity(Alumno alumno) {
-        return new AlumnoDTO(
-                alumno.getId(),
-                alumno.getNombre(),
-                alumno.getApellidos(),
-                alumno.getDni()
-        );
+        AlumnoDTO dto = new AlumnoDTO();
+        dto.setId(alumno.getId());
+        dto.setNombre(alumno.getNombre());
+        dto.setApellidos(alumno.getApellidos());
+        dto.setDni(alumno.getDni());
+        if (alumno.getGrado() != null) {
+            dto.setGradoId(alumno.getGrado().getId());
+            dto.setGradoNombre(alumno.getGrado().getTitulo());
+        }
+        return dto;
     }
 }

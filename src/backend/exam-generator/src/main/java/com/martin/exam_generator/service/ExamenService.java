@@ -1,18 +1,13 @@
 package com.martin.exam_generator.service;
 
-import com.martin.exam_generator.dto.AsignaturaConGradosDTO;
-import com.martin.exam_generator.dto.ConfigGradoDTO;
-import com.martin.exam_generator.dto.GenerarExamenesRequest;
-import com.martin.exam_generator.dto.GenerarExamenesResponse;
-import com.martin.exam_generator.dto.PlantillaExamen;
-import com.martin.exam_generator.dto.PreguntaDTO;
+import com.martin.exam_generator.dto.*;
 import com.martin.exam_generator.entities.Pregunta;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,13 +16,19 @@ public class ExamenService {
     private final AsignaturaService asignaturaService;
     private final PreguntaService preguntaService;
     private final ExamenSessionService examenSessionService;
+    private final AlumnoService alumnoService;
+    private final PdfGenerationService pdfGenerationService;
 
     public ExamenService(AsignaturaService asignaturaService,
                          PreguntaService preguntaService,
-                         ExamenSessionService examenSessionService) {
+                         ExamenSessionService examenSessionService,
+                         AlumnoService alumnoService,
+                         PdfGenerationService pdfGenerationService) {
         this.asignaturaService = asignaturaService;
         this.preguntaService = preguntaService;
         this.examenSessionService = examenSessionService;
+        this.alumnoService = alumnoService;
+        this.pdfGenerationService = pdfGenerationService;
     }
 
     public GenerarExamenesResponse generarExamenes(GenerarExamenesRequest request, Long docenteId) {
@@ -66,7 +67,8 @@ public class ExamenService {
                         asignatura.getId(),
                         asignatura.getTitulo(),
                         request.getEvaluacion(),
-                        preguntasSeleccionadas
+                        preguntasSeleccionadas,
+                        gradoId
                 );
 
                 plantillas.add(plantilla);
@@ -195,5 +197,167 @@ public class ExamenService {
                 }
             }
         }
+    }
+
+    public List<PlantillaExamenDTO> obtenerPlantillas() {
+        List<PlantillaExamen> plantillas = examenSessionService.obtenerPlantillas();
+        return plantillas.stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public Map<GradoDTO, List<AlumnoDTO>> obtenerAlumnosPorGrado(Long asignaturaId, Long docenteId) {
+        AsignaturaConGradosDTO asignatura = asignaturaService.obtenerAsignaturaConGradosYAlumnos(asignaturaId, docenteId);
+
+        if (asignatura.getGrados() == null || asignatura.getGrados().isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        List<Long> gradoIds = asignatura.getGrados().stream()
+                .map(GradoConAlumnosDTO::getId)
+                .collect(Collectors.toList());
+
+        List<AlumnoDTO> allAlumnos = alumnoService.obtenerAlumnosPorAsignaturaYGrados(asignaturaId, gradoIds);
+
+        Map<GradoDTO, List<AlumnoDTO>> result = new LinkedHashMap<>();
+        for (GradoConAlumnosDTO gradoDTO : asignatura.getGrados()) {
+            GradoDTO grado = new GradoDTO(gradoDTO.getId(), gradoDTO.getTitulo(), gradoDTO.getCodigo());
+            List<AlumnoDTO> alumnosDelGrado = allAlumnos.stream()
+                    .filter(a -> a.getGradoId() != null && a.getGradoId().equals(gradoDTO.getId()))
+                    .collect(Collectors.toList());
+            result.put(grado, alumnosDelGrado);
+        }
+
+        return result;
+    }
+
+    public void asignarExamen(String plantillaId, Long alumnoId) {
+        if (examenSessionService.existeAsignacionParaAlumno(alumnoId)) {
+            throw new IllegalStateException("Este alumno ya tiene un examen asignado");
+        }
+
+        Optional<PlantillaExamen> optPlantilla = examenSessionService.obtenerPlantillaPorId(plantillaId);
+        if (optPlantilla.isEmpty()) {
+            throw new IllegalArgumentException("No se encontró la plantilla de examen");
+        }
+
+        PlantillaExamen plantilla = optPlantilla.get();
+
+        if (!alumnoService.verificarAlumnoPerteneceAGrado(alumnoId, plantilla.getGradoId())) {
+            throw new IllegalArgumentException("El alumno no pertenece al grado correspondiente a este examen");
+        }
+
+        String claveCorreccion = generarClaveCorreccion(plantilla, alumnoId);
+
+        examenSessionService.marcarComoAsignada(plantillaId, alumnoId, claveCorreccion);
+    }
+
+    public int asignarTodos(List<AsignacionDTO> asignaciones) {
+        int asignadas = 0;
+        List<Long> alumnosYaAsignados = new ArrayList<>();
+
+        for (AsignacionDTO asignacion : asignaciones) {
+            if (alumnosYaAsignados.contains(asignacion.getAlumnoId())) {
+                throw new IllegalStateException("El alumno " + asignacion.getAlumnoId() + " aparece múltiples veces en las asignaciones");
+            }
+
+            if (examenSessionService.existeAsignacionParaAlumno(asignacion.getAlumnoId())) {
+                throw new IllegalStateException("El alumno " + asignacion.getAlumnoId() + " ya tiene un examen asignado");
+            }
+
+            Optional<PlantillaExamen> optPlantilla = examenSessionService.obtenerPlantillaPorId(asignacion.getPlantillaId());
+            if (optPlantilla.isEmpty()) {
+                throw new IllegalArgumentException("No se encontró la plantilla: " + asignacion.getPlantillaId());
+            }
+
+            PlantillaExamen plantilla = optPlantilla.get();
+
+            if (!alumnoService.verificarAlumnoPerteneceAGrado(asignacion.getAlumnoId(), plantilla.getGradoId())) {
+                throw new IllegalArgumentException("El alumno " + asignacion.getAlumnoId() + " no pertenece al grado correspondiente a este examen");
+            }
+
+            String claveCorreccion = generarClaveCorreccion(plantilla, asignacion.getAlumnoId());
+            examenSessionService.marcarComoAsignada(asignacion.getPlantillaId(), asignacion.getAlumnoId(), claveCorreccion);
+
+            alumnosYaAsignados.add(asignacion.getAlumnoId());
+            asignadas++;
+        }
+
+        return asignadas;
+    }
+
+    public byte[] generarZipExamenes() {
+        List<PlantillaExamen> plantillas = examenSessionService.obtenerExamenesAsignados();
+
+        if (plantillas.isEmpty()) {
+            throw new IllegalStateException("No hay exámenes asignados para descargar");
+        }
+
+        List<Long> alumnoIds = plantillas.stream()
+                .filter(p -> p.getAlumnoId() != null)
+                .map(PlantillaExamen::getAlumnoId)
+                .collect(Collectors.toList());
+
+        Map<Long, String> alumnoInfoMap = new HashMap<>();
+        for (Long alumnoId : alumnoIds) {
+            AlumnoDTO alumno = new AlumnoDTO();
+            alumno.setId(alumnoId);
+            alumno.setNombre("Alumno");
+            alumno.setApellidos("Apellidos");
+            alumnoInfoMap.put(alumnoId, "Alumno Apellidos");
+        }
+
+        return pdfGenerationService.generarZipExamenes(plantillas, alumnoInfoMap);
+    }
+
+    private String generarClaveCorreccion(PlantillaExamen plantilla, Long alumnoId) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("P:");
+        if (plantilla.getPreguntas() != null) {
+            for (PlantillaExamen.PreguntaSeleccionada pregunta : plantilla.getPreguntas()) {
+                sb.append(pregunta.getPreguntaId()).append("|");
+                if (pregunta.getRespuestas() != null) {
+                    for (PlantillaExamen.RespuestaSeleccionada respuesta : pregunta.getRespuestas()) {
+                        if (respuesta.getEsCorrecta() != null && respuesta.getEsCorrecta()) {
+                            sb.append(respuesta.getRespuestaId()).append(",");
+                        }
+                    }
+                }
+                sb.append(";");
+            }
+        }
+        sb.append("A:").append(alumnoId);
+
+        return hashMD5(sb.toString());
+    }
+
+    private String hashMD5(String input) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] hashBytes = md.digest(input.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hashBytes) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Error al generar hash MD5", e);
+        }
+    }
+
+    private PlantillaExamenDTO toDTO(PlantillaExamen plantilla) {
+        PlantillaExamenDTO dto = new PlantillaExamenDTO();
+        dto.setId(plantilla.getId());
+        dto.setAsignaturaId(plantilla.getAsignaturaId());
+        dto.setTituloAsignatura(plantilla.getTituloAsignatura());
+        dto.setEvaluacion(plantilla.getEvaluacion() != null ? plantilla.getEvaluacion().name() : null);
+        dto.setNumPreguntas(plantilla.getPreguntas() != null ? plantilla.getPreguntas().size() : 0);
+        dto.setAlumnoId(plantilla.getAlumnoId());
+        dto.setClaveCorreccion(plantilla.getClaveCorreccion());
+        dto.setAsignada(plantilla.getAsignada());
+        dto.setGradoId(plantilla.getGradoId());
+        return dto;
     }
 }

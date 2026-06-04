@@ -22,7 +22,10 @@ public class ExamenSessionService {
 
     @SuppressWarnings("unchecked")
     public List<PlantillaExamen> obtenerPlantillas() {
+        System.out.println("Session ID: " + httpSession.getId());
+        System.out.println("Session isNew: " + httpSession.isNew());
         List<PlantillaExamen> plantillas = (List<PlantillaExamen>) httpSession.getAttribute(PLANTILLAS_EXAMENES_KEY);
+        System.out.println("Plantillas encontradas: " + (plantillas != null ? plantillas.size() : 0));
         return plantillas != null ? new ArrayList<>(plantillas) : new ArrayList<>();
     }
 
@@ -65,5 +68,18 @@ public class ExamenSessionService {
             plantilla.setAsignada(true);
             actualizarPlantilla(plantilla);
         });
+    }
+
+    public boolean existeAsignacionParaAlumno(Long alumnoId) {
+        return obtenerPlantillas().stream()
+                .anyMatch(p -> p.getAlumnoId() != null && p.getAlumnoId().equals(alumnoId));
+    }
+
+    public Long obtenerAsignaturaId() {
+        List<PlantillaExamen> plantillas = obtenerPlantillas();
+        if (plantillas.isEmpty()) {
+            return null;
+        }
+        return plantillas.get(0).getAsignaturaId();
     }
 }

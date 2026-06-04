@@ -1369,3 +1369,13 @@ El diseño sigue la corrección simplificada indicada por el profesor: el docent
 **Enlace:** [session-ses_16e9.md](conversations/session-ses_16e9.md)
 
 **Decisión:** La implementación de generarExamenes() se aceptó.
+
+## [04/06/2026][15:55] Implementación de asignarExamenes() 
+
+**Prompt:** empezar → revisar diseño e implementación de generarExamenes → verificar diseño de asignarExamenes → planificar implementación → empieza
+
+**Resultado:** Se implementó completamente el caso de uso asignarExamenes() 
+
+**Enlace:** [session-ses_16d6.md](conversations/session-ses_16d6.md)
+
+**Decisión:** La implementación de asignarExamenes() se aceptó tras corregir los errores de compilación del backend y añadir la restricción de que los exámenes de un grado solo pueden asignarse a alumnos de ese grado.

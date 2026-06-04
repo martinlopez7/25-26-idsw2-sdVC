@@ -142,6 +142,20 @@ public class AlumnoService {
                 .collect(Collectors.toList());
     }
 
+    public List<AlumnoDTO> obtenerAlumnosPorAsignaturaYGrado(Long asignaturaId, Long gradoId) {
+        List<Alumno> alumnos = alumnoRepository.findByAsignaturaIdAndGradoId(asignaturaId, gradoId);
+        return alumnos.stream()
+                .map(AlumnoDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public List<AlumnoDTO> obtenerAlumnosPorAsignaturaYGrados(Long asignaturaId, List<Long> gradoIds) {
+        List<Alumno> alumnos = alumnoRepository.findByAsignaturaIdAndGradoIdIn(asignaturaId, gradoIds);
+        return alumnos.stream()
+                .map(AlumnoDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
     public int contarAlumnosDeGradoEnAsignatura(Long gradoId, Long asignaturaId) {
         return alumnoRepository.countByGradoIdAndAsignaturaId(gradoId, asignaturaId);
     }

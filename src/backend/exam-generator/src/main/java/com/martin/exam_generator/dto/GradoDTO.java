@@ -18,6 +18,13 @@ public class GradoDTO {
     private String codigo;
     private List<AlumnoDTO> alumnos = new ArrayList<>();
 
+    public GradoDTO(Long id, String titulo, String codigo) {
+        this.id = id;
+        this.titulo = titulo;
+        this.codigo = codigo;
+        this.alumnos = new ArrayList<>();
+    }
+
     public static GradoDTO fromEntity(Grado grado) {
         return new GradoDTO(
                 grado.getId(),
