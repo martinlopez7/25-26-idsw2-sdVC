@@ -2,12 +2,14 @@ package com.martin.exam_generator.controller;
 
 import com.martin.exam_generator.dto.*;
 import com.martin.exam_generator.security.JwtTokenProvider;
+import com.martin.exam_generator.service.CorreccionService;
 import com.martin.exam_generator.service.ExamenService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -18,10 +20,12 @@ import java.util.stream.Collectors;
 public class ExamenesController {
 
     private final ExamenService examenService;
+    private final CorreccionService correccionService;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public ExamenesController(ExamenService examenService, JwtTokenProvider jwtTokenProvider) {
+    public ExamenesController(ExamenService examenService, CorreccionService correccionService, JwtTokenProvider jwtTokenProvider) {
         this.examenService = examenService;
+        this.correccionService = correccionService;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
@@ -141,5 +145,27 @@ public class ExamenesController {
 
         examenService.cancelarGeneracion();
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/corregir")
+    public ResponseEntity<?> corregirExamenes(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestParam("archivo") MultipartFile archivo) {
+
+        if (archivo.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "El archivo PDF no puede estar vacío"));
+        }
+
+        String contentType = archivo.getContentType();
+        if (contentType == null || !contentType.equals("application/pdf")) {
+            return ResponseEntity.badRequest().body(Map.of("error", "El archivo debe ser un PDF"));
+        }
+
+        try {
+            List<ResultadoCorreccionDTO> resultados = correccionService.procesarPdf(archivo);
+            return ResponseEntity.ok(resultados);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
     }
 }

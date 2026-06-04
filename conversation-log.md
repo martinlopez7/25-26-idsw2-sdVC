@@ -1383,3 +1383,15 @@ El diseño sigue la corrección simplificada indicada por el profesor: el docent
 ## [04/06/2026][16:23] Corrección diseño de corregirExamenes() 
 
 **Decisión:** Me he dado cuenta de que el diseño del caso de uso corregirExamenes es demasiado complejo. Tal y como acordé con Masías este caso de uso se debía limitar a que el docente sube los examenes (archivo PDF en el que se asume que cada página es un examen realizado) y el sistema simplemente calcula una nota random del 1 al 10 para cada examen.
+
+## [04/06/2026][16:30] Implementación de corregirExamenes()
+
+**Prompt:** empezar → implementar el caso de uso corregirExamenes
+
+**Resultado:** Se implementó el caso de uso corregirExamenes() siguiendo el diseño simplificado:
+- Backend: ResultadoCorreccionDTO, CorreccionService (usa PDFBox para contar páginas y Random para nota 1-10), endpoint POST /api/examenes/corregir en ExamenesController
+- Frontend: correccionService.ts, CorregirExamenesComponent.tsx (formulario de subida de PDF y tabla de resultados), tipos/index.ts, rutas en App.tsx
+
+**Enlace:** [session-ses_16d1.md](conversations/session-ses_16d1.md)
+
+**Decisión:** La implementación de corregirExamenes() se aceptó tras las correcciones de imports (PDFBox en lugar de OpenPDF).
