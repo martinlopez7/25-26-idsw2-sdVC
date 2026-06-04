@@ -22,6 +22,8 @@ public interface PreguntaRepository extends JpaRepository<Pregunta, Long> {
 
     List<Pregunta> findByAsignaturaId(Long asignaturaId);
 
+    List<Pregunta> findByAsignaturaIdAndTemaIn(Long asignaturaId, List<String> temas);
+
     @Query("SELECT p FROM Pregunta p WHERE p.asignaturaId = :asignaturaId AND " +
             "(LOWER(p.enunciado) LIKE LOWER(CONCAT('%', :criterio, '%')) OR " +
             "LOWER(p.tema) LIKE LOWER(CONCAT('%', :criterio, '%')) OR " +

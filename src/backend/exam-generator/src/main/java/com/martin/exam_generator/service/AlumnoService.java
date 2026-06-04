@@ -142,6 +142,10 @@ public class AlumnoService {
                 .collect(Collectors.toList());
     }
 
+    public int contarAlumnosDeGradoEnAsignatura(Long gradoId, Long asignaturaId) {
+        return alumnoRepository.countByGradoIdAndAsignaturaId(gradoId, asignaturaId);
+    }
+
     @Transactional
     public void matricularAlumnoEnAsignatura(Long alumnoId, Long asignaturaId) {
         Alumno alumno = alumnoRepository.findById(alumnoId)

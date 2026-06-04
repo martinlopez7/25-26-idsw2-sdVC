@@ -38,5 +38,8 @@ public interface AlumnoRepository extends JpaRepository<Alumno, Long> {
                                                    @Param("asignaturaId") Long asignaturaId,
                                                    @Param("gradoIds") List<Long> gradoIds);
 
+    @Query("SELECT COUNT(a) FROM Alumno a JOIN a.asignaturas asig WHERE a.grado.id = :gradoId AND asig.id = :asignaturaId")
+    int countByGradoIdAndAsignaturaId(@Param("gradoId") Long gradoId, @Param("asignaturaId") Long asignaturaId);
+
     void deleteByDocenteId(Long docenteId);
 }

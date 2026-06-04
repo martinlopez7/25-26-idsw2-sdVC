@@ -1359,3 +1359,13 @@ El diseño sigue la corrección simplificada indicada por el profesor: el docent
 **Enlace:** [session-ses_16e8.md](conversations/session-ses_16e8.md)
 
 **Decisión:** Se aceptó el diseño de corregirExamenes
+
+## [04/06/2026][10:45] Implementación de generarExamenes() y cancelarGeneracion()
+
+**Prompt:** implementa generarExamenes y cancelarGeneracion
+
+**Resultado:** Se implementaron los casos de uso generarExamenes y cancelarGeneracion:
+
+**Enlace:** [session-ses_16e9.md](conversations/session-ses_16e9.md)
+
+**Decisión:** La implementación de generarExamenes() se aceptó.

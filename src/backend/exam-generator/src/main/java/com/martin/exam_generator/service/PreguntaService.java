@@ -10,7 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +39,23 @@ public class PreguntaService {
 
         Pregunta guardada = preguntaRepository.save(pregunta);
         return PreguntaDTO.fromEntity(guardada);
+    }
+
+    public List<PreguntaDTO> obtenerPreguntasPorAsignaturaYTemas(Long asignaturaId, List<String> temas) {
+        List<Pregunta> preguntas = preguntaRepository.findByAsignaturaIdAndTemaIn(asignaturaId, temas);
+
+        List<PreguntaDTO> dtos = new ArrayList<>();
+        for (Pregunta pregunta : preguntas) {
+            if (pregunta.getHabilitada()) {
+                dtos.add(PreguntaDTO.fromEntity(pregunta));
+            }
+        }
+        return dtos;
+    }
+
+    public Map<String, List<PreguntaDTO>> clasificarPreguntasPorDificultad(List<PreguntaDTO> preguntasDTO) {
+        return preguntasDTO.stream()
+                .collect(Collectors.groupingBy(PreguntaDTO::getDificultad));
     }
 
     public List<PreguntaDTO> obtenerPreguntasDelDocente(Long docenteId) {

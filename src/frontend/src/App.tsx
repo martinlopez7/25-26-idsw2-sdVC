@@ -26,6 +26,8 @@ import RespuestaFormComponent from './components/respuestas/RespuestaFormCompone
 import EliminarRespuestaComponent from './components/respuestas/EliminarRespuestaComponent';
 import ExportarConfiguracionComponent from './components/configuracion/ExportarConfiguracionComponent';
 import ImportarConfiguracionComponent from './components/configuracion/ImportarConfiguracionComponent';
+import GenerarExamenesComponent from './components/examenes/GenerarExamenesComponent';
+import AsignarExamenesComponent from './components/examenes/AsignarExamenesComponent';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth();
@@ -76,6 +78,8 @@ function AppRoutes() {
       <Route path="/respuestas/eliminar/:id" element={<ProtectedRoute><EliminarRespuestaComponent /></ProtectedRoute>} />
       <Route path="/configuracion/exportar" element={<ProtectedRoute><ExportarConfiguracionComponent /></ProtectedRoute>} />
       <Route path="/configuracion/importar" element={<ProtectedRoute><ImportarConfiguracionComponent /></ProtectedRoute>} />
+      <Route path="/examenes/generar" element={<ProtectedRoute><GenerarExamenesComponent /></ProtectedRoute>} />
+      <Route path="/examenes/asignar" element={<ProtectedRoute><AsignarExamenesComponent /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to={isAuthenticated ? (user?.tipoActor === 'ADMINISTRADOR_INSTITUCIONAL' ? "/menu-admin" : "/menu-docente") : "/login"} />} />
     </Routes>
   );

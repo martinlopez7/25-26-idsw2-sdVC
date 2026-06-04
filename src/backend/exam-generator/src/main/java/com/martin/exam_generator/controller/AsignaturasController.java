@@ -1,6 +1,7 @@
 package com.martin.exam_generator.controller;
 
 import com.martin.exam_generator.dto.AlumnoDTO;
+import com.martin.exam_generator.dto.AsignaturaConGradosDTO;
 import com.martin.exam_generator.dto.AsignaturaCreateDTO;
 import com.martin.exam_generator.dto.AsignaturaDTO;
 import com.martin.exam_generator.dto.AsignaturaUpdateDTO;
@@ -53,6 +54,21 @@ public class AsignaturasController {
 
         try {
             AsignaturaDTO asignatura = asignaturaService.obtenerAsignaturaPorId(id, docenteId);
+            return ResponseEntity.ok(asignatura);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/{id}/completa")
+    public ResponseEntity<AsignaturaConGradosDTO> obtenerAsignaturaCompleta(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable Long id) {
+
+        Long docenteId = jwtTokenProvider.extractDocenteId(authHeader.replace("Bearer ", ""));
+
+        try {
+            AsignaturaConGradosDTO asignatura = asignaturaService.obtenerAsignaturaConGradosYAlumnos(id, docenteId);
             return ResponseEntity.ok(asignatura);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();

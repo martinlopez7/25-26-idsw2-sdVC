@@ -1,9 +1,11 @@
 package com.martin.exam_generator.service;
 
 import com.martin.exam_generator.dto.AlumnoDTO;
+import com.martin.exam_generator.dto.AsignaturaConGradosDTO;
 import com.martin.exam_generator.dto.AsignaturaCreateDTO;
 import com.martin.exam_generator.dto.AsignaturaDTO;
 import com.martin.exam_generator.dto.AsignaturaUpdateDTO;
+import com.martin.exam_generator.dto.GradoConAlumnosDTO;
 import com.martin.exam_generator.dto.GradoDTO;
 import com.martin.exam_generator.entities.Alumno;
 import com.martin.exam_generator.entities.Asignatura;
@@ -231,5 +233,44 @@ public class AsignaturaService {
             }
             eliminarRelacionGrado(gradoId, asignatura.getId());
         }
+    }
+
+    public AsignaturaConGradosDTO obtenerAsignaturaConGradosYAlumnos(Long asignaturaId, Long docenteId) {
+        Asignatura asignatura = asignaturaRepository.findById(asignaturaId)
+                .orElseThrow(() -> new EntityNotFoundException("Asignatura no encontrada con id: " + asignaturaId));
+
+        if (!asignatura.getDocenteId().equals(docenteId)) {
+            throw new EntityNotFoundException("Asignatura no encontrada con id: " + asignaturaId);
+        }
+
+        AsignaturaConGradosDTO dto = new AsignaturaConGradosDTO();
+        dto.setId(asignatura.getId());
+        dto.setTitulo(asignatura.getTitulo());
+        dto.setCodigo(asignatura.getCodigo());
+        dto.setCursoAcademico(asignatura.getCursoAcademico());
+
+        if (asignatura.getGrados() != null) {
+            List<GradoConAlumnosDTO> gradosConAlumnos = new ArrayList<>();
+            for (Grado grado : asignatura.getGrados()) {
+                GradoConAlumnosDTO gradoDTO = new GradoConAlumnosDTO();
+                gradoDTO.setId(grado.getId());
+                gradoDTO.setTitulo(grado.getTitulo());
+                gradoDTO.setCodigo(grado.getCodigo());
+
+                int numAlumnos = alumnoService.contarAlumnosDeGradoEnAsignatura(grado.getId(), asignaturaId);
+                gradoDTO.setNumAlumnos(numAlumnos);
+
+                gradosConAlumnos.add(gradoDTO);
+            }
+            dto.setGrados(gradosConAlumnos);
+        }
+
+        if (asignatura.getAlumnos() != null) {
+            dto.setAlumnos(asignatura.getAlumnos().stream()
+                    .map(AlumnoDTO::fromEntity)
+                    .collect(Collectors.toList()));
+        }
+
+        return dto;
     }
 }
