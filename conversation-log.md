@@ -1379,3 +1379,7 @@ El diseño sigue la corrección simplificada indicada por el profesor: el docent
 **Enlace:** [session-ses_16d6.md](conversations/session-ses_16d6.md)
 
 **Decisión:** La implementación de asignarExamenes() se aceptó tras corregir los errores de compilación del backend y añadir la restricción de que los exámenes de un grado solo pueden asignarse a alumnos de ese grado.
+
+## [04/06/2026][16:23] Corrección diseño de corregirExamenes() 
+
+**Decisión:** Me he dado cuenta de que el diseño del caso de uso corregirExamenes es demasiado complejo. Tal y como acordé con Masías este caso de uso se debía limitar a que el docente sube los examenes (archivo PDF en el que se asume que cada página es un examen realizado) y el sistema simplemente calcula una nota random del 1 al 10 para cada examen.

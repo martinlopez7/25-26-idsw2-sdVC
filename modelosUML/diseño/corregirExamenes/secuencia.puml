@@ -4,104 +4,61 @@ title Diagrama de Secuencia - Corregir Exámenes (Simplificado) - Spring Boot + 
 actor "Docente" as Teacher
 participant "Frontend (React)" as FE
 participant "ExamenesController" as Controller
-participant "ExamenService" as Service
-participant "ExamenSessionService" as SessionService
 participant "CorreccionService" as CorreccionService
-database "HttpSession" as Session
 
 == FLUJO PRINCIPAL: CORREGIR EXÁMENES ==
 
 Teacher -> FE: Clic en "Corregir Exámenes"
 activate FE
 
-FE -> Controller: GET /api/examenes/asignados
-activate Controller
-Controller -> Service: obtenerExamenesAsignados()
-activate Service
-Service -> SessionService: obtenerExamenesAsignados()
-activate SessionService
-SessionService -> Session: getAttribute("plantillasExamenes")
-Session --> SessionService: List<PlantillaExamen>
-SessionService --> Service: List<PlantillaExamenDTO>
-deactivate SessionService
-Service --> Controller: List<ExamenAsignadoDTO>
-deactivate Service
-Controller --> FE: 200 OK (Lista de exámenes asignados)
-deactivate Controller
-FE --> Teacher: Mostrar exámenes pendientes de corrección\n(alumno, clave corrección, fecha)
+FE --> Teacher: Mostrar formulario de subida de PDF
 
-alt NO HAY EXÁMENES EN SESIÓN
-    FE --> Teacher: Mensaje "No hay exámenes\npendientes de corrección"
-end
-
-Teacher -> FE: Selecciona PDFs con exámenes resueltos
+Teacher -> FE: Selecciona PDF con exámenes resueltos\n(una página por alumno)
 FE -> FE: Validar formato PDF
 
 Teacher -> FE: Clic en "Corregir"
-FE -> Controller: POST /api/examenes/corregir\n(multipart/form-data: pdfs[])
+FE -> Controller: POST /api/examenes/corregir\n(multipart/form-data: archivo PDF)
 activate Controller
-Controller -> Service: procesarCorreccion(pdfs)
-activate Service
 
-loop PARA CADA PDF
-    Service -> CorreccionService: procesarPdf(pdf)
+Controller -> CorreccionService: procesarPdf(archivoPdf)
+activate CorreccionService
+
+CorreccionService -> CorreccionService: contarPaginas(pdf) : int
+activate CorreccionService
+CorreccionService --> CorreccionService: numPaginas : int
+deactivate CorreccionService
+
+loop PARA CADA PÁGINA (i = 1..numPaginas)
+    CorreccionService -> CorreccionService: generarNotaAleatoria() : int
     activate CorreccionService
-    CorreccionService --> Service: ResultadoCorreccion
+    CorreccionService --> CorreccionService: nota : int (1-10)
     deactivate CorreccionService
 
-    Service -> Service: generarNotaAleatoria()
-    activate Service
-    Service --> Service: nota : int (1-10)
-    deactivate Service
-
-    Service -> SessionService: marcarComoCorregido(plantillaId)
-    activate SessionService
-    SessionService -> Session: actualizar attribute
-    SessionService --> Service: void
-    deactivate SessionService
+    CorreccionService -> CorreccionService: crearResultado(i, nota)
+    activate CorreccionService
+    CorreccionService --> CorreccionService: ResultadoCorreccion
+    deactivate CorreccionService
 end
 
-Service --> Controller: List<ResultadoCorreccionDTO>
-deactivate Service
-Controller --> FE: 200 OK (resultados con notas)
+CorreccionService --> Controller: List<ResultadoCorreccionDTO>
+deactivate CorreccionService
+
+Controller --> FE: 200 OK (Lista de resultados)
 deactivate Controller
-FE --> Teacher: Mostrar resultados\n(alumno, nota 1-10)
+
+FE --> Teacher: Mostrar resultados\n(Página 1: Nota 7, Página 2: Nota 5, ...)
 
 note right of CorreccionService
 **Corrección simplificada:**
-- Procesa el PDF (simulado)
-- Asigna nota aleatoria 1-10
+- Cuenta páginas del PDF (X páginas = X alumnos)
+- Genera nota aleatoria 1-10 por página
 - No hace reconocimiento de imagen
 - No compara respuestas con clave
 end note
 
-== FLUJO ALTERNATIVO: LIMPIAR SESIÓN ==
-
-Teacher -> FE: Clic en "Limpiar y salir"
-FE -> Controller: DELETE /api/examenes/asignados
-activate Controller
-Controller -> Service: limpiarExamenesAsignados()
-activate Service
-Service -> SessionService: limpiarPlantillas()
-activate SessionService
-SessionService -> Session: removeAttribute("plantillasExamenes")
-Session --> SessionService: void
-deactivate SessionService
-Service --> Controller: void
-deactivate Service
-Controller --> FE: 204 No Content
-deactivate Controller
-FE --> Teacher: Redirigir a menú
-
-== FLUJO ALTERNATIVO: CANCELAR ==
-
-Teacher -> FE: Clic en "Cancelar"
-FE --> Teacher: Volver a SISTEMA_DISPONIBLE\nsin modificar sesión
-
-alt No hay exámenes en sesión
-    Controller --> FE: 400 Bad Request
-    FE --> Teacher: Mostrar error
-end
+Teacher -> FE: Clic en "Volver al menú"
+FE -> FE: completarGestion()
+FE --> Teacher: Volver a SISTEMA_DISPONIBLE
 
 deactivate FE
 
