@@ -1,0 +1,98 @@
+@startuml
+title Diagrama de Secuencia - Generar Exámenes (Ephemeral) - Spring Boot + React
+
+actor "Docente" as Teacher
+participant "Frontend (React)" as FE
+participant "ExamenesController" as Controller
+participant "ExamenService" as Service
+participant "AsignaturaService" as AsignaturaService
+participant "PreguntaService" as PreguntaService
+participant "ExamenSessionService" as SessionService
+participant "HttpSession" as Session
+database "Base de Datos (PostgreSQL)" as DB
+
+Teacher -> FE: Clic en "Generar Exámenes"
+activate FE
+
+FE -> Controller: POST /api/examenes/generar\n(GenerarExamenesRequest JSON)\n(Header: Authorization: Bearer <token>)
+activate Controller
+Controller -> Controller: extraer docenteId del JWT
+
+Controller -> Service: generarExamenes(request, docenteId)
+activate Service
+
+Service -> AsignaturaService: obtenerAsignaturaConGradosYAlumnos(asignaturaId, docenteId)
+activate AsignaturaService
+AsignaturaService -> DB: SELECT * FROM asignaturas WHERE id = ? AND docente_id = ?
+DB --> AsignaturaService: Optional<Asignatura>
+alt Asignatura no existe o no pertenece
+    AsignaturaService --> Service: throw NotFoundException
+end
+AsignaturaService -> DB: SELECT g.*, COUNT(a.id) as num_alumnos\nFROM grados g\nJOIN asignatura_grado ag ON g.id = ag.grado_id\nLEFT JOIN alumnos a ON a.grado_id = g.id\nLEFT JOIN alumnos_asignaturas aa ON a.id = aa.alumno_id AND aa.asignatura_id = ?\nWHERE ag.asignatura_id = ?\nGROUP BY g.id
+DB --> AsignaturaService: List<GradoConAlumnosDTO>
+deactivate AsignaturaService
+
+Service -> Service: validarLimitesPorGrado(configGrados, gradosConAlumnos)
+
+Service -> PreguntaService: obtenerPreguntasPorAsignaturaYTemas(asignaturaId, temas)
+activate PreguntaService
+PreguntaService -> DB: SELECT p.* FROM preguntas p\nJOIN asignaturas a ON p.asignatura_id = a.id\nWHERE p.asignatura_id = ? AND p.tema IN (?)\nORDER BY p.dificultad
+DB --> PreguntaService: List<Pregunta>
+PreguntaService -> PreguntaService: clasificarPorDificultad(preguntas)
+activate PreguntaService
+PreguntaService --> Service: List<PreguntaDTO> clasificadas
+deactivate PreguntaService
+deactivate PreguntaService
+
+alt Preguntas insuficientes
+    Service --> Controller: throw BusinessException("Preguntas insuficientes")
+end
+
+Service -> Service: para cada configGrado:\n  generarPlantillas(configGrado, preguntasClasificadas)
+
+loop PARA CADA PLANTILLA
+    Service -> Service: seleccionarPreguntas(numPreguntas, proporcionDificultad)
+    Service -> Service: aleatorizarOrden(preguntas)
+    Service -> Service: aleatorizarOpcionesRespuesta(preguntas)
+    Service -> Service: crearPlantillaExamen(asignatura, evaluacion, preguntas, clavePendiente=true)
+end
+
+Service -> SessionService: almacenarPlantillas(plantillas)
+activate SessionService
+SessionService -> Session: setAttribute("plantillasExamenes", plantillas)
+activate Session
+Session --> SessionService: void
+deactivate Session
+SessionService --> Service: void
+deactivate SessionService
+
+Service --> Controller: GenerarExamenesResponse(plantillaIds, totalExamenes)
+deactivate Service
+
+Controller --> FE: 200 OK (GenerarExamenesResponse JSON)
+deactivate Controller
+
+FE -> FE: Redirigir a asignarExamenes()\ncon plantillaIds
+
+note right of Service
+**Arquitectura efímera:**
+- ExamenService orquesta pero NO accede a repositorios directamente
+- Colabora con AsignaturaService y PreguntaService
+- ExamenSessionService gestiona la sesión
+- Los exámenes solo existen en HttpSession
+end note
+
+alt Datos Inválidos
+    Controller --> FE: 400 Bad Request (validation errors)
+    FE --> Teacher: Mostrar errores de validación
+else Asignatura no existe
+    Controller --> FE: 404 Not Found
+    FE --> Teacher: Mostrar error "Asignatura no encontrada"
+else Preguntas insuficientes
+    Controller --> FE: 409 Conflict
+    FE --> Teacher: Mostrar error "No hay suficientes preguntas\npara los criterios seleccionados"
+end
+
+deactivate FE
+
+@enduml

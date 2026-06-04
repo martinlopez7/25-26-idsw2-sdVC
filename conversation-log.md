@@ -1303,3 +1303,17 @@ Errores corregidos durante la sesión:
 ## [03/06/2026][13:35] Corrección de eliminarDocente()
 
 **Decisión:** Me he dado cuenta de un error: en el análisis está especificado que cuando el administrador institucional elimina un docente, también se eliminan todos los datos de este (alumnos, grados, asignaturas, preguntas y respuestas), sin embargo esto no ocurría actualmente, por lo que se corrigió el diseño e implementación de este caso de uso.
+
+## [04/06/2026][09:45] Diseño de generarExamenes()
+
+**Prompt:** empezar → me gustaría diseñar el caso de uso generarExamenes. 
+
+**Resultado:** Se realizó el diseño MVC de generarExamenes() generando:
+- documents/diseño/generarExamenes/README.md
+- modelosUML/diseño/generarExamenes/secuencia.puml
+
+El diseño contempla la arquitectura efímera del sistema: los exámenes no se persisten en BD, solo existen en memoria (HttpSession) durante la generación. El diseño initial fue modificado para ser más cohesivo: ExamenService no accede a repositorios directamente, sino que collaborate con AsignaturaService, PreguntaService y ExamenSessionService.
+
+**Enlace:** [session-ses_172f.md](conversations/session-ses_172f.md)
+
+**Decisión:** Se aceptó el diseño de generarExamenes
