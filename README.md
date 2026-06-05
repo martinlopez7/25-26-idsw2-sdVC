@@ -1,4 +1,4 @@
-# Análisis, diseño e implementación de 
+# Análisis, diseño e implementación de Jorgestor
 
 ## Contexto
 
