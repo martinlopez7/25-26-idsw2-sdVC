@@ -1,6 +1,6 @@
 # Sistema de Generación de Exámenes > crearAlumno > Diseño
 
-> |[🏠️](/documents/diseño/README.md)|[📊](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/crearAlumno/crearAlumno.svg)|[Análisis](/documents/analisis/crearAlumno/README.md)|**Diseño**|
+> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/crearAlumno/crearAlumno.svg)|[Análisis](/documents/analisis/crearAlumno/README.md)|**Diseño**|
 > |-|-|-|-|
 
 ## Información del artefacto

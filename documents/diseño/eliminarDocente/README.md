@@ -1,6 +1,6 @@
 # Sistema de Generación de Exámenes > eliminarDocente > Diseño
 
-> |[🏠️](/documents/diseño/README.md)|[📊](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/eliminarDocente/eliminarDocente.svg)|[Análisis](/documents/analisis/eliminarDocente/README.md)|**Diseño**|
+> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/eliminarDocente/eliminarDocente.svg)|[Análisis](/documents/analisis/eliminarDocente/README.md)|**Diseño**|
 > |-|-|-|-|
 
 ## Información del artefacto

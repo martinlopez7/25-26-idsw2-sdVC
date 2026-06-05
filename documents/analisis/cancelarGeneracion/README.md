@@ -1,6 +1,6 @@
 # Cancelar Generación > Análisis
 
-> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/cancelarGeneracion/cancelarGeneracion.svg)|**Análisis**|Diseño|
+> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/cancelarGeneracion/cancelarGeneracion.svg)|**Análisis**|[Diseño](/documents/diseño/cancelarGeneracion/README.md)|
 > |-|-|-|-|
 
 ## información del artefacto

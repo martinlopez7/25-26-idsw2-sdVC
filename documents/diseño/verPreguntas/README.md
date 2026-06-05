@@ -1,6 +1,6 @@
 # Sistema de Generación de Exámenes > verPreguntas > Diseño
 
-> |[🏠️](/documents/diseño/README.md)|[📊](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/verPreguntas/verPreguntas.svg)|[Análisis](/documents/analisis/verPreguntas/README.md)|**Diseño**|
+> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/verPreguntas/verPreguntas.svg)|[Análisis](/documents/analisis/verPreguntas/README.md)|**Diseño**|
 > |-|-|-|-|
 
 ## Información del artefacto

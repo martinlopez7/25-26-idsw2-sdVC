@@ -1,6 +1,6 @@
 # Sistema de Generación de Exámenes > crearGrado > Diseño
 
-> |[🏠️](/documents/diseño/README.md)|[📊](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/crearGrado/crearGrado.svg)|[Análisis](/documents/analisis/crearGrado/README.md)|**Diseño**|
+> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/crearGrado/crearGrado.svg)|[Análisis](/documents/analisis/crearGrado/README.md)|**Diseño**|
 > |-|-|-|-|
 
 ## Información del artefacto

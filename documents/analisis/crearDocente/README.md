@@ -1,6 +1,6 @@
 # crearDocente > Análisis
 
-> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/crearDocente/crearDocente.svg)|**Análisis**|Diseño|
+> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/crearDocente/crearDocente.svg)|**Análisis**|[Diseño](/documents/diseño/crearDocente/README.md)|
 > |-|-|-|-|
 
 ## información del artefacto

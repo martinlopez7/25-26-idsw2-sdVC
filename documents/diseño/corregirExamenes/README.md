@@ -1,6 +1,6 @@
 # Generador de Exámenes > corregirExamenes > Diseño
 
-> |[🏠️](/documents/diseño/README.md)|[📊](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/corregirExamenes/corregirExamenes.svg)|[Análisis](/documents/analisis/corregirExamenes/README.md)|**Diseño**|
+> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/corregirExamenes/corregirExamenes.svg)|[Análisis](/documents/analisis/corregirExamenes/README.md)|**Diseño**|
 > |-|-|-|-|
 
 ## Información del artefacto

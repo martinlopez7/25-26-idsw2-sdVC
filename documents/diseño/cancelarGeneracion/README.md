@@ -1,6 +1,6 @@
 # Generador de Exámenes > cancelarGeneracion > Diseño
 
-> |[🏠️](/documents/diseño/README.md)|[📊](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/cancelarGeneracion/cancelarGeneracion.svg)|[Análisis](/documents/analisis/cancelarGeneracion/README.md)|**Diseño**|
+> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/cancelarGeneracion/cancelarGeneracion.svg)|[Análisis](/documents/analisis/cancelarGeneracion/README.md)|**Diseño**|
 > |-|-|-|-|
 
 ## Información del artefacto

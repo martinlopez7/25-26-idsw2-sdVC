@@ -1,6 +1,6 @@
 # Generador de Exámenes > generarExamenes > Diseño
 
-> |[🏠️](/documents/diseño/README.md)|[📊](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/generarExamenes/generarExamenes.svg)|[Análisis](/documents/analisis/generarExamenes/README.md)|**Diseño**|
+> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/generarExamenes/generarExamenes.svg)|[Análisis](/documents/analisis/generarExamenes/README.md)|**Diseño**|
 > |-|-|-|-|
 
 ## Información del artefacto
