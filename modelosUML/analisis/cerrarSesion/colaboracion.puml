@@ -4,22 +4,14 @@ skinparam linetype polyline
 rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponible
 package cerrarSesion as "cerrarSesion()" {
     rectangle #629EF9 CerrarSesionView
-    rectangle #b5bd68 CerrarSesionController
-    rectangle #F2AC4E SesionRepository
-    rectangle #F2AC4E Sesion
-    rectangle #F2AC4E Usuario
+    rectangle #b5bd68 AuthController
 }
 
 rectangle #CDEBA5 ":SESION_CERRADA" as SESIONCERRADA
 
 SistemaDisponible -r-> CerrarSesionView: cerrarSesion(Usuario)
 
-CerrarSesionView -d-> CerrarSesionController: confirmarCierre(Usuario)
-
-CerrarSesionController --> SesionRepository: terminarSesion(Usuario)
-SesionRepository --> Sesion: destruirSesion(Usuario)
-
-Sesion -d- Usuario
+CerrarSesionView -d-> AuthController: confirmarCierre(Usuario)
 
 CerrarSesionView ..> SistemaDisponible: cancelarCierre()
 CerrarSesionView ..r.> SESIONCERRADA: confirmarCierre()

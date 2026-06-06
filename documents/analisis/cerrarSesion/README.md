@@ -41,13 +41,6 @@ Análisis del caso de uso `cerrarSesion()` mediante diagrama de colaboración MV
 
 ## clases de análisis identificadas
 
-### clases model (naranja #F2AC4E)
-|Clase|Responsabilidad|Trazabilidad|
-|-|-|-|
-|**Sesion**|Entidad que mantiene estado de autenticación activa|Concepto del caso de uso|
-|**Usuario**|Entidad del dominio que representa usuario del sistema|Modelo del dominio|
-|**SesionRepository**|Concepto puro de gestión de sesiones activas|Análisis puro|
-
 ### clases view (azul #629EF9)
 |Clase|Responsabilidad|Derivación|
 |-|-|-|
@@ -56,7 +49,7 @@ Análisis del caso de uso `cerrarSesion()` mediante diagrama de colaboración MV
 ### clases controller (verde #b5bd68)
 |Clase|Responsabilidad|Caso de uso|
 |-|-|-|
-|**CerrarSesionController**|Control y coordinación completa del caso de uso|cerrarSesion()|
+|**AuthController**|Control y coordinación completa del caso de uso|cerrarSesion()|
 
 ### colaboraciones (verde claro #CDEBA5)
 |Colaboración|Propósito|Invocación|
@@ -70,8 +63,8 @@ Análisis del caso de uso `cerrarSesion()` mediante diagrama de colaboración MV
 |Origen|Destino|Mensaje|Intención|
 |-|-|-|-|
 |**:Sistema Disponible**|**CerrarSesionView**|`cerrarSesion(Usuario)`|Invocación con usuario autenticado|
-|**CerrarSesionView**|**CerrarSesionController**|`confirmarCierre(Usuario)`|Delegar proceso de cierre|
-|**CerrarSesionController**|**SesionRepository**|`terminarSesion(Usuario)`|Finalizar sesión activa|
+|**CerrarSesionView**|**AuthController**|`confirmarCierre(Usuario)`|Delegar proceso de cierre|
+|**AuthController**|**SesionRepository**|`terminarSesion(Usuario)`|Finalizar sesión activa|
 |**SesionRepository**|**Sesion**|`destruirSesion(Usuario)`|Destruir objeto de sesión|
 
 ### flujo alternativo (cierre cancelado)
@@ -81,12 +74,9 @@ Análisis del caso de uso `cerrarSesion()` mediante diagrama de colaboración MV
 |**CerrarSesionView**|**:SESION_CERRADA**|`confirmarCierre()`|Transición tras cierre confirmado|
 
 ## enlaces de dependencia
-- **CerrarSesionView** conoce a **CerrarSesionController** (delegación)
+- **CerrarSesionView** conoce a **AuthController** (delegación)
 - **CerrarSesionView** conoce a **:Sistema Disponible** (retorno en cancelación)
 - **CerrarSesionView** conoce a **:SESION_CERRADA** (transición tras cierre)
-- **CerrarSesionController** conoce a **SesionRepository** (gestión sesión)
-- **SesionRepository** conoce a **Sesion** (destrucción)
-- **Sesion** conoce a **Usuario** (asociación)
 
 ## trazabilidad con artefactos previos
 
@@ -94,21 +84,13 @@ Análisis del caso de uso `cerrarSesion()` mediante diagrama de colaboración MV
 - **Estados internos** → **Clases de análisis**
 - **SolicitandoCierre** → **CerrarSesionView.solicitarCierre()**
 - **ConfirmandoCierre** → **CerrarSesionView.mostrarConfirmacion()**
-- **Choice point** → **CerrarSesionController.procesarDecision()**
 - **Transformación actor** → **Docente/Admin → UsuarioNoRegistrado**
-
-### con modelo del dominio
-- **Usuario** (entidad) → **Usuario** (clase de análisis)
-- **Sesión** (concepto) → **Sesion** (clase de análisis)
 
 ## características del análisis
 
 ### responsabilidades identificadas
 - **CerrarSesionView**: Capturar decisión del usuario y coordinar flujo de confirmación
-- **CerrarSesionController**: Orquestar lógica completa del caso de uso
-- **SesionRepository**: Proveer acceso conceptual a gestión de sesiones
-- **Sesion**: Representar estado de autenticación activa
-- **Usuario**: Mantener información del usuario autenticado
+- **AuthController**: Orquestar lógica completa del caso de uso
 
 ### relaciones conceptuales
 - **Delegación**: Vista delega lógica de negocio al controlador

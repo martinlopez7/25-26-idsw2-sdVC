@@ -40,12 +40,12 @@ Análisis de colaboración del caso de uso `iniciarSesion()` mediante el patrón
 
 **Colaboraciones**:
 - **Entrada**: Recibe `iniciarSesion()` desde `:SESION_CERRADA`
-- **Control**: Se comunica con `IniciarSesionController`
+- **Control**: Se comunica con `AuthController`
 - **Salida**: Navega a `:Sistema Disponible`
 
 ### clases de control
 
-#### IniciarSesionController
+#### AuthController
 **Estereotipo**: Control  
 **Responsabilidades**:
 - Coordinar el proceso completo de autenticación
@@ -77,25 +77,15 @@ Análisis de colaboración del caso de uso `iniciarSesion()` mediante el patrón
 **Colaboraciones**:
 - **Repositorio**: Es gestionado por `UsuarioRepository`
 
-#### Sesion
-**Estereotipo**: Entidad  
-**Responsabilidades**:
-- Representar el estado de autenticación activa
-- Mantener referencia al usuario autenticado
-
-**Colaboraciones**:
-- **Control**: Es creada por `IniciarSesionController`
-
 ## flujo de colaboración
 
 ### secuencia de operaciones
 
 1. **Inicio**: `:SESION_CERRADA` → `LoginView.iniciarSesion(usuario, contraseña)`
-2. **Autenticación**: `LoginView` → `IniciarSesionController.autenticar(usuario, contraseña)`
-3. **Validación**: `IniciarSesionController` → `UsuarioRepository.validarCredenciales(usuario, contraseña)`
-4. **Respuesta**: `UsuarioRepository` → `IniciarSesionController` (usuario válido o inválido)
-5. **Creación de sesión**: `IniciarSesionController` → `Sesion.crearSesion(usuario)` (si válido)
-6. **Transición**: `LoginView` → `:Sistema Disponible`
+2. **Autenticación**: `LoginView` → `AuthController.autenticar(usuario, contraseña)`
+3. **Validación**: `AuthController` → `UsuarioRepository.validarCredenciales(usuario, contraseña)`
+4. **Respuesta**: `UsuarioRepository` → `AuthController` (usuario válido o inválido)
+5. **Transición**: `LoginView` → `:Sistema Disponible`
 
 ## correspondencia con requisitos
 
@@ -105,9 +95,8 @@ Análisis de colaboración del caso de uso `iniciarSesion()` mediante el patrón
 |-|-|-|
 |Solicitar acceso al sistema|LoginView|Recibe `iniciarSesion(usuario, contraseña)`|
 |Mostrar formulario de login|LoginView|Interfaz de captura de credenciales|
-|Validar credenciales|IniciarSesionController|`autenticar(usuario, contraseña)`|
+|Validar credenciales|AuthController|`autenticar(usuario, contraseña)`|
 |Verificar credenciales|UsuarioRepository|`validarCredenciales(usuario, contraseña)`|
-|Crear sesión|Sesion|`crearSesion(usuario)`|
 |Credenciales inválidas|LoginView|Muestra error y vuelve a solicitar|
 |Credenciales válidas|:Sistema Disponible|Transición de estado|
 
@@ -144,7 +133,4 @@ Este análisis sigue el **patrón metodológico universal** establecido para el 
 `UsuarioRepository` abstrae el acceso a datos, permitiendo diferentes implementaciones sin afectar el controlador.
 
 ### mvc pattern
-Separación clara entre presentación (`LoginView`), lógica de aplicación (`IniciarSesionController`) y datos (`Usuario`, `UsuarioRepository`, `Sesion`).
-
-### session pattern
-`Sesion` mantiene el estado de autenticación del usuario activo en el sistema.
+Separación clara entre presentación (`LoginView`), lógica de aplicación (`AuthController`) y datos (`Usuario`, `UsuarioRepository`).
