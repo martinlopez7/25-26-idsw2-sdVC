@@ -10,6 +10,9 @@ package eliminarAsignatura as "eliminarAsignatura()" {
     rectangle #b5bd68 AsignaturasController
     rectangle #F2AC4E AsignaturaRepository
     rectangle #F2AC4E Asignatura
+    rectangle #F2AC4E Grado
+    rectangle #F2AC4E Alumno
+    rectangle #F2AC4E Pregunta
 }
 
 AsignaturasAbierto --> EliminarAsignaturaView: eliminarAsignatura(asignaturaId)
@@ -20,6 +23,10 @@ EliminarAsignaturaView -d-> AsignaturasController: cargarAsignaturaParaEliminaci
 AsignaturasController --> AsignaturaRepository: obtenerPorId(asignaturaId) : Asignatura
 
 AsignaturaRepository -- Asignatura
+
+Asignatura -- Grado
+Asignatura -- Alumno
+Asignatura -- Pregunta
 
 EliminarAsignaturaView --> AsignaturasController: eliminarAsignatura(asignaturaId) : void
 

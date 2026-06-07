@@ -80,6 +80,22 @@ Análisis de colaboración del caso de uso `eliminarAsignatura()` mediante el pa
 **Colaboraciones**:
 - **Repositorio**: Es gestionado por `AsignaturaRepository`
 
+#### Grado
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Mostrar grados asociados a las asignaturas
+
+#### Alumno
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Mostrar alumnos matriculados a las asignaturas
+
+#### Pregunta
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Mostrar preguntas de la asignatura
+
+
 ## flujo de colaboración principal
 
 1. **Inicio**: `:ASIGNATURAS_ABIERTO` o `:ASIGNATURA_ABIERTO` → `EliminarAsignaturaView.eliminarAsignatura(asignaturaId)`
@@ -96,7 +112,7 @@ Análisis de colaboración del caso de uso `eliminarAsignatura()` mediante el pa
 ### confirmación obligatoria
 
 Este análisis implementa eliminación con confirmación que:
-- **Muestra información completa**: Título, código, curso académico y batería de preguntas de la asignatura
+- **Muestra información completa**: Título, código, curso académico, alumnos matriculados, grados asociados y preguntas de la asignatura
 - **Advierte sobre irreversibilidad**: Mensaje claro de advertencia
 - **Requiere confirmación explícita**: No permite eliminación accidental
 
