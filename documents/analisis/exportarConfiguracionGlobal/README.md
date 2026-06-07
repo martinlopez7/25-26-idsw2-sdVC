@@ -36,6 +36,7 @@ Análisis del caso de uso `exportarConfiguracionGlobal()` mediante diagrama de c
 | **GradoRepository** | Abstrae el acceso a datos de grados para exportación | Análisis puro |
 | **AsignaturaRepository** | Abstrae el acceso a datos de asignaturas para exportación | Análisis puro |
 | **PreguntaRepository** | Abstrae el acceso a datos de preguntas para exportación | Análisis puro |
+| **RespuestaRepository** | Abstrae el acceso a datos de respuestas para exportación | Análisis puro |
 
 ### clases de vista (boundary)
 
@@ -47,7 +48,7 @@ Análisis del caso de uso `exportarConfiguracionGlobal()` mediante diagrama de c
 
 | Clase | Responsabilidad | Caso de uso |
 |-|-|-|
-| **ExportarConfiguracionGlobalController** | Control y coordinación del proceso de exportación | exportarConfiguracionGlobal() |
+| **ConfiguracionController** | Control y coordinación del proceso de exportación | exportarConfiguracionGlobal() |
 
 ### colaboraciones incluidas
 
@@ -57,22 +58,23 @@ Análisis del caso de uso `exportarConfiguracionGlobal()` mediante diagrama de c
 | **:Collaboration ExportarGrados** | Exportar todos los grados del sistema | Automática al confirmar exportación |
 | **:Collaboration ExportarAsignaturas** | Exportar todas las asignaturas del sistema | Automática al confirmar exportación |
 | **:Collaboration ExportarPreguntas** | Exportar todas las preguntas del sistema | Automática al confirmar exportación |
+| **:Collaboration ExportarRespuestas** | Exportar todas las respuestas del sistema | Automática al confirmar exportación |
 
 ## flujo de colaboración
 
 ### secuencia de operaciones
 
 1. **Inicio**: `:Sistema Disponible` → `ExportarConfiguracionGlobalView.mostrarDialogoExportacion()`
-2. **Delegación**: `ExportarConfiguracionGlobalView` → `ExportarConfiguracionGlobalController.iniciarExportacion()`
-3. **Información**: `ExportarConfiguracionGlobalController` → `AlumnoRepository.obtenerAlumnos()`, `GradoRepository.obtenerGrados()`, `AsignaturaRepository.obtenerAsignaturas()`, `PreguntaRepository.obtenerPreguntas()` para obtener datos a exportar
-4. **Presentación**: `ExportarConfiguracionGlobalView` presenta mensaje de confirmación de exportación global (todos los elementos: alumnos, grados, asignaturas, preguntas) y opciones de confirmar/cancelar/salir
+2. **Delegación**: `ExportarConfiguracionGlobalView` → `ConfiguracionController.iniciarExportacion()`
+3. **Información**: `ExportarConfiguracionGlobalController` → `AlumnoRepository.obtenerAlumnos()`, `GradoRepository.obtenerGrados()`, `AsignaturaRepository.obtenerAsignaturas()`, `PreguntaRepository.obtenerPreguntas()`, `RespuestaRepository.obtenerRespuestas()` para obtener datos a exportar
+4. **Presentación**: `ExportarConfiguracionGlobalView` presenta mensaje de confirmación de exportación global (todos los elementos: alumnos, grados, asignaturas, preguntas y respuestas) y opciones de confirmar/cancelar/salir
 5. **Confirmación**: Usuario confirma la exportación
-6. **Exportación completa**: `ExportarConfiguracionGlobalController` → `AlumnoRepository`, `GradoRepository`, `AsignaturaRepository`, `PreguntaRepository` exporta todos los datos
+6. **Exportación completa**: `ExportarConfiguracionGlobalController` → `AlumnoRepository`, `GradoRepository`, `AsignaturaRepository`, `PreguntaRepository`, `RespuestaRepository` exporta todos los datos
 7. **Resultado**: Si éxito → retornar al `:Sistema Disponible`; si error → mostrar mensaje de error y volver a opciones
 
 ### opciones de navegación disponibles
 
-- **confirmarExportacion()** → `:Collaboration ExportarAlumnos`, `:Collaboration ExportarGrados`, `:Collaboration ExportarAsignaturas`, `:Collaboration ExportarPreguntas` (todas automáticamente)
+- **confirmarExportacion()** → `:Collaboration ExportarAlumnos`, `:Collaboration ExportarGrados`, `:Collaboration ExportarAsignaturas`, `:Collaboration ExportarPreguntas`, `:Collaboration ExportarRespuestas` (todas automáticamente)
 - **cancelarExportacion()** → `:Sistema Disponible` (retorno sin exportar)
 - **salir()** → `:Sistema Disponible` (retorno sin exportar)
 
@@ -83,9 +85,9 @@ Análisis del caso de uso `exportarConfiguracionGlobal()` mediante diagrama de c
 | Requisito del caso de uso | Clase responsable | Método/Colaboración |
 |-|-|-|
 | Mostrar diálogo de exportación | `ExportarConfiguracionGlobalView` | `mostrarDialogoExportacion()` |
-| Obtener todos los datos | `ExportarConfiguracionGlobalController` | `obtenerDatosExportacion()` |
-| Exportar todos los elementos | `AlumnoRepository`, `GradoRepository`, `AsignaturaRepository`, `PreguntaRepository` | `exportarTodo()` |
-| Gestionar errores | `ExportarConfiguracionGlobalController` | `manejarErrorExportacion()` |
+| Obtener todos los datos | `ConfiguracionController` | `obtenerDatosExportacion()` |
+| Exportar todos los elementos | `AlumnoRepository`, `GradoRepository`, `AsignaturaRepository`, `PreguntaRepository`, `RespuestaRepository` | `exportarTodo()` |
+| Gestionar errores | `ConfiguracionController` | `manejarErrorExportacion()` |
 
 ## características del análisis
 
@@ -112,12 +114,13 @@ A diferencia de los casos de uso de gestión (CRUD), `exportarConfiguracionGloba
 
 ### restricción de exportación global
 
-La exportación global **siempre incluye todos los elementos** del sistema (alumnos, grados, asignaturas, preguntas) debido a las dependencias entre entidades:
+La exportación global **siempre incluye todos los elementos** del sistema (alumnos, grados, asignaturas, preguntas y respuestas) debido a las dependencias entre entidades:
 
 - **Preguntas → Asignaturas**: Las preguntas están vinculadas a asignaturas específicas, carecen de sentido sin ellas
 - **Asignaturas → Grados**: Las asignaturas pertenecen a grados, perderían contexto sin ellos
 - **Alumnos → Asignaturas**: Los alumnos están matriculados en asignaturas, necesitan ese contexto
 - **Alumnos → Grado**: Los alumnos están matriculados a un grado concreto, necesitan ese contexto
+- **Respuestas → Preguntas**: Las respuestas están vinculadas a preguntas específicas
 
 Esta restricción garantiza la **integridad referencial** de los datos exportados, evitando inconsistencias en la configuración importada en otro sistema.
 
@@ -127,19 +130,5 @@ El caso de uso se ejecuta desde el estado `SISTEMA_DISPONIBLE`, accesible única
 
 ## enlaces de dependencia
 
-- **ExportarConfiguracionGlobalView** conoce a **ExportarConfiguracionGlobalController** (delegación)
-- **ExportarConfiguracionGlobalController** conoce a **AlumnoRepository**, **GradoRepository**, **AsignaturaRepository**, **PreguntaRepository** (operaciones de exportación)
-- **ExportarConfiguracionGlobalView** conoce a **AlumnoRepository**, **GradoRepository**, **AsignaturaRepository**, **PreguntaRepository** (para mostrar opciones)
-
-## patrones aplicados
-
-### patrón MVC
-- **Un controlador por caso de uso**: ExportarConfiguracionGlobalController
-- **Vista derivada de especificación**: ExportarConfiguracionGlobalView desde detallado
-- **Modelo del dominio**: AlumnoRepository, GradoRepository, AsignaturaRepository, PreguntaRepository con trazabilidad directa
-
-### repository pattern
-Cada repository abstrae el acceso a datos de su entidad, permitiendo diferentes formatos de exportación sin acoplamiento directo.
-
-### navigation pattern
-Flechas discontinuas indican las colaboraciones incluidas que pueden ser invocadas según la selección del usuario.
+- **ExportarConfiguracionGlobalView** conoce a **ConfiguracionController** (delegación)
+- **ConfiguracionController** conoce a **AlumnoRepository**, **GradoRepository**, **AsignaturaRepository**, **PreguntaRepository**, **RespuestaRepository** (operaciones de exportación)
