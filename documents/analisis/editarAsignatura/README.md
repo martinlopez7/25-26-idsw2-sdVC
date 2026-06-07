@@ -70,7 +70,6 @@ Análisis de colaboración del caso de uso `editarAsignatura()` mediante el patr
 - Proporcionar método para obtener asignatura completa por ID
 - Implementar actualización de campos de la asignatura
 - Verificar restricciones de integridad durante modificación
-- Mantener relación con batería de preguntas
 
 **Colaboraciones**:
 - **Control**: Responde a `AsignaturaController`
@@ -81,7 +80,6 @@ Análisis de colaboración del caso de uso `editarAsignatura()` mediante el patr
 **Responsabilidades**:
 - Representar la información completa de la asignatura a editar
 - Encapsular atributos: título, código, curso académico, alumnos matriculados, grados asociados
-- Mantener relación con batería de preguntas
 - Validar cambios en datos de la asignatura
 - Mantener la integridad de los datos durante modificación continua
 
@@ -97,15 +95,11 @@ Análisis de colaboración del caso de uso `editarAsignatura()` mediante el patr
 **Colaboraciones**:
 - **Entidad**: Se muestra en el formulario de edición de asignatura
 
-#### BateriaDePreguntas
+#### Alumno
 **Estereotipo**: Entidad  
 **Responsabilidades**:
-- Representar la batería de preguntas asociada a la asignatura
-- Contener referencias a las preguntas de la asignatura
-- Mantener relación de composición con la asignatura
-
-**Colaboraciones**:
-- **Repositorio**: Es gestionada junto con `AsignaturaRepository`
+- Representar al alumno matriculado en la asignatura
+- Contener referencias a los alumnos matriculados en la asignatura
 
 ## flujo de colaboración principal
 
@@ -192,6 +186,12 @@ El diseño permite entrada desde múltiples contextos:
 - **Asociación múltiple**: Una asignatura puede tener varios grados asociados
 - **Presentación**: Los grados asociados se muestran en el formulario de edición
 - **Persistencia**: Los cambios en grados se guardan con la asignatura
+
+### gestión de alumnos
+
+- **Asociación múltiple**: Una asignatura puede tener varios alumnos matriculados
+- **Presentación**: Los alumnos matriculados se muestran en el formulario de edición
+- **Persistencia**: Los cambios en los alumnos matriculados se guardan con la asignatura
 
 ### experiencia de usuario académica
 

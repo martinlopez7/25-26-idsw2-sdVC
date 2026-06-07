@@ -17,7 +17,7 @@ package editarAsignatura as "editarAsignatura()" {
     rectangle #F2AC4E AsignaturaRepository
     rectangle #F2AC4E Asignatura
     rectangle #F2AC4E Grado
-    rectangle #F2AC4E BateriaDePreguntas
+    rectangle #F2AC4E Alumno
 }
 
 AsignaturasAbierto --> EditarAsignaturaView: editarAsignatura(asignaturaId)
@@ -36,7 +36,7 @@ AsignaturaController --> AsignaturaRepository: actualizar(asignatura) : boolean
 
 AsignaturaRepository -- Asignatura
 
-Asignatura --> BateriaDePreguntas : tiene
+Asignatura --> Alumno : tiene
 Asignatura --> Grado : asociada
 
 EditarAsignaturaView ..> VerAsignaturas: <<include>> verAsignaturas()

@@ -7,7 +7,7 @@ participant "AsignaturasController" as Controller
 participant "AsignaturaService" as Service
 participant "GradoService" as GradoService
 participant "AlumnoService" as AlumnoService
-participant "AsadoRepository" as AsignaturaRepo
+participant "AsignaturaRepository" as AsignaturaRepo
 participant "GradoRepository" as GradoRepo
 participant "AlumnoRepository" as AlumnoRepo
 database "Base de Datos (PostgreSQL)" as DB
