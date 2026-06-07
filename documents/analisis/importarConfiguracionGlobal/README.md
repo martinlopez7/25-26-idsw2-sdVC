@@ -36,6 +36,7 @@ Análisis del caso de uso `importarConfiguracionGlobal()` mediante diagrama de c
 | **GradoRepository** | Abstrae el acceso a datos de grados para importación | Análisis puro |
 | **AsignaturaRepository** | Abstrae el acceso a datos de asignaturas para importación | Análisis puro |
 | **PreguntaRepository** | Abstrae el acceso a datos de preguntas para importación | Análisis puro |
+| **RespuestaRepository** | Abstrae el acceso a datos de respuestas para importación | Análisis puro |
 
 ### clases de vista (boundary)
 
@@ -47,7 +48,7 @@ Análisis del caso de uso `importarConfiguracionGlobal()` mediante diagrama de c
 
 | Clase | Responsabilidad | Caso de uso |
 |-|-|-|
-| **ImportarConfiguracionGlobalController** | Control y coordinación del proceso de importación | importarConfiguracionGlobal() |
+| **ConfiguracionController** | Control y coordinación del proceso de importación | importarConfiguracionGlobal() |
 
 ### colaboraciones incluidas
 
@@ -57,23 +58,24 @@ Análisis del caso de uso `importarConfiguracionGlobal()` mediante diagrama de c
 | **:Collaboration ImportarAsignaturas** | Importar todas las asignaturas del sistema | Automática al confirmar importación |
 | **:Collaboration ImportarAlumnos** | Importar todos los alumnos del sistema | Automática al confirmar importación |
 | **:Collaboration ImportarPreguntas** | Importar todas las preguntas del sistema | Automática al confirmar importación |
+| **:Collaboration ImportarRespuestas** | Importar todas las respuestas del sistema | Automática al confirmar importación |
 
 ## flujo de colaboración
 
 ### secuencia de operaciones
 
 1. **Inicio**: `:Sistema Disponible` → `ImportarConfiguracionGlobalView.mostrarDialogoImportacion()`
-2. **Delegación**: `ImportarConfiguracionGlobalView` → `ImportarConfiguracionGlobalController.iniciarImportacion()`
+2. **Delegación**: `ImportarConfiguracionGlobalView` → `ConfiguracionController.iniciarImportacion()`
 3. **Selección**: Usuario introduce archivo de configuración global
-4. **Validación**: `ImportarConfiguracionGlobalController` valida el archivo (formato, estructura)
-5. **Presentación**: `ImportarConfiguracionGlobalView` presenta mensaje de confirmación de importación global (todos los elementos: grados, asignaturas, alumnos, preguntas) y opciones de confirmar/cancelar/salir
+4. **Validación**: `ConfiguracionController` valida el archivo (formato, estructura)
+5. **Presentación**: `ImportarConfiguracionGlobalView` presenta mensaje de confirmación de importación global (todos los elementos: grados, asignaturas, alumnos, preguntas y respuestas) y opciones de confirmar/cancelar/salir
 6. **Confirmación**: Usuario confirma la importación
-7. **Importación secuencial**: `ImportarConfiguracionGlobalController` → `AlumnoRepository`, `GradoRepository`, `AsignaturaRepository`,  `PreguntaRepository` importa todos los datos en orden (para mantener integridad referencial)
+7. **Importación secuencial**: `ConfiguracionController` → `AlumnoRepository`, `GradoRepository`, `AsignaturaRepository`,  `PreguntaRepository`, `RespuestaRepository` importa todos los datos en orden (para mantener integridad referencial)
 8. **Resultado**: Si éxito → retornar al `:Sistema Disponible`; si error → mostrar mensaje de error y volver a opciones
 
 ### opciones de navegación disponibles
 
-- **confirmarImportacion()** → `:Collaboration ImportarGrados`, `:Collaboration ImportarAsignaturas`, `:Collaboration ImportarAlumnos`, `:Collaboration ImportarPreguntas` (todas automáticamente)
+- **confirmarImportacion()** → `:Collaboration ImportarGrados`, `:Collaboration ImportarAsignaturas`, `:Collaboration ImportarAlumnos`, `:Collaboration ImportarPreguntas`, `:Collaboration ImportarRespuestas` (todas automáticamente)
 - **cancelarImportacion()** → `:Sistema Disponible` (retorno sin importar)
 - **salir()** → `:Sistema Disponible` (retorno sin importar)
 
@@ -84,8 +86,8 @@ Análisis del caso de uso `importarConfiguracionGlobal()` mediante diagrama de c
 | Requisito del caso de uso | Clase responsable | Método/Colaboración |
 |-|-|-|
 | Mostrar diálogo de importación | `ImportarConfiguracionGlobalView` | `mostrarDialogoImportacion()` |
-| Validar archivo de configuración | `ImportarConfiguracionGlobalController` | `validarArchivoImportacion()` |
-| Importar todos los elementos | `GradoRepository`, `AsignaturaRepository`, `AlumnoRepository`, `PreguntaRepository` | `importarTodo()` |
+| Validar archivo de configuración | `ConfiguracionController` | `validarArchivoImportacion()` |
+| Importar todos los elementos | `GradoRepository`, `AsignaturaRepository`, `AlumnoRepository`, `PreguntaRepository`, `RespuestaRepository` | `importarTodo()` |
 | Gestionar errores | `ImportarConfiguracionGlobalController` | `manejarErrorImportacion()` |
 
 ## características del análisis
@@ -113,13 +115,14 @@ A diferencia de los casos de uso de gestión (CRUD), `importarConfiguracionGloba
 
 ### restricción de importación global
 
-La importación global **siempre incluye todos los elementos** del sistema (grados, asignaturas, alumnos, preguntas) debido a las dependencias entre entidades:
+La importación global **siempre incluye todos los elementos** del sistema (grados, asignaturas, alumnos, preguntas y respuestas) debido a las dependencias entre entidades:
 
 - **Grados → Asignaturas**: Los grados son la base para las asignaturas
 - **Grados → Alumnos**: Los alumnos están matriculados a un grado concreto
 - **Asignaturas → Preguntas**: Las preguntas están vinculadas a asignaturas específicas
+- **Preguntas → Respuestas**: Las respuestas están vinculadas a preguntas específicas
 
-Esta restricción garantiza la **integridad referencial** de los datos importados, procesando en el orden correcto: grados → asignaturas → alumnos → preguntas.
+Esta restricción garantiza la **integridad referencial** de los datos importados, procesando en el orden correcto: grados → asignaturas → alumnos → preguntas → respuestas.
 
 ## estado previo
 
@@ -127,16 +130,15 @@ El caso de uso se ejecuta desde el estado `SISTEMA_DISPONIBLE`, accesible única
 
 ## enlaces de dependencia
 
-- **ImportarConfiguracionGlobalView** conoce a **ImportarConfiguracionGlobalController** (delegación)
-- **ImportarConfiguracionGlobalController** conoce a **GradoRepository**, **AsignaturaRepository**, **AlumnoRepository**, **PreguntaRepository** (operaciones de importación)
-- **ImportarConfiguracionGlobalView** conoce a **GradoRepository**, **AsignaturaRepository**, **AlumnoRepository**, **PreguntaRepository** (para mostrar opciones)
+- **ImportarConfiguracionGlobalView** conoce a **ConfiguracionController** (delegación)
+- **ConfiguracionController** conoce a **GradoRepository**, **AsignaturaRepository**, **AlumnoRepository**, **PreguntaRepository**, **RespuestaRepository** (operaciones de importación)
 
 ## patrones aplicados
 
 ### patrón MVC
-- **Un controlador por caso de uso**: ImportarConfiguracionGlobalController
+- **Un controlador por caso de uso**: ConfiguracionController
 - **Vista derivada de especificación**: ImportarConfiguracionGlobalView desde detallado
-- **Modelo del dominio**: GradoRepository, AsignaturaRepository, AlumnoRepository, PreguntaRepository con trazabilidad directa
+- **Modelo del dominio**: GradoRepository, AsignaturaRepository, AlumnoRepository, PreguntaRepository y RespuestaRepository con trazabilidad directa
 
 ### repository pattern
 Cada repository abstrae el acceso a datos de su entidad, permitiendo diferentes formatos de importación sin acoplamiento directo.

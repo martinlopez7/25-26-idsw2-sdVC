@@ -4,31 +4,35 @@ skinparam linetype polyline
 rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponible
 package importarConfiguracionGlobal as "importarConfiguracionGlobal()" {
     rectangle #629EF9 ImportarConfiguracionGlobalView
-    rectangle #b5bd68 ImportarConfiguracionGlobalController
+    rectangle #b5bd68 ConfiguracionController
     rectangle #F2AC4E GradoRepository
     rectangle #F2AC4E AsignaturaRepository
     rectangle #F2AC4E AlumnoRepository
     rectangle #F2AC4E PreguntaRepository
+    rectangle #F2AC4E RespuestaRepository
 }
 
 rectangle #CDEBA5 ":Collaboration ImportarGrados" as ImportarGrados
 rectangle #CDEBA5 ":Collaboration ImportarAsignaturas" as ImportarAsignaturas
 rectangle #CDEBA5 ":Collaboration ImportarAlumnos" as ImportarAlumnos
 rectangle #CDEBA5 ":Collaboration ImportarPreguntas" as ImportarPreguntas
+rectangle #CDEBA5 ":Collaboration ImportarRespuestas" as ImportarRespuestas
 
 SistemaDisponible -r-> ImportarConfiguracionGlobalView : importarConfiguracionGlobal(config)
 
-ImportarConfiguracionGlobalView -d-> ImportarConfiguracionGlobalController: iniciarImportacion(config)
+ImportarConfiguracionGlobalView -d-> ConfiguracionController: iniciarImportacion(config)
 
-ImportarConfiguracionGlobalController --> AlumnoRepository: añadirAlumnos(alumnos) : void
-ImportarConfiguracionGlobalController --> GradoRepository: añadirGrados(grados) : void
-ImportarConfiguracionGlobalController --> AsignaturaRepository: añadirAsignaturas(asignaturas) :void
-ImportarConfiguracionGlobalController --> PreguntaRepository: añadirPreguntas(preguntas) : void
+ConfiguracionController --> AlumnoRepository: añadirAlumnos(alumnos) : void
+ConfiguracionController --> GradoRepository: añadirGrados(grados) : void
+ConfiguracionController --> AsignaturaRepository: añadirAsignaturas(asignaturas) :void
+ConfiguracionController --> PreguntaRepository: añadirPreguntas(preguntas) : void
+ConfiguracionController --> RespuestaRepository: añadirRespuestas(respuestas) : void
 
 ImportarConfiguracionGlobalView ..> ImportarGrados: importarGrados()
 ImportarConfiguracionGlobalView ..> ImportarAsignaturas: importarAsignaturas()
 ImportarConfiguracionGlobalView ..> ImportarAlumnos: importarAlumnos()
 ImportarConfiguracionGlobalView ..> ImportarPreguntas: importarPreguntas()
+ImportarConfiguracionGlobalView ..> ImportarRespuestas: importarRespuestas()
 
 ImportarConfiguracionGlobalView -u-> SistemaDisponible: cancelarImportacion() / salir()
 
