@@ -15,7 +15,6 @@ control "AsignaturaController" as Controlador <<control>>
 ' Clases de análisis - Entidad (Entity)
 entity "AsignaturaRepository" as Repositorio <<entity>>
 entity "Asignatura" as AsignaturaEntity <<entity>>
-entity "BateriaDePreguntas" as BateriaEntity <<entity>>
 
 title Análisis de Colaboración: crearAsignatura()
 
@@ -66,17 +65,6 @@ end note
 
 AsignaturaEntity --> Repositorio : 10: asignaturaNueva : Asignatura
 deactivate AsignaturaEntity
-
-Repositorio -> BateriaEntity : 11: new BateriaDePreguntas(asignaturaNueva)
-activate BateriaEntity
-note right
-**Batería de preguntas creada automáticamente:**
-• Asignatura asociada: asignaturaNueva
-• Preguntas: vacía (inicial)
-end note
-
-BateriaEntity --> Repositorio : 12: bateriaNueva : BateriaDePreguntas
-deactivate BateriaEntity
 
 Repositorio -> Repositorio : 13: persistir(asignaturaNueva, bateriaNueva)
 Repositorio --> Controlador : 14: asignaturaCreada : Asignatura

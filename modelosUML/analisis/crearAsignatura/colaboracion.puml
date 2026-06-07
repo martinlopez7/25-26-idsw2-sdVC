@@ -9,7 +9,6 @@ package crearAsignatura as "crearAsignatura()" {
     rectangle #b5bd68 AsignaturaController
     rectangle #F2AC4E AsignaturaRepository
     rectangle #F2AC4E Asignatura
-    rectangle #F2AC4E BateriaDePreguntas
 }
 
 AsignaturasAbierto --> CrearAsignaturaView: crearAsignatura()
@@ -24,7 +23,6 @@ CrearAsignaturaView --> AsignaturaController: crearAsignatura(título, código, 
 AsignaturaController --> AsignaturaRepository: crear(título, código, cursoAcadémico) : Asignatura
 
 AsignaturaRepository -- Asignatura
-AsignaturaRepository -- BateriaDePreguntas
 
 CrearAsignaturaView ..> EditarAsignatura: <<include>> editarAsignatura(asignaturaNueva)
 
