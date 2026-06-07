@@ -9,6 +9,7 @@ package verAsignaturas as "verAsignaturas()" {
     rectangle #F2AC4E AsignaturaRepository
     rectangle #F2AC4E Asignatura
     rectangle #F2AC4E Grado
+    rectangle #F2AC4E Alumno
 }
 
 rectangle #CDEBA5 ":Sistema Disponible" as SistemaDisponibleSalida
@@ -26,7 +27,9 @@ AsignaturasController --> AsignaturaRepository: obtenerTodos() : List<Asignatura
 
 AsignaturaRepository -- Asignatura
 
-Asignatura --> Grado: pertenece
+Asignatura --> Grado
+Asignatura --> Alumno
+
 
 VerAsignaturasView --> AsignaturasController: filtrarAsignaturas(criterio) : List<Asignatura>
 

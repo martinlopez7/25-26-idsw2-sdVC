@@ -90,6 +90,15 @@ Análisis de colaboración del caso de uso `verAsignaturas()` mediante el patró
 **Colaboraciones**:
 - **Asignatura**: Asociada mediante relación de pertenencia
 
+#### Alumno
+**Estereotipo**: Entidad  
+**Responsabilidades**:
+- Representar la información de un alumno matriculado
+- Mantener relación con las asignaturas asociadas
+
+**Colaboraciones**:
+- **Asignatura**: Asociada mediante relación de pertenencia
+
 ## flujo de colaboración
 
 ### secuencia de operaciones
@@ -114,7 +123,7 @@ Análisis de colaboración del caso de uso `verAsignaturas()` mediante el patró
 ### mapeado con especificación detallada
 
 |Requisito del caso de uso|Clase responsable|Método/Colaboración|
-|-|-|
+|-|-|-|
 |Presentar lista de asignaturas|`VerAsignaturasView`|Coordina con `AsignaturasController.listarAsignaturas()`|
 |Permitir filtrado de lista|`VerAsignaturasView`|Invoca `AsignaturasController.filtrarAsignaturas(criterio)`|
 |Mostrar nombre, código, curso académico|`Asignatura`|Encapsula atributos de la asignatura|
