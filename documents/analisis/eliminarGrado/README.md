@@ -90,6 +90,15 @@ Análisis de colaboración del caso de uso `eliminarGrado()` mediante el patrón
 **Colaboraciones**:
 - **Entidad**: Se relaciona con `Grado` (muchos alumnos se cursan en un grado)
 
+#### Asignatura
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Representar las asignaturas asociadas a ese grado
+- Desmatricular a los alumnos pertenecientes del grado
+
+**Colaboraciones**:
+- **Entidad**: Se relaciona con `Grado` (las asiganturas se asocian a un grado)
+
 ## flujo de colaboración principal
 
 1. **Inicio**: `:GRADOS_ABIERTO` o `:GRADO_ABIERTO` → `EliminarGradoView.eliminarGrado(gradoId)`

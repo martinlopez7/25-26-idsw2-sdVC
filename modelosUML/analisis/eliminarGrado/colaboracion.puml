@@ -11,6 +11,7 @@ package eliminarGrado as "eliminarGrado()" {
     rectangle #F2AC4E GradoRepository
     rectangle #F2AC4E Grado
     rectangle #F2AC4E Alumno
+    rectangle #F2AC4E Asignatura
 }
 
 GradosAbierto --> EliminarGradoView: eliminarGrado(gradoId)
@@ -22,6 +23,7 @@ GradosController --> GradoRepository: obtenerPorId(gradoId) : Grado
 
 GradoRepository -- Grado
 Grado -- Alumno
+Grado -- Asignatura
 
 EliminarGradoView --> GradosController: eliminarGrado(gradoId) : void
 
