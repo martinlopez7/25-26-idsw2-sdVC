@@ -20,16 +20,17 @@ Análisis del caso de uso `asignarExamenes()` mediante el patrón MVC, identific
 
 `asignarExamenes()` es el **caso de uso de asignación** del proceso de generación de exámenes, funcionando como:
 
-- **Asignador de exámenes**: Asocia exámenes generados a alumnos destinatarios por grado
-- **Configurador de destinatarios**: Permite seleccionar qué alumnos reciben qué exámenes
+- **Asignador de exámenes**: Asocia plantillas de exámenes a alumnos destinatarios por grado
+- **Generador de claves**: Genera la clave de corrección definitiva (hash) para cada examen
+- **Actualizador de estado**: Marca las plantillas como asignadas con clave definitiva
 
 **Invocación**: Este caso de uso es invocado automáticamente desde `generarExamenes()` mediante <<include>> tras generación exitosa.
 
-**Entrada**: 
+**Entrada**:
 1. **`EXAMENES_GENERADOS`** - Estado desde generarExamenes() global
 2. **`EXAMENES_GENERADOS_CONTEXTUALES`** - Estado desde generarExamenes() contextual
 
-**Resultado**: 
+**Resultado**:
 - **Asignación exitosa**: Transfiere a `EXAMENES_ASIGNADOS` o `EXAMENES_ASIGNADOS_CONTEXTUALES`
 
 ## diagrama de colaboración
@@ -44,114 +45,111 @@ Análisis del caso de uso `asignarExamenes()` mediante el patrón MVC, identific
 
 ## clases de análisis identificadas
 
-### clases model (naranja #F2AC4E)
-| Clase | Responsabilidad | Trazabilidad |
-|-|-|-|
-| **ExamenRepository** | Concepto puro de gestión de exámenes generados y su asignación a alumnos | Análisis puro |
-| **Examen** | Entidad que representa un examen generado pendiente de asignación | Modelo del dominio |
-| **Alumno** | Entidad que representa al alumno destinatario del examen | Modelo del dominio |
-| **Grado** | Entidad que representa el grado para agrupar alumnos destinatarios | Modelo del dominio |
+### clases de vista (boundary)
 
-### clases view (azul #629EF9)
-| Clase | Responsabilidad | Derivación |
-|-|-|-|
-| **AsignarExamenesView** | Formulario de asignación de exámenes a alumnos por grado | Especificación detallada |
+#### AsignarExamenesView
+**Estereotipo**: Vista (Boundary)
+**Responsabilidades**:
+- Recibir la solicitud de asignación de exámenes
+- Presentar formulario con alumnos destinatarios por grado
+- Mostrar configuración de asignación por grado
+- Delegar asignación al controlador
+- Gestionar navegación a estados de destino
 
-### clases controller (verde #b5bd68)
-| Clase | Responsabilidad | Caso de uso |
-|-|-|-|
-| **ExamenesController** | Control y coordinación completa del caso de uso | asignarExamenes() |
+**Colaboraciones**:
+- **Entrada**: Recibe `asignarExamenes()` desde `:EXAMENES_GENERADOS` o `:EXAMENES_GENERADOS_CONTEXTUALES`
+- **Control**: Se comunica con `ExamenesController`
+- **Salida**: Navega a `:EXAMENES_ASIGNADOS` o `:EXAMENES_ASIGNADOS_CONTEXTUALES`
 
-### colaboraciones (verde claro #CDEBA5)
-| Colaboración | Propósito | Invocación |
-|-|-|-|
-| **:EXAMENES_GENERADOS** | Origen del caso cuando se asigna desde estado global | Entrada |
-| **:EXAMENES_GENERADOS_CONTEXTUALES** | Origen del caso cuando se asigna desde estado contextual | Entrada |
-| **:EXAMENES_ASIGNADOS** | Destino cuando docente confirma asignación global | Tras confirmación global |
-| **:EXAMENES_ASIGNADOS_CONTEXTUALES** | Destino cuando docente confirma asignación contextual | Tras confirmación contextual |
+### clases de control
 
-## mensajes de colaboración
+#### ExamenesController
+**Estereotipo**: Control
+**Responsabilidades**:
+- Recibir petición de asignación con datos de exámenes y alumnos
+- Obtener exámenes
+- Obtener alumnos por grado de la asignatura
+- Para cada asignación: actualizar examen con alumno y generar clave de corrección
+- Gestionar el flujo de asignación
 
-### flujo principal (asignación confirmada)
-| Origen | Destino | Mensaje | Intención |
-|-|-|-|-|
-| **:EXAMENES_GENERADOS** | **AsignarExamenesView** | `asignarExamenes(examenesGenerados)` | Invocación con exámenes generados |
-| **:EXAMENES_GENERADOS_CONTEXTUALES** | **AsignarExamenesView** | `asignarExamenes(examenesGenerados)` | Invocación con exámenes generados |
-| **AsignarExamenesView** | **ExamenesController** | `obtenerAlumnosPorGrado(asignaturaId)` | Obtener alumnos matriculados por grado |
-| **ExamenesController** | **ExamenRepository** | `obtenerAlumnosMatriculados(asignaturaId)` | Recuperar alumnos por grado |
-| **ExamenRepository** | **Alumno** | `getAlumnos()` | Obtener lista de alumnos |
-| **ExamenRepository** | **Grado** | `getGrado()` | Obtener grado del alumno |
-| **AsignarExamenesView** | **ExamenesController** | `asignarExamenes(examenes, asignaciones)` | Delegar proceso de asignación |
-| **ExamenesController** | **ExamenRepository** | `asignarAlumnos(examenes, asignaciones)` | Persistir asignaciones |
-| **ExamenRepository** | **Examen** | `setAlumno(alumno)` | Asignar alumno a examen |
-| **AsignarExamenesView** | **:EXAMENES_ASIGNADOS** | `completarGestion()` | Retorno tras confirmación global |
-| **AsignarExamenesView** | **:EXAMENES_ASIGNADOS_CONTEXTUALES** | `completarGestion()` | Retorno tras confirmación contextual |
+**Colaboraciones**:
+- **Vista**: Responde a solicitudes de `AsignarExamenesView`
+- **GestorSesion**: Obtiene y actualiza exámenes
+- **GestorAlumnos**: Obtiene alumnos por grado
+
+### clases de entidad (entity)
+
+#### GestorExamen
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Abstraer el acceso a los exámenes
+- Actualizar exámenes con alumno asignado y clave de corrección definitiva
+- Generar clave de corrección (hash con preguntas + respuestas + alumno)
+- Marcar exámenes como asignadas
+
+**Colaboraciones**:
+- **Control**: Responde a `ExamenesController`
+- **Examen**: Proporciona y actualiza exámenes
+
+#### GestorAlumnos
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Abstraer el acceso a los alumnos matriculados por grado
+- Proporcionar mapa de grados con sus alumnos destinatarios
+
+**Colaboraciones**:
+- **Control**: Responde a `ExamenesController`
+- **Grado**: Agrupa alumnos
+- **Alumno**: Proporciona datos de alumno destinatario
+
+#### Examen
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Representar una plantilla de examen
+- Mantener atributos: asignatura, evaluación, preguntas, alumnoAsignado, claveCorreccion
+- Mantener estado: clavePendiente (true→false tras asignación), asignada (true/false)
+
+**Colaboraciones**:
+- **GestorSesion**: Es obtenida y actualizada por `GestorExamen`
+
+#### Grado
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Representar un grado asociado a la asignatura
+- Agrupar alumnos destinatarios para selección
+
+**Colaboraciones**:
+- **GestorAlumnos**: Es consultado para obtener alumnos por grado
+
+#### Alumno
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Representar un alumno destinatario del examen
+- Proporcionar datos para generación de clave de corrección
+
+**Colaboraciones**:
+- **GestorAlumnos**: Es proporcionado para asignación
 
 ## enlaces de dependencia
+
 - **AsignarExamenesView** conoce a **ExamenesController** (delegación)
-- **AsignarExamenesView** conoce a **:EXAMENES_ASIGNADOS** (retorno tras confirmación global)
-- **AsignarExamenesView** conoce a **:EXAMENES_ASIGNADOS_CONTEXTUALES** (retorno tras confirmación contextual)
-- **ExamenesController** conoce a **ExamenRepository** (gestión de exámenes y asignaciones)
-- **ExamenRepository** conoce a **Examen** (gestión de entidad)
-- **ExamenRepository** conoce a **Alumno** (acceso a datos de alumnos)
-- **ExamenRepository** conoce a **Grado** (acceso a datos de grados)
-
-## trazabilidad con artefactos previos
-
-### con especificación detallada
-- **Estados internos** → **Clases de análisis**
-- **RequiringAssignment** → **AsignarExamenesView.solicitarAsignacion()**
-- **ProvidingAssignment** → **AsignarExamenesView.mostrarFormularioAsignacion()**
-- **ProvidingConfirmation** → **AsignarExamenesView.mostrarConfirmacion()**
+- **AsignarExamenesView** conoce a **:EXAMENES_ASIGNADOS** (retorno tras asignación global)
+- **AsignarExamenesView** conoce a **:EXAMENES_ASIGNADOS_CONTEXTUALES** (retorno tras asignación contextual)
+- **ExamenesController** conoce a **GestorExamen**
+- **ExamenesController** conoce a **GestorAlumnos** (obtención de alumnos)
+- **GestorAlumnos** conoce a **Grado** y **Alumno** (datos de alumnos)
 
 ### con diagrama de contexto
 - **EXAMENES_GENERADOS** → Entrada al caso de uso (origen global)
 - **EXAMENES_GENERADOS_CONTEXTUALES** → Entrada al caso de uso (origen contextual)
-- **EXAMENES_ASIGNADOS** → Destino tras confirmación global
-- **EXAMENES_ASIGNADOS_CONTEXTUALES** → Destino tras confirmación contextual
-
-### con modelo del dominio
-- **Examen** (entidad) → **Examen** (clase de análisis)
-- **Alumno** (entidad) → **Alumno** (clase de análisis)
-- **Grado** (entidad) → **Grado** (clase de análisis)
-- **Relación Examen → Alumno** → Asignación de alumno a examen
-- **Relación Alumno → Grado** → Agrupación por grado para selección de destinatarios
+- **EXAMENES_ASIGNADOS** → Destino tras asignación global
+- **EXAMENES_ASIGNADOS_CONTEXTUALES** → Destino tras asignación contextual
 
 ## características del análisis
 
 ### responsabilidades identificadas
-- **AsignarExamenesView**: Capturar selección de alumnos destinatarios por grado y mostrar confirmación
-- **ExamenesController**: Orquestar carga de alumnos por grado y persistencia de asignaciones
-- **ExamenRepository**: Proveer acceso a alumnos matriculados y gestionar asignaciones examen-alumno
-- **Examen**: Representar exámenes generados pendientes de asignación a alumnos
-- **Alumno**: Representar alumnos destinatarios de exámenes
-- **Grado**: Representar grado para filtrar y agrupar alumnos destinatarios
-
-### relaciones conceptuales
-- **Delegación**: Vista delega lógica de negocio al controlador
-- **Carga de datos**: Controlador obtiene alumnos por grado desde repositorio
-- **Asignación**: Repositorio coordina la relación examen-alumno
-- **Navegación**: Vista maneja navegación directa a estados de destino
-
-## naturaleza del flujo de control
-
-### flujo único de asignación
-- **Asignación**: Asocia exámenes a alumnos destinatarios por grado
-- **Transición**: Cambio de estado a EXAMENES_ASIGNADOS o EXAMENES_ASIGNADOS_CONTEXTUALES
-
-### gestión de estado
-- **Asignación exitosa**: Los exámenes se asignan a alumnos y se completa la gestión
-
-## patrones arquitectónicos aplicados
-
-### patrón MVC para asignación de exámenes
-- **Model**: `Examen` + `Alumno` + `Grado` + `ExamenRepository`
-- **View**: `AsignarExamenesView` (formulario de asignación e interacción)
-- **Controller**: `ExamenesController` (coordinación y validación)
-
-### patrón de asignación por grado
-- **Agrupación por grado**: Los alumnos se muestran y seleccionan por grado
-- **Configuración por grado**: Cada grado puede tener diferentes alumnos destinatarios
-- **Asignación individual**: Cada examen se asigna a un alumno específico
-
-**Código fuente:** [colaboracion.puml](/modelosUML/analisis/asignarExamenes/colaboracion.puml)
+- **AsignarExamenesView**: Formulario de asignación, delegar, navegar
+- **ExamenesController**: Recibir petición, orquestar flujo, coordinar asignación
+- **GestorExamen**: Abstraer examenes y actualizar con alumno y clave
+- **GestorAlumnos**: Abstraer acceso a alumnos por grado
+- **Examen**: Plantilla con datos de alumno y clave de corrección

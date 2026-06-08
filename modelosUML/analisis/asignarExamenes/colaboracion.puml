@@ -9,23 +9,29 @@ rectangle #CDEBA5 ":EXAMENES_ASIGNADOS_CONTEXTUALES" as ExamAsignadosContext
 package asignarExamenes as "asignarExamenes()" {
     rectangle #629EF9 AsignarExamenesView
     rectangle #b5bd68 ExamenesController
-    rectangle #F2AC4E ExamenRepository
+    rectangle #F2AC4E GestorExamen
+    rectangle #F2AC4E GestorAlumnos
     rectangle #F2AC4E Examen
-    rectangle #F2AC4E Alumno
     rectangle #F2AC4E Grado
+    rectangle #F2AC4E Alumno
 }
 
-ExamGenerados --> AsignarExamenesView: asignarExamenes(examenesGenerados)
-ExamGeneradosContext --> AsignarExamenesView: asignarExamenes(examenesGenerados)
+ExamGenerados --> AsignarExamenesView: asignarExamenes()
+ExamGeneradosContext --> AsignarExamenesView: asignarExamenes()
 
-AsignarExamenesView -d-> ExamenesController: obtenerAlumnosPorGrado(asignaturaId) : Map<Grado, List<Alumno>>
-ExamenesController --> ExamenRepository: obtenerAlumnosMatriculados(asignaturaId) : Map<Grado, List<Alumno>>
-ExamenRepository -- Alumno
-ExamenRepository -- Grado
+AsignarExamenesView -d-> ExamenesController: obtenerAlumnosPorGrado(asignaturaId)
 
-AsignarExamenesView --> ExamenesController: asignarExamenes(examenes, asignaciones) : boolean
-ExamenesController --> ExamenRepository: asignarAlumnos(examenes, asignaciones) : boolean
-ExamenRepository -- Examen
+ExamenesController -> GestorAlumnos: obtenerAlumnosPorGrado(asignaturaId)
+GestorAlumnos -- Grado
+GestorAlumnos -- Alumno
+
+AsignarExamenesView --> ExamenesController: asignarExamenes(asignaciones)
+
+ExamenesController -> GestorExamen: obtenerExamenes()
+
+ExamenesController -> GestorExamen: [PARA_CADA_ASIGNACION]\nactualizarExamen(alumno, clave)
+GestorExamen -> GestorExamen: generarClaveCorreccion(preguntas, respuestas, alumno)
+GestorExamen -> Examen: actualizar(alumno, clave, clavePendiente=false, asignada=true)
 
 ExamAsignados <-- AsignarExamenesView
 ExamAsignadosContext <-- AsignarExamenesView
