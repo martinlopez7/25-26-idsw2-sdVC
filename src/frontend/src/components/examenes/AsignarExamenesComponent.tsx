@@ -116,14 +116,17 @@ export default function AsignarExamenesComponent() {
     setAsignacionExito('');
 
     try {
+      const alumnosYaUsados = new Set<number>();
       const asignaciones = plantillas
         .filter((p) => !p.asignada)
         .map((plantilla) => {
           const alumnosDelGrado = getAlumnosDelGrado(plantilla.gradoId);
           const alumnoNoAsignado = alumnosDelGrado.find((a) => {
-            return !plantillas.some((p) => p.alumnoId === a.id && p.asignada);
+            return !alumnosYaUsados.has(a.id) &&
+                   !plantillas.some((p) => p.alumnoId === a.id && p.asignada);
           });
           if (!alumnoNoAsignado) return null;
+          alumnosYaUsados.add(alumnoNoAsignado.id);
           return { plantillaId: plantilla.id, alumnoId: alumnoNoAsignado.id };
         })
         .filter((a) => a !== null) as { plantillaId: string; alumnoId: number }[];

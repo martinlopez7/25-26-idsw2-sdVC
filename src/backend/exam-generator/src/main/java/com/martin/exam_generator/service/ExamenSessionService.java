@@ -22,10 +22,7 @@ public class ExamenSessionService {
 
     @SuppressWarnings("unchecked")
     public List<PlantillaExamen> obtenerPlantillas() {
-        System.out.println("Session ID: " + httpSession.getId());
-        System.out.println("Session isNew: " + httpSession.isNew());
         List<PlantillaExamen> plantillas = (List<PlantillaExamen>) httpSession.getAttribute(PLANTILLAS_EXAMENES_KEY);
-        System.out.println("Plantillas encontradas: " + (plantillas != null ? plantillas.size() : 0));
         return plantillas != null ? new ArrayList<>(plantillas) : new ArrayList<>();
     }
 
