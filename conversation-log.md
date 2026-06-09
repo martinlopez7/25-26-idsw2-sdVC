@@ -1395,3 +1395,7 @@ El diseño sigue la corrección simplificada indicada por el profesor: el docent
 **Enlace:** [session-ses_16d1.md](conversations/session-ses_16d1.md)
 
 **Decisión:** La implementación de corregirExamenes() se aceptó tras las correcciones de imports (PDFBox en lugar de OpenPDF).
+
+## [06/06/2026 - 09/06/2026] Simplificación del análsis de algunos casos de uso
+
+**Decisión:** Me dí cuenta de que los análisis de algunos casos de uso eran excesivamente complejos y algunos no terminaban de cuadrar con lo posteriormente diseñado e implementado, por lo que los corregí.
