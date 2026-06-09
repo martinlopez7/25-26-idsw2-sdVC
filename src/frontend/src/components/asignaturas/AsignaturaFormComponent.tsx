@@ -314,6 +314,15 @@ export default function AsignaturaFormComponent() {
                   {isEditing && (
                     <button
                       type="button"
+                      className="btn btn-success"
+                      onClick={() => navigate(`/examenes/generar?asignaturaId=${id}`)}
+                    >
+                      Generar Exámenes
+                    </button>
+                  )}
+                  {isEditing && (
+                    <button
+                      type="button"
                       className="btn btn-info"
                       onClick={() => navigate(`/preguntas/asignatura/${id}`)}
                     >

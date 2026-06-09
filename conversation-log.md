@@ -1396,6 +1396,28 @@ El diseño sigue la corrección simplificada indicada por el profesor: el docent
 
 **Decisión:** La implementación de corregirExamenes() se aceptó tras las correcciones de imports (PDFBox en lugar de OpenPDF).
 
-## [06/06/2026 - 09/06/2026] Simplificación del análsis de algunos casos de uso
+## [06/06/2026 - 09/06/2026] Simplificación del ánalisis de algunos casos de uso
 
 **Decisión:** Me dí cuenta de que los análisis de algunos casos de uso eran excesivamente complejos y algunos no terminaban de cuadrar con lo posteriormente diseñado e implementado, por lo que los corregí.
+
+## [09/06/2026][16:04] Planificación e implementación de generarExamenes() desde ASIGNATURA_ABIERTO
+
+**Prompt:** empezar → para ser fieles al diagrama de contexto me gustaría que se pudiera ejecutar el caso de uso generarExamenes desde ASIGNATURA_ABIERTO también. planifica la implementación de esto
+
+**Resultado:** Se planificó e implementó la navegación de generarExamenes() desde el estado ASIGNATURA_ABIERTO. Los cambios realizados fueron:
+
+1. **AsignaturaFormComponent.tsx**: Añadido botón "Generar Exámenes" (verde) en la barra de acciones, visible solo en modo edición (isEditing). Navega a `/examenes/generar?asignaturaId=${id}`.
+
+2. **GenerarExamenesComponent.tsx**: 
+   - Añadido import de `useSearchParams` de react-router-dom
+   - Detecta parámetro `asignaturaId` en query string y modo contextual (`isContextual`)
+   - useEffect que pre-selecciona la asignatura cuando viene de contexto
+   - Selector de asignatura deshabilitado cuando `isContextual` es true
+   - Título dinámico: "Generar Exámenes (Contexto)" vs "Generar Exámenes"
+   - Botón "Volver" context-aware: vuelve a `/asignaturas/editar/${id}` o `/menu-docente`
+
+3. **Backend**: No requiere cambios. El endpoint `GET /asignaturas/{id}/completa` ya existe.
+
+**Enlace:** [session-ses_1535.md](conversations/session-ses_1535.md)
+
+**Decisión:** Se aceptó la implementación.

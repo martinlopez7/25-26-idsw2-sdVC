@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { examenesService, GenerarExamenesRequest, ConfigGradoDTO, AsignaturaConGradosDTO } from '../../services/examenesService';
 import { asignaturasService, AsignaturaDTO } from '../../services/asignaturasService';
 
 export default function GenerarExamenesComponent() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const asignaturaIdParam = searchParams.get('asignaturaId');
+  const isContextual = Boolean(asignaturaIdParam);
 
   const [loading, setLoading] = useState(false);
   const [loadingAsignaturas, setLoadingAsignaturas] = useState(true);
@@ -23,6 +27,12 @@ export default function GenerarExamenesComponent() {
   useEffect(() => {
     cargarAsignaturas();
   }, []);
+
+  useEffect(() => {
+    if (asignaturaIdParam) {
+      handleAsignaturaChange(Number(asignaturaIdParam));
+    }
+  }, [asignaturaIdParam]);
 
   const cargarAsignaturas = async () => {
     setLoadingAsignaturas(true);
@@ -163,7 +173,7 @@ export default function GenerarExamenesComponent() {
         <div className="col-md-10">
           <div className="card">
             <div className="card-header bg-success text-white">
-              <h4>Generar Exámenes</h4>
+              <h4>{isContextual ? 'Generar Exámenes (Contexto)' : 'Generar Exámenes'}</h4>
             </div>
             <div className="card-body">
               {error && <div className="alert alert-danger">{error}</div>}
@@ -196,7 +206,7 @@ export default function GenerarExamenesComponent() {
                     className="form-select"
                     value={selectedAsignatura?.id || ''}
                     onChange={e => handleAsignaturaChange(Number(e.target.value))}
-                    disabled={loadingAsignaturas}
+                    disabled={loadingAsignaturas || isContextual}
                     required
                   >
                     <option value="">-- Seleccionar asignatura --</option>
@@ -342,7 +352,11 @@ export default function GenerarExamenesComponent() {
                   <button type="submit" className="btn btn-success" disabled={loading}>
                     {loading ? 'Generando...' : 'Generar Exámenes'}
                   </button>
-                  <button type="button" className="btn btn-secondary" onClick={() => navigate('/menu-docente')}>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => navigate(isContextual ? `/asignaturas/editar/${asignaturaIdParam}` : '/menu-docente')}
+                  >
                     Volver
                   </button>
                 </div>
