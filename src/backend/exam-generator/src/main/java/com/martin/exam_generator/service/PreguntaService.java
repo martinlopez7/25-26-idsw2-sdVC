@@ -52,6 +52,10 @@ public class PreguntaService {
         return dtos;
     }
 
+    public List<String> obtenerTemasDisponibles(Long asignaturaId) {
+        return preguntaRepository.findDistinctTemasByAsignaturaId(asignaturaId);
+    }
+
     public Map<String, List<PreguntaDTO>> clasificarPreguntasPorDificultad(List<PreguntaDTO> preguntasDTO) {
         return preguntasDTO.stream()
                 .collect(Collectors.groupingBy(PreguntaDTO::getDificultad));

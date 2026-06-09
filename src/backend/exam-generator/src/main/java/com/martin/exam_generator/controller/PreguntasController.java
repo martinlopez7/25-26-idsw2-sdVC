@@ -67,6 +67,12 @@ public class PreguntasController {
         return ResponseEntity.ok(preguntas);
     }
 
+    @GetMapping("/asignatura/{asignaturaId}/temas")
+    public ResponseEntity<List<String>> obtenerTemasPorAsignatura(@PathVariable Long asignaturaId) {
+        List<String> temas = preguntaService.obtenerTemasDisponibles(asignaturaId);
+        return ResponseEntity.ok(temas);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<PreguntaDTO> obtenerPregunta(@PathVariable Long id) {
         PreguntaDTO pregunta = preguntaService.obtenerPreguntaPorId(id);

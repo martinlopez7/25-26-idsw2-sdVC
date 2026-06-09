@@ -24,6 +24,9 @@ public interface PreguntaRepository extends JpaRepository<Pregunta, Long> {
 
     List<Pregunta> findByAsignaturaIdAndTemaIn(Long asignaturaId, List<String> temas);
 
+    @Query("SELECT DISTINCT p.tema FROM Pregunta p WHERE p.asignaturaId = :asignaturaId ORDER BY p.tema")
+    List<String> findDistinctTemasByAsignaturaId(@Param("asignaturaId") Long asignaturaId);
+
     @Query("SELECT p FROM Pregunta p WHERE p.asignaturaId = :asignaturaId AND " +
             "(LOWER(p.enunciado) LIKE LOWER(CONCAT('%', :criterio, '%')) OR " +
             "LOWER(p.tema) LIKE LOWER(CONCAT('%', :criterio, '%')) OR " +

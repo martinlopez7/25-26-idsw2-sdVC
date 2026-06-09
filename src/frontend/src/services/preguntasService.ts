@@ -55,6 +55,11 @@ export const preguntasService = {
     return response.data;
   },
 
+  obtenerTemasPorAsignatura: async (asignaturaId: number): Promise<string[]> => {
+    const response = await api.get<string[]>(`/preguntas/asignatura/${asignaturaId}/temas`);
+    return response.data;
+  },
+
   getPreguntaById: async (id: number): Promise<PreguntaDTO> => {
     const response = await api.get<PreguntaDTO>(`/preguntas/${id}`);
     return response.data;

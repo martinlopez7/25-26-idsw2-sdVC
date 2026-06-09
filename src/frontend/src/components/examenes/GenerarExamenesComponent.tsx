@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { examenesService, GenerarExamenesRequest, ConfigGradoDTO, AsignaturaConGradosDTO } from '../../services/examenesService';
 import { asignaturasService, AsignaturaDTO } from '../../services/asignaturasService';
+import { preguntasService } from '../../services/preguntasService';
 
 export default function GenerarExamenesComponent() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ export default function GenerarExamenesComponent() {
 
   const [loading, setLoading] = useState(false);
   const [loadingAsignaturas, setLoadingAsignaturas] = useState(true);
+  const [loadingTemas, setLoadingTemas] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [generatedCount, setGeneratedCount] = useState(0);
@@ -20,7 +22,7 @@ export default function GenerarExamenesComponent() {
   const [selectedAsignatura, setSelectedAsignatura] = useState<AsignaturaConGradosDTO | null>(null);
   const [evaluacion, setEvaluacion] = useState('PARCIAL_1');
   const [temas, setTemas] = useState<string[]>([]);
-  const [temaInput, setTemaInput] = useState('');
+  const [temasDisponibles, setTemasDisponibles] = useState<string[]>([]);
   const [numPreguntas, setNumPreguntas] = useState(5);
   const [configPorGrado, setConfigPorGrado] = useState<Record<number, ConfigGradoDTO>>({});
 
@@ -49,26 +51,31 @@ export default function GenerarExamenesComponent() {
   const handleAsignaturaChange = async (asignaturaId: number) => {
     setSelectedAsignatura(null);
     setConfigPorGrado({});
+    setTemas([]);
+    setTemasDisponibles([]);
+
     if (asignaturaId) {
       try {
         const completa = await examenesService.getAsignaturaConGrados(asignaturaId);
         setSelectedAsignatura(completa);
+
+        setLoadingTemas(true);
+        const temasData = await preguntasService.obtenerTemasPorAsignatura(asignaturaId);
+        setTemasDisponibles(temasData);
       } catch (err: any) {
         setError(err.response?.data?.error || 'Error al cargar datos de la asignatura');
+      } finally {
+        setLoadingTemas(false);
       }
     }
   };
 
-  const handleAddTema = () => {
-    const trimmed = temaInput.trim();
-    if (trimmed && !temas.includes(trimmed)) {
-      setTemas([...temas, trimmed]);
-      setTemaInput('');
+  const handleTemaToggle = (tema: string) => {
+    if (temas.includes(tema)) {
+      setTemas(temas.filter(t => t !== tema));
+    } else {
+      setTemas([...temas, tema]);
     }
-  };
-
-  const handleRemoveTema = (tema: string) => {
-    setTemas(temas.filter(t => t !== tema));
   };
 
   const handleGradoConfigChange = (gradoId: number, field: string, value: any) => {
@@ -235,33 +242,30 @@ export default function GenerarExamenesComponent() {
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label">Temas</label>
-                  <div className="input-group mb-2">
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={temaInput}
-                      onChange={e => setTemaInput(e.target.value)}
-                      onKeyPress={e => e.key === 'Enter' && (e.preventDefault(), handleAddTema())}
-                      placeholder="Introducir tema"
-                    />
-                    <button type="button" className="btn btn-secondary" onClick={handleAddTema}>
-                      Añadir
-                    </button>
+                  <label className="form-label">Temas disponibles en la batería</label>
+                  <div className="border rounded p-3" style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                    {loadingTemas ? (
+                      <p>Cargando temas...</p>
+                    ) : temasDisponibles.length === 0 ? (
+                      <p className="text-muted">No hay temas disponibles para esta asignatura</p>
+                    ) : (
+                      temasDisponibles.map(tema => (
+                        <div key={tema} className="form-check">
+                          <input
+                            type="checkbox"
+                            className="form-check-input"
+                            id={`tema-${tema}`}
+                            checked={temas.includes(tema)}
+                            onChange={() => handleTemaToggle(tema)}
+                          />
+                          <label className="form-check-label" htmlFor={`tema-${tema}`}>
+                            {tema}
+                          </label>
+                        </div>
+                      ))
+                    )}
                   </div>
-                  <div className="d-flex flex-wrap gap-2">
-                    {temas.map(tema => (
-                      <span key={tema} className="badge bg-primary d-flex align-items-center">
-                        {tema}
-                        <button
-                          type="button"
-                          className="btn-close btn-close-white ms-2"
-                          style={{ fontSize: '0.5rem' }}
-                          onClick={() => handleRemoveTema(tema)}
-                        />
-                      </span>
-                    ))}
-                  </div>
+                  <small className="text-muted">{temas.length} tema(s) seleccionado(s)</small>
                 </div>
 
                 <div className="mb-3">
