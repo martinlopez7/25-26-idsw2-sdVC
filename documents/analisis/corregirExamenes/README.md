@@ -14,15 +14,15 @@
 
 ## propósito
 
-Análisis del caso de uso `corregirExamenes()` mediante el patrón MVC, identificando las clases de análisis, sus responsabilidades y colaboraciones necesarias para implementar el proceso de corrección de exámenes realizados por alumnos.
+Análisis del caso de uso `corregirExamenes()` mediante el patrón MVC, identificando las clases de análisis, sus responsabilidades y colaboraciones necesarias para implementar el proceso simplificado de corrección de exámenes.
 
 ### rol metodológico del caso de uso
 
 `corregirExamenes()` es el **caso de uso de corrección** del proceso de exámenes, funcionando como:
 
-- **Receptor de exámenes realizados**: El docente introduce los exámenes ya realizados por los alumnos
-- **Comparador con clave**: El sistema verifica las respuestas del alumno contra la clave de corrección
-- **Calculador de resultados**: Genera las puntuaciones y resultados de cada examen corregido
+- **Receptor de exámenes**: Recibe los exámenes realizados por alumnos
+- **Generador de notas**: Genera una nota aleatoria (1-10) para cada examen
+- **Presentador de resultados**: Muestra los resultados de corrección al docente
 
 **Entrada**: Desde `SISTEMA_DISPONIBLE` (estado EXAMENES_CORREGIDOS).
 
@@ -40,117 +40,126 @@ Análisis del caso de uso `corregirExamenes()` mediante el patrón MVC, identifi
 
 ## clases de análisis identificadas
 
-### clases model (naranja #F2AC4E)
-| Clase | Responsabilidad | Trazabilidad |
-|-|-|-|
-| **ExamenRepository** | Concepto puro de gestión de exámenes corregidos y sus resultados | Análisis puro |
-| **Examen** | Entidad que representa un examen asignado a un alumno | Modelo del dominio |
-| **Pregunta** | Entidad que representa las preguntas del examen | Modelo del dominio |
-| **Respuesta** | Entidad que representa las respuestas del alumno | Modelo del dominio |
+### clases de vista (boundary)
 
-### clases view (azul #629EF9)
-| Clase | Responsabilidad | Derivación |
-|-|-|-|
-| **CorregirExamenesView** | Formulario de corrección de exámenes realizados | Especificación detallada |
+#### CorregirExamenesView
+**Estereotipo**: Vista (Boundary)
+**Responsabilidades**:
+- Presentar formulario de corrección de exámenes
+- Capturar los exámenes realizados por los alumnos
+- Delegar la corrección al controlador
+- Presentar los resultados de la corrección (examen + nota)
+- Gestionar navegación a estados de destino
 
-### clases controller (verde #b5bd68)
-| Clase | Responsabilidad | Caso de uso |
-|-|-|-|
-| **ExamenesController** | Control y coordinación completa del caso de uso | corregirExamenes() |
+**Colaboraciones**:
+- **Entrada**: Recibe `corregirExamenes()` desde `:Sistema Disponible`
+- **Control**: Se comunica con `ExamenesController`
+- **Salida**: Navega a `:EXAMENES_CORREGIDOS`
 
-### colaboraciones (verde claro #CDEBA5)
-| Colaboración | Propósito | Invocación |
-|-|-|-|
-| **:Sistema Disponible** | Origen del caso de uso | Entrada desde menú |
-| **:EXAMENES_CORREGIDOS** | Destino tras corrección exitosa | Retorno tras confirmar |
+### clases de control
 
-## mensajes de colaboración
+#### ExamenesController
+**Estereotipo**: Control
+**Responsabilidades**:
+- Recibir los exámenes a corregir
+- Delegar el procesamiento al corrector
+- Retornar los resultados al docente
 
-### flujo principal (corrección exitosa)
-| Origen | Destino | Mensaje | Intención |
+**Colaboraciones**:
+- **Vista**: Responde a solicitudes de `CorregirExamenesView`
+- **Corrector**: Delega la generación de notas
+
+### clases de entidad (entity)
+
+#### Corrector
+**Estereotipo**: Entidad
+**Responsabilidades**:
+- Procesar los exámenes recibidos
+- Generar una nota aleatoria (1-10) para cada examen
+- Proporcionar lista de resultados (examen, nota)
+
+**Colaboraciones**:
+- **Control**: Responde a `ExamenesController`
+
+## flujo de colaboración principal
+
+### secuencia: corregir exámenes
+
+1. **Inicio**: `:Sistema Disponible` → `CorregirExamenesView.corregirExamenes()`
+2. **Presentación**: `CorregirExamenesView` presenta formulario de corrección
+3. **Delegación**: `CorregirExamenesView` → `ExamenesController.corregirExamenes(examenes)`
+4. **Procesamiento**: `ExamenesController` → `Corrector.corregir(examenes)`
+5. **Generación**: Para cada examen, `Corrector` genera una nota aleatoria 1-10
+6. **Retorno**: `ExamenesController` → `CorregirExamenesView` (resultados: examen, nota)
+7. **Navegación**: `CorregirExamenesView` → `:EXAMENES_CORREGIDOS`
+
+## flujo de colaboración
+
+### mensajes de colaboración
+
+|Origen|Destino|Mensaje|Intención|
 |-|-|-|-|
-| **:Sistema Disponible** | **CorregirExamenesView** | `corregirExamenes()` | Invocación del caso de uso |
-| **CorregirExamenesView** | **ExamenesController** | `obtenerExamenesPendientes()` | Recuperar exámenes asignados sin corregir |
-| **ExamenesController** | **ExamenRepository** | `obtenerExamenesSinCorregir()` | Obtener lista de exámenes pendientes |
-| **ExamenRepository** | **Examen** | `getExamenes()` | Acceso a datos del examen |
-| **CorregirExamenesView** | **ExamenesController** | `introducirExamenesRealizados(examenes, respuestasAlumno)` | Proporcionar exámenes realizados |
-| **ExamenesController** | **ExamenRepository** | `obtenerClaveCorreccion(examenId)` | Recuperar clave de corrección |
-| **ExamenRepository** | **Respuesta** | `getClave()` | Obtener respuesta correcta |
-| **ExamenesController** | **ExamenesController** | `compararRespuestas(respuestasAlumno, clave)` | Comparar con clave |
-| **ExamenesController** | **ExamenRepository** | `guardarResultados(examenId, resultados)` | Persistir resultados corregidos |
-| **ExamenRepository** | **Examen** | `setResultados(resultados)` | Asignar resultados al examen |
-| **CorregirExamenesView** | **:EXAMENES_CORREGIDOS** | `completarGestion()` | Retorno tras corrección exitosa |
-
-### flujo alternativo (cancelar corrección)
-| Origen | Destino | Mensaje | Intención |
-|-|-|-|-|
-| **CorregirExamenesView** | **ExamenesController** | `cancelarCorreccion()` | Docente cancela la corrección |
-| **:Sistema Disponible** | **CorregirExamenesView** | `rechazarCancelacion()` | Permanecer en estado actual |
+|**:Sistema Disponible**|**CorregirExamenesView**|`corregirExamenes()`|Invocación del caso de uso|
+|**CorregirExamenesView**|**ExamenesController**|`corregirExamenes(examenes)`|Delegar corrección|
+|**ExamenesController**|**Corrector**|`corregir(examenes)`|Procesar exámenes|
+|**Corrector**|`:ExamenesController`|resultados (examen, nota)|Retornar resultados|
+|**ExamenesController**|**CorregirExamenesView**|resultados|Retornar resultados|
+|**CorregirExamenesView**|**:EXAMENES_CORREGIDOS**|`completarGestion()`|Retorno tras corrección|
 
 ## enlaces de dependencia
+
 - **CorregirExamenesView** conoce a **ExamenesController** (delegación)
-- **CorregirExamenesView** conoce a **:EXAMENES_CORREGIDOS** (retorno tras corrección)
-- **ExamenesController** conoce a **ExamenRepository** (gestión de exámenes y corrección)
-- **ExamenRepository** conoce a **Examen** (gestión de entidad)
-- **ExamenRepository** conoce a **Pregunta** (acceso a preguntas del examen)
-- **ExamenRepository** conoce a **Respuesta** (acceso a respuestas y clave de corrección)
+- **CorregirExamenesView** conoce a **:EXAMENES_CORREGIDOS** (retorno)
+- **ExamenesController** conoce a **Corrector** (procesamiento)
+
+## coherencia con el diseño
+
+### corrección simplificada
+
+Este análisis es coherente con el diseño:
+- **Entrada**: Exámenes realizados por alumnos
+- **Proceso**: Generación de notas aleatorias 1-10 por examen
+- **Salida**: Lista de resultados (examen, nota)
+- **Sin comparación**: No se comparan respuestas con clave de corrección
+
+### sin persistencia
+
+Este caso de uso:
+- **Solo retorna resultados**: No persiste en base de datos
+- **Visualización**: Los resultados se muestran al docente
 
 ## trazabilidad con artefactos previos
 
 ### con especificación detallada
 - **Estados internos** → **Clases de análisis**
 - **RequiringCorrection** → **CorregirExamenesView.solicitarCorreccion()**
-- **ProvidingDoneExams** → **CorregirExamenesView.mostrarFormularioExamenes()**
-- **ProvidingConfirmation** → **CorregirExamenesView.mostrarConfirmacion()**
+- **ProvidingDoneExams** → **CorregirExamenesView.mostrarFormulario()**
+- **ProvidingConfirmation** → **CorregirExamenesView.mostrarResultados()**
 
 ### con diagrama de contexto
 - **SISTEMA_DISPONIBLE** → Entrada al caso de uso (desde menú)
-- **EXAMENES_CORREGIDOS** → Destino tras corrección exitosa
-
-### con modelo del dominio
-- **Examen** (entidad) → **Examen** (clase de análisis)
-- **Pregunta** (entidad) → **Pregunta** (clase de análisis)
-- **Respuesta** (entidad) → **Respuesta** (clase de análisis)
-- **Relación Examen → Pregunta** → Preguntas del examen a corregir
-- **Relación Pregunta → Respuesta** → Clave de corrección y respuestas del alumno
+- **EXAMENES_CORREGIDOS** → Estado durante presentación de resultados
 
 ## características del análisis
 
 ### responsabilidades identificadas
-- **CorregirExamenesView**: Presentar exámenes pendientes, capturar exámenes realizados y confirmar corrección
-- **ExamenesController**: Obtener exámenes pendientes, comparar respuestas con clave, guardar resultados
-- **ExamenRepository**: Proveer acceso a exámenes sin corregir, almacenar claves de corrección, persistir resultados
-- **Examen**: Representar examen con datos del alumno y resultados de corrección
-- **Pregunta**: Representar preguntas del examen con su clave de corrección
-- **Respuesta**: Representar respuestas del alumno y la clave correcta
+- **CorregirExamenesView**: Formulario de corrección, presentar resultados
+- **ExamenesController**: Recibir exámenes, delegar procesamiento, retornar resultados
+- **Corrector**: Generar notas aleatorias para cada examen
 
 ### relaciones conceptuales
-- **Delegación**: Vista delega lógica de negocio al controlador
-- **Carga de datos**: Controlador obtiene exámenes pendientes desde repositorio
-- **Comparación**: Repositorio proporciona clave de corrección para comparar
-- **Navegación**: Vista maneja navegación directa a estado de destino
-
-## naturaleza del flujo de control
-
-### flujo único de corrección
-- **Introducción**: El docente proporciona los exámenes realizados
-- **Comparación**: El sistema compara con la clave de corrección
-- **Resultado**: Se calculan y guardan los resultados de cada examen
-
-### gestión de estado
-- **Corrección exitosa**: Los exámenes se corrigen y se completan
-- **Cancelación**: El docente puede cancelar y no se persisten cambios
+- **Delegación**: Vista delega lógica al controlador
+- **Procesamiento**: Controlador usa corrector para generar notas
+- **Generación**: Corrector genera notas aleatorias sin intervención humana
 
 ## patrones arquitectónicos aplicados
 
 ### patrón MVC para corrección de exámenes
-- **Model**: `Examen` + `Pregunta` + `Respuesta` + `ExamenRepository`
-- **View**: `CorregirExamenesView` (formulario de corrección e interacción)
-- **Controller**: `ExamenesController` (coordinación y comparación)
+- **Model**: `Corrector`
+- **View**: `CorregirExamenesView` (formulario y resultados)
+- **Controller**: `ExamenesController` (coordinación)
 
-### patrón de corrección con clave
-- **Clave de corrección**: Cada examen tiene una clave generada en creación
-- **Comparación automática**: El sistema compara respuestas con clave
-- **Resultados calculados**: Puntuación y resultado calculado automáticamente
-
-**Código fuente:** [colaboracion.puml](/modelosUML/analisis/corregirExamenes/colaboracion.puml)
+### patrón de corrección simplificada
+- **Entrada**: Exámenes a corregir
+- **Proceso**: Generación de notas aleatorias 1-10
+- **Salida**: Lista de resultados (examen, nota)
