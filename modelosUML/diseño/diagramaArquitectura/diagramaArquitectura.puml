@@ -1,0 +1,31 @@
+@startuml "Diagrama de Contenedores - pySigHor"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Diagrama de Arquitectura - Spring Boot + React
+
+' --- ACTORES ---
+Person(admin, "Administrador institucional", "Usuario que gestiona docentes")
+Person(docente, "Docente", "Usuario que genera exámenes")
+
+' --- SISTEMA ---
+System_Boundary(c1, "Jorgestor") {
+    
+    ' Frontend
+    Container(spa, "Single Page Application", "React + TypeScript", "Interfaz de usuario")
+    
+    ' Backend
+    Container(api, "API Backend", "Java + Spring Boot", "Lógica de negocio y gestión de datos")
+    
+    ' Base de Datos
+    ContainerDb(db, "Base de Datos", "PostgreSQL", "Almacenamiento persistente")
+}
+
+' --- RELACIONES ---
+Rel(admin, spa, "Usa", "HTTP")
+Rel(docente, spa, "Usa", "HTTP")
+
+Rel(spa, api, "Realiza peticiones API", "JSON/HTTP")
+
+Rel(api, db, "Lee/Escribe")
+
+@enduml
