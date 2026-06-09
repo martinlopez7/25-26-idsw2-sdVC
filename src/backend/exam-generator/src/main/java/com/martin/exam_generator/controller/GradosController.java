@@ -1,9 +1,9 @@
 package com.martin.exam_generator.controller;
 
-import com.martin.exam_generator.dto.AlumnoDTO;
-import com.martin.exam_generator.dto.GradoCreateDTO;
-import com.martin.exam_generator.dto.GradoDTO;
-import com.martin.exam_generator.dto.GradoUpdateDTO;
+import com.martin.exam_generator.dto.alumno.AlumnoDTO;
+import com.martin.exam_generator.dto.grado.GradoCreateDTO;
+import com.martin.exam_generator.dto.grado.GradoDTO;
+import com.martin.exam_generator.dto.grado.GradoUpdateDTO;
 import com.martin.exam_generator.security.JwtTokenProvider;
 import com.martin.exam_generator.service.GradoService;
 import jakarta.validation.Valid;

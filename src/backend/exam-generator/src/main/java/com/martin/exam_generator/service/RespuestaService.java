@@ -1,9 +1,9 @@
 package com.martin.exam_generator.service;
 
-import com.martin.exam_generator.dto.PreguntaDTO;
-import com.martin.exam_generator.dto.RespuestaCreateDTO;
-import com.martin.exam_generator.dto.RespuestaDTO;
-import com.martin.exam_generator.dto.RespuestaUpdateDTO;
+import com.martin.exam_generator.dto.pregunta.PreguntaDTO;
+import com.martin.exam_generator.dto.respuesta.RespuestaCreateDTO;
+import com.martin.exam_generator.dto.respuesta.RespuestaDTO;
+import com.martin.exam_generator.dto.respuesta.RespuestaUpdateDTO;
 import com.martin.exam_generator.entities.Pregunta;
 import com.martin.exam_generator.entities.Respuesta;
 import com.martin.exam_generator.repository.RespuestaRepository;

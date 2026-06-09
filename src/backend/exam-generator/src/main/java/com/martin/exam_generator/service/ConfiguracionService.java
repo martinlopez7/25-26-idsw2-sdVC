@@ -1,7 +1,7 @@
 package com.martin.exam_generator.service;
 
-import com.martin.exam_generator.dto.ConfiguracionExportDTO;
-import com.martin.exam_generator.dto.ConfiguracionExportDTO.*;
+import com.martin.exam_generator.dto.config.ConfiguracionExportDTO;
+import com.martin.exam_generator.dto.config.ConfiguracionExportDTO.*;
 import com.martin.exam_generator.entities.*;
 import com.martin.exam_generator.repository.*;
 import org.springframework.stereotype.Service;

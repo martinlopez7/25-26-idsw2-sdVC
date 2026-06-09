@@ -1,11 +1,9 @@
 package com.martin.exam_generator.service;
 
-import com.martin.exam_generator.dto.AlumnoDTO;
-import com.martin.exam_generator.dto.GradoCreateDTO;
-import com.martin.exam_generator.dto.GradoDTO;
-import com.martin.exam_generator.dto.GradoUpdateDTO;
-import com.martin.exam_generator.entities.Alumno;
-import com.martin.exam_generator.entities.Asignatura;
+import com.martin.exam_generator.dto.alumno.AlumnoDTO;
+import com.martin.exam_generator.dto.grado.GradoCreateDTO;
+import com.martin.exam_generator.dto.grado.GradoDTO;
+import com.martin.exam_generator.dto.grado.GradoUpdateDTO;
 import com.martin.exam_generator.entities.Grado;
 import com.martin.exam_generator.repository.GradoRepository;
 import com.martin.exam_generator.repository.AsignaturaRepository;
@@ -15,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityNotFoundException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -145,13 +142,6 @@ public class GradoService {
 
     public boolean verificarAlumnoPerteneceAGradoDeAsignatura(Long alumnoId, Long asignaturaId) {
         List<Long> gradoIds = obtenerGradoIdsDeAsignatura(asignaturaId);
-        return alumnoService.verificarAlumnoPerteneceAGrado(alumnoId, gradoIds);
-    }
-
-    public boolean verificarAlumnoPerteneceAGrado(Long alumnoId, List<Long> gradoIds) {
-        if (gradoIds == null || gradoIds.isEmpty()) {
-            return false;
-        }
         return alumnoService.verificarAlumnoPerteneceAGrado(alumnoId, gradoIds);
     }
 

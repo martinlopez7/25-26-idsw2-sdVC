@@ -31,8 +31,6 @@ public interface PreguntaRepository extends JpaRepository<Pregunta, Long> {
     List<Pregunta> findByAsignaturaIdAndCriterio(@Param("asignaturaId") Long asignaturaId,
                                                  @Param("criterio") String criterio);
 
-    List<Pregunta> findByAsignaturaIdAndDocenteId(Long asignaturaId, Long docenteId);
-
     boolean existsByAsignaturaIdAndEnunciadoIgnoreCase(Long asignaturaId, String enunciado);
 
     boolean existsByAsignaturaIdAndEnunciadoIgnoreCaseAndIdNot(Long asignaturaId, String enunciado, Long id);

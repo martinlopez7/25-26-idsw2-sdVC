@@ -1,7 +1,7 @@
 package com.martin.exam_generator.controller;
 
-import com.martin.exam_generator.dto.JwtResponse;
-import com.martin.exam_generator.dto.LoginRequest;
+import com.martin.exam_generator.dto.auth.JwtResponse;
+import com.martin.exam_generator.dto.auth.LoginRequest;
 import com.martin.exam_generator.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

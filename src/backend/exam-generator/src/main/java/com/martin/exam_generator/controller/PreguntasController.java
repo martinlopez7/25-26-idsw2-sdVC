@@ -1,8 +1,8 @@
 package com.martin.exam_generator.controller;
 
-import com.martin.exam_generator.dto.PreguntaCreateDTO;
-import com.martin.exam_generator.dto.PreguntaDTO;
-import com.martin.exam_generator.dto.PreguntaUpdateDTO;
+import com.martin.exam_generator.dto.pregunta.PreguntaCreateDTO;
+import com.martin.exam_generator.dto.pregunta.PreguntaDTO;
+import com.martin.exam_generator.dto.pregunta.PreguntaUpdateDTO;
 import com.martin.exam_generator.security.JwtTokenProvider;
 import com.martin.exam_generator.service.PreguntaService;
 import jakarta.validation.Valid;

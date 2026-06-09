@@ -1,8 +1,8 @@
 package com.martin.exam_generator.controller;
 
-import com.martin.exam_generator.dto.RespuestaCreateDTO;
-import com.martin.exam_generator.dto.RespuestaDTO;
-import com.martin.exam_generator.dto.RespuestaUpdateDTO;
+import com.martin.exam_generator.dto.respuesta.RespuestaCreateDTO;
+import com.martin.exam_generator.dto.respuesta.RespuestaDTO;
+import com.martin.exam_generator.dto.respuesta.RespuestaUpdateDTO;
 import com.martin.exam_generator.security.JwtTokenProvider;
 import com.martin.exam_generator.service.PreguntaService;
 import com.martin.exam_generator.service.RespuestaService;

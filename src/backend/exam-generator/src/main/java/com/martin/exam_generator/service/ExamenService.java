@@ -1,6 +1,12 @@
 package com.martin.exam_generator.service;
 
-import com.martin.exam_generator.dto.*;
+import com.martin.exam_generator.dto.alumno.AlumnoDTO;
+import com.martin.exam_generator.dto.asignacion.AsignacionDTO;
+import com.martin.exam_generator.dto.asignatura.AsignaturaConGradosDTO;
+import com.martin.exam_generator.dto.generacion.*;
+import com.martin.exam_generator.dto.grado.GradoConAlumnosDTO;
+import com.martin.exam_generator.dto.grado.GradoDTO;
+import com.martin.exam_generator.dto.pregunta.PreguntaDTO;
 import com.martin.exam_generator.entities.Pregunta;
 import org.springframework.stereotype.Service;
 

@@ -1,10 +1,10 @@
 package com.martin.exam_generator.controller;
 
-import com.martin.exam_generator.dto.AlumnoDTO;
-import com.martin.exam_generator.dto.AsignaturaConGradosDTO;
-import com.martin.exam_generator.dto.AsignaturaCreateDTO;
-import com.martin.exam_generator.dto.AsignaturaDTO;
-import com.martin.exam_generator.dto.AsignaturaUpdateDTO;
+import com.martin.exam_generator.dto.alumno.AlumnoDTO;
+import com.martin.exam_generator.dto.asignatura.AsignaturaConGradosDTO;
+import com.martin.exam_generator.dto.asignatura.AsignaturaCreateDTO;
+import com.martin.exam_generator.dto.asignatura.AsignaturaDTO;
+import com.martin.exam_generator.dto.asignatura.AsignaturaUpdateDTO;
 import com.martin.exam_generator.exception.EntityNotFoundException;
 import com.martin.exam_generator.security.JwtTokenProvider;
 import com.martin.exam_generator.service.AsignaturaService;

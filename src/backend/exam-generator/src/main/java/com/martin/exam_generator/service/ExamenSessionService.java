@@ -1,6 +1,6 @@
 package com.martin.exam_generator.service;
 
-import com.martin.exam_generator.dto.PlantillaExamen;
+import com.martin.exam_generator.dto.generacion.PlantillaExamen;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpSession;
@@ -75,11 +75,4 @@ public class ExamenSessionService {
                 .anyMatch(p -> p.getAlumnoId() != null && p.getAlumnoId().equals(alumnoId));
     }
 
-    public Long obtenerAsignaturaId() {
-        List<PlantillaExamen> plantillas = obtenerPlantillas();
-        if (plantillas.isEmpty()) {
-            return null;
-        }
-        return plantillas.get(0).getAsignaturaId();
-    }
 }

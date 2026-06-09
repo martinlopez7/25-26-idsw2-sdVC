@@ -1,8 +1,8 @@
 package com.martin.exam_generator.service;
 
-import com.martin.exam_generator.dto.PreguntaCreateDTO;
-import com.martin.exam_generator.dto.PreguntaDTO;
-import com.martin.exam_generator.dto.PreguntaUpdateDTO;
+import com.martin.exam_generator.dto.pregunta.PreguntaCreateDTO;
+import com.martin.exam_generator.dto.pregunta.PreguntaDTO;
+import com.martin.exam_generator.dto.pregunta.PreguntaUpdateDTO;
 import com.martin.exam_generator.entities.Pregunta;
 import com.martin.exam_generator.repository.PreguntaRepository;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityNotFoundException;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

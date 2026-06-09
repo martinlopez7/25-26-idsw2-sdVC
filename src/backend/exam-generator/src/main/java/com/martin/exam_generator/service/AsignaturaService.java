@@ -1,12 +1,12 @@
 package com.martin.exam_generator.service;
 
-import com.martin.exam_generator.dto.AlumnoDTO;
-import com.martin.exam_generator.dto.AsignaturaConGradosDTO;
-import com.martin.exam_generator.dto.AsignaturaCreateDTO;
-import com.martin.exam_generator.dto.AsignaturaDTO;
-import com.martin.exam_generator.dto.AsignaturaUpdateDTO;
-import com.martin.exam_generator.dto.GradoConAlumnosDTO;
-import com.martin.exam_generator.dto.GradoDTO;
+import com.martin.exam_generator.dto.alumno.AlumnoDTO;
+import com.martin.exam_generator.dto.asignatura.AsignaturaConGradosDTO;
+import com.martin.exam_generator.dto.asignatura.AsignaturaCreateDTO;
+import com.martin.exam_generator.dto.asignatura.AsignaturaDTO;
+import com.martin.exam_generator.dto.asignatura.AsignaturaUpdateDTO;
+import com.martin.exam_generator.dto.grado.GradoConAlumnosDTO;
+import com.martin.exam_generator.dto.grado.GradoDTO;
 import com.martin.exam_generator.entities.Alumno;
 import com.martin.exam_generator.entities.Asignatura;
 import com.martin.exam_generator.entities.Grado;

@@ -1,6 +1,6 @@
 package com.martin.exam_generator.controller;
 
-import com.martin.exam_generator.dto.ConfiguracionExportDTO;
+import com.martin.exam_generator.dto.config.ConfiguracionExportDTO;
 import com.martin.exam_generator.security.JwtTokenProvider;
 import com.martin.exam_generator.service.ConfiguracionService;
 import org.springframework.http.ResponseEntity;

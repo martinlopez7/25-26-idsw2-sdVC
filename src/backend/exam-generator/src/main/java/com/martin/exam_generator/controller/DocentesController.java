@@ -1,8 +1,8 @@
 package com.martin.exam_generator.controller;
 
-import com.martin.exam_generator.dto.UsuarioCreateDTO;
-import com.martin.exam_generator.dto.UsuarioDTO;
-import com.martin.exam_generator.dto.UsuarioUpdateDTO;
+import com.martin.exam_generator.dto.usuario.UsuarioCreateDTO;
+import com.martin.exam_generator.dto.usuario.UsuarioDTO;
+import com.martin.exam_generator.dto.usuario.UsuarioUpdateDTO;
 import com.martin.exam_generator.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

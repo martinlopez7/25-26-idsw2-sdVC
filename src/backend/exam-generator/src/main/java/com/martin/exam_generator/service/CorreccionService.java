@@ -1,6 +1,6 @@
 package com.martin.exam_generator.service;
 
-import com.martin.exam_generator.dto.ResultadoCorreccionDTO;
+import com.martin.exam_generator.dto.correccion.ResultadoCorreccionDTO;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.stereotype.Service;

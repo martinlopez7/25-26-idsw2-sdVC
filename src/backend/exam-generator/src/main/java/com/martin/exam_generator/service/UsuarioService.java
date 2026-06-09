@@ -1,8 +1,8 @@
 package com.martin.exam_generator.service;
 
-import com.martin.exam_generator.dto.UsuarioCreateDTO;
-import com.martin.exam_generator.dto.UsuarioDTO;
-import com.martin.exam_generator.dto.UsuarioUpdateDTO;
+import com.martin.exam_generator.dto.usuario.UsuarioCreateDTO;
+import com.martin.exam_generator.dto.usuario.UsuarioDTO;
+import com.martin.exam_generator.dto.usuario.UsuarioUpdateDTO;
 import com.martin.exam_generator.entities.Usuario;
 import com.martin.exam_generator.exception.EntityNotFoundException;
 import com.martin.exam_generator.repository.UsuarioRepository;

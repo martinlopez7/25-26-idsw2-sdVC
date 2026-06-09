@@ -1,7 +1,7 @@
 package com.martin.exam_generator.service;
 
-import com.martin.exam_generator.dto.JwtResponse;
-import com.martin.exam_generator.dto.LoginRequest;
+import com.martin.exam_generator.dto.auth.JwtResponse;
+import com.martin.exam_generator.dto.auth.LoginRequest;
 import com.martin.exam_generator.entities.Usuario;
 import com.martin.exam_generator.repository.UsuarioRepository;
 import com.martin.exam_generator.security.JwtTokenProvider;

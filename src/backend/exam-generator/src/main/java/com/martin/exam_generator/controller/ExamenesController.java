@@ -1,6 +1,14 @@
 package com.martin.exam_generator.controller;
 
-import com.martin.exam_generator.dto.*;
+import com.martin.exam_generator.dto.alumno.AlumnoDTO;
+import com.martin.exam_generator.dto.asignacion.AsignarExamenRequest;
+import com.martin.exam_generator.dto.asignacion.AsignarTodosRequest;
+import com.martin.exam_generator.dto.correccion.ResultadoCorreccionDTO;
+import com.martin.exam_generator.dto.generacion.GenerarExamenesRequest;
+import com.martin.exam_generator.dto.generacion.GenerarExamenesResponse;
+import com.martin.exam_generator.dto.generacion.PlantillaExamenDTO;
+import com.martin.exam_generator.dto.grado.AlumnoPorGradoDTO;
+import com.martin.exam_generator.dto.grado.GradoDTO;
 import com.martin.exam_generator.security.JwtTokenProvider;
 import com.martin.exam_generator.service.CorreccionService;
 import com.martin.exam_generator.service.ExamenService;
