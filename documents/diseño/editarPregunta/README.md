@@ -1,7 +1,7 @@
 # editarPregunta > Diseño
 
-> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/editarPregunta/editarPregunta.svg)|[Análisis](/documents/analisis/editarPregunta/README.md)|**Diseño**|
-> |-|-|-|-|
+> |[🏠️](/README.md)|[Volver](/documents/diseño/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/editarPregunta/editarPregunta.svg)|[Análisis](/documents/analisis/editarPregunta/README.md)|**Diseño**|
+> |-|-|-|-|-|
 
 ## información del artefacto
 

@@ -1,7 +1,7 @@
 # Sistema de Generación de Exámenes > verAlumnos > Diseño
 
-> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/verAlumnos/verAlumnos.svg)|[Análisis](/documents/analisis/verAlumnos/README.md)|**Diseño**|
-> |-|-|-|-|
+> |[🏠️](/README.md)|[Volver](/documents/diseño/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/verAlumnos/verAlumnos.svg)|[Análisis](/documents/analisis/verAlumnos/README.md)|**Diseño**|
+> |-|-|-|-|-|
 
 ## Información del artefacto
 

@@ -1,7 +1,7 @@
 # editarGrado > Diseño
 
-> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/editarGrado/editarGrado.svg)|[Análisis](/documents/analisis/editarGrado/README.md)|**Diseño**|
-> |-|-|-|-|
+> |[🏠️](/README.md)|[Volver](/documents/diseño/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/editarGrado/editarGrado.svg)|[Análisis](/documents/analisis/editarGrado/README.md)|**Diseño**|
+> |-|-|-|-|-|
 
 ## información del artefacto
 

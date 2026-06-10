@@ -1,7 +1,7 @@
 # 25-26-idsw2-sdVC > verAsignaturas > Análisis
 
->|[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/verGrados/verGrados.svg)|Analisis|[Diseño](/documents/diseño/verAsignaturas/README.md)|
->|-|-|-|-|
+>|[🏠️](/README.md)|[Volver](/documents/analisis/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/verGrados/verGrados.svg)|Analisis|[Diseño](/documents/diseño/verAsignaturas/README.md)|
+>|-|-|-|-|-|
 
 ## información del artefacto
 

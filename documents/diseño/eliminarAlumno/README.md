@@ -1,7 +1,7 @@
 # eliminarAlumno > Diseño
 
-> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/eliminarAlumno/eliminarAlumno.svg)|[Análisis](/documents/analisis/eliminarAlumno/README.md)|**Diseño**|
-> |-|-|-|-|
+> |[🏠️](/README.md)|[Volver](/documents/diseño/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/eliminarAlumno/eliminarAlumno.svg)|[Análisis](/documents/analisis/eliminarAlumno/README.md)|**Diseño**|
+> |-|-|-|-|-|
 
 ## información del artefacto
 

@@ -1,7 +1,7 @@
 # verAlumnos > Análisis
 
-> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/verAlumnos/verAlumnos.svg)|**Análisis**|[Diseño](/documents/diseño/verAlumnos/README.md)|
-> |-|-|-|-|
+> |[🏠️](/README.md)|[Volver](/documents/analisis/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/verAlumnos/verAlumnos.svg)|**Análisis**|[Diseño](/documents/diseño/verAlumnos/README.md)|
+> |-|-|-|-|-|
 
 ## información del artefacto
 

@@ -1,6 +1,6 @@
 # editarAlumno > Diseño
-> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/editarAlumno/editarAlumno.svg)|[Análisis](/documents/analisis/editarAlumno/README.md)|**Diseño**|
-> |-|-|-|-|
+> |[🏠️](/README.md)|[Volver](/documents/diseño/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/editarAlumno/editarAlumno.svg)|[Análisis](/documents/analisis/editarAlumno/README.md)|**Diseño**|
+> |-|-|-|-|-|
 ## información del artefacto
 - **Proyecto**: Sistema de Generación de Exámenes Universitarios
 - **Fase RUP**: Elaboración

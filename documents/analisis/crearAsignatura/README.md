@@ -1,7 +1,7 @@
 # Generador de Exámenes > crearAsignatura > Análisis
 
-> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/crearAsignatura/crearAsignatura.svg)|**Análisis**|[Diseño](/documents/diseño/crearAsignatura/README.md)|
-> |-|-|-|-|
+> |[🏠️](/README.md)|[Volver](/documents/analisis/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/crearAsignatura/crearAsignatura.svg)|**Análisis**|[Diseño](/documents/diseño/crearAsignatura/README.md)|
+> |-|-|-|-|-|
 
 ## información del artefacto
 

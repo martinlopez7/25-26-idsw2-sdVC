@@ -1,7 +1,7 @@
 # importarConfiguracionGlobal > Análisis
 
-> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/importarConfiguracionGlobal/importarConfiguracionGlobal.svg)|**Análisis**|[Diseño](/documents/diseño/importarConfiguracionGlobal/README.md)|
-> |-|-|-|-|
+> |[🏠️](/README.md)|[Volver](/documents/analisis/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/importarConfiguracionGlobal/importarConfiguracionGlobal.svg)|**Análisis**|[Diseño](/documents/diseño/importarConfiguracionGlobal/README.md)|
+> |-|-|-|-|-|
 
 ## información del artefacto
 

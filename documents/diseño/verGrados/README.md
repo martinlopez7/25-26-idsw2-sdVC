@@ -1,7 +1,7 @@
 # Sistema de Generación de Exámenes > verGrados > Diseño
 
-> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/verGrados/verGrados.svg)|[Análisis](/documents/analisis/verGrados/README.md)|**Diseño**|
-> |-|-|-|-|
+> |[🏠️](/README.md)|[Volver](/documents/diseño/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/verGrados/verGrados.svg)|[Análisis](/documents/analisis/verGrados/README.md)|**Diseño**|
+> |-|-|-|-|-|
 
 ## Información del artefacto
 

@@ -1,7 +1,7 @@
 # Sistema de Generación de Exámenes > verAsignaturas > Diseño
 
-> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/verAsignaturas/verAsignaturas.svg)|[Análisis](/documents/analisis/verAsignaturas/README.md)|**Diseño**|
-> |-|-|-|-|
+> |[🏠️](/README.md)|[Volver](/documents/diseño/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/verAsignaturas/verAsignaturas.svg)|[Análisis](/documents/analisis/verAsignaturas/README.md)|**Diseño**|
+> |-|-|-|-|-|
 
 ## Información del artefacto
 

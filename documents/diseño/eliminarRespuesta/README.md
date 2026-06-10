@@ -1,7 +1,7 @@
 # eliminarRespuesta > Diseño
 
-> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/eliminarRespuesta/eliminarRespuesta.svg)|[Análisis](/documents/analisis/eliminarRespuesta/README.md)|**Diseño**|
-> |-|-|-|-|
+> |[🏠️](/README.md)|[Volver](/documents/diseño/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/eliminarRespuesta/eliminarRespuesta.svg)|[Análisis](/documents/analisis/eliminarRespuesta/README.md)|**Diseño**|
+> |-|-|-|-|-|
 
 ## información del artefacto
 

@@ -1,7 +1,7 @@
 # eliminarGrado > Análisis
 
-> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/eliminarGrado/eliminarGrado.svg)|**Análisis**|[Diseño](/documents/diseño/eliminarGrado/README.md)|
-> |-|-|-|-|
+> |[🏠️](/README.md)|[Volver](/documents/analisis/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/eliminarGrado/eliminarGrado.svg)|**Análisis**|[Diseño](/documents/diseño/eliminarGrado/README.md)|
+> |-|-|-|-|-|
 
 ## información del artefacto
 

@@ -1,7 +1,7 @@
 # verGrados > Análisis
 
-> |[🏠️](/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/verGrados/verGrados.svg)|**Análisis**|[Diseño](/documents/diseño/verGrados/README.md)|
-> |-|-|-|-|
+> |[🏠️](/README.md)|[Volver](/documents/analisis/README.md)|[Detalle](https://github.com/martinlopez7/25-26-IdSw1-SdR/blob/main/documents/casos-de-uso/detalladoCasosDeUso/verGrados/verGrados.svg)|**Análisis**|[Diseño](/documents/diseño/verGrados/README.md)|
+> |-|-|-|-|-|
 
 ## información del artefacto
 
