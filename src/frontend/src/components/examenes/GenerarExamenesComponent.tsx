@@ -78,7 +78,7 @@ export default function GenerarExamenesComponent() {
     }
   };
 
-  const handleGradoConfigChange = (gradoId: number, field: string, value: any) => {
+  const handleGradoConfigChange = (gradoId: number, field: string, value: number) => {
     setConfigPorGrado(prev => ({
       ...prev,
       [gradoId]: {
@@ -86,11 +86,9 @@ export default function GenerarExamenesComponent() {
         numExamenes: prev[gradoId]?.numExamenes || 1,
         numTiposExamen: prev[gradoId]?.numTiposExamen || 1,
         proporcionDificultad: {
-          facil: prev[gradoId]?.proporcionDificultad?.facil || 33,
-          medio: prev[gradoId]?.proporcionDificultad?.medio || 34,
-          dificil: prev[gradoId]?.proporcionDificultad?.dificil || 33,
-          ...(prev[gradoId]?.proporcionDificultad || {}),
-          [field]: value,
+          facil: field === 'facil' ? value : (prev[gradoId]?.proporcionDificultad?.facil ?? 33),
+          medio: field === 'medio' ? value : (prev[gradoId]?.proporcionDificultad?.medio ?? 34),
+          dificil: field === 'dificil' ? value : (prev[gradoId]?.proporcionDificultad?.dificil ?? 33),
         },
       },
     }));
@@ -104,10 +102,25 @@ export default function GenerarExamenesComponent() {
         numExamenes: value,
         numTiposExamen: prev[gradoId]?.numTiposExamen || 1,
         proporcionDificultad: {
-          facil: 33,
-          medio: 34,
-          dificil: 33,
-          ...(prev[gradoId]?.proporcionDificultad || {}),
+          facil: prev[gradoId]?.proporcionDificultad?.facil ?? 33,
+          medio: prev[gradoId]?.proporcionDificultad?.medio ?? 34,
+          dificil: prev[gradoId]?.proporcionDificultad?.dificil ?? 33,
+        },
+      },
+    }));
+  };
+
+  const handleNumTiposExamenChange = (gradoId: number, value: number) => {
+    setConfigPorGrado(prev => ({
+      ...prev,
+      [gradoId]: {
+        ...prev[gradoId],
+        numExamenes: prev[gradoId]?.numExamenes || 1,
+        numTiposExamen: value,
+        proporcionDificultad: {
+          facil: prev[gradoId]?.proporcionDificultad?.facil ?? 33,
+          medio: prev[gradoId]?.proporcionDificultad?.medio ?? 34,
+          dificil: prev[gradoId]?.proporcionDificultad?.dificil ?? 33,
         },
       },
     }));
@@ -146,7 +159,7 @@ export default function GenerarExamenesComponent() {
     setLoading(true);
     try {
       const request: GenerarExamenesRequest = {
-        asignaturaId: selectedAsignatura.id,
+        asignaturaId: selectedAsignatura!.id,
         evaluacion,
         temas,
         numPreguntas,
@@ -305,7 +318,7 @@ export default function GenerarExamenesComponent() {
                                 type="number"
                                 className="form-control"
                                 value={configPorGrado[grado.id]?.numTiposExamen || 1}
-                                onChange={e => handleGradoConfigChange(grado.id, 'numTiposExamen', Number(e.target.value))}
+                                onChange={e => handleNumTiposExamenChange(grado.id, Number(e.target.value))}
                                 min={1}
                                 max={3}
                               />
