@@ -20,16 +20,13 @@ import java.util.stream.Collectors;
 public class GradoService {
 
     private final GradoRepository gradoRepository;
-    private final AsignaturaRepository asignaturaRepository;
     private final AlumnoService alumnoService;
     private final AsignaturaService asignaturaService;
 
     public GradoService(GradoRepository gradoRepository,
-                        AsignaturaRepository asignaturaRepository,
                         AlumnoService alumnoService,
                         @Lazy AsignaturaService asignaturaService) {
         this.gradoRepository = gradoRepository;
-        this.asignaturaRepository = asignaturaRepository;
         this.alumnoService = alumnoService;
         this.asignaturaService = asignaturaService;
     }
@@ -133,16 +130,12 @@ public class GradoService {
     }
 
     public List<Long> obtenerGradoIdsDeAsignatura(Long asignaturaId) {
-        return asignaturaRepository.findById(asignaturaId)
-                .orElseThrow(() -> new EntityNotFoundException("Asignatura no encontrada"))
-                .getGrados().stream()
-                .map(Grado::getId)
-                .collect(Collectors.toList());
+        return asignaturaService.obtenerGradoIds(asignaturaId);
     }
 
     public boolean verificarAlumnoPerteneceAGradoDeAsignatura(Long alumnoId, Long asignaturaId) {
         List<Long> gradoIds = obtenerGradoIdsDeAsignatura(asignaturaId);
-        return alumnoService.verificarAlumnoPerteneceAGrado(alumnoId, gradoIds);
+        return alumnoService.verificarAlumnoPerteneceAGrados(alumnoId, gradoIds);
     }
 
     public void verificarGradoPerteneceAlDocente(Long gradoId, Long docenteId) {

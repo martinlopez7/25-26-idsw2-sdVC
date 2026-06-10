@@ -130,7 +130,7 @@ public class AsignaturaService {
                     List<AlumnoDTO> alumnosDelGrado = alumnoService.obtenerAlumnosPorGrado(gradoAnterior.getId());
                     for (AlumnoDTO alumno : alumnosDelGrado) {
                         if (asignatura.getAlumnos().stream().anyMatch(a -> a.getId().equals(alumno.getId()))) {
-                            alumnoService.desmatricularAlumnoDeAsignatura(alumno.getId(), id);
+                            alumnoService.desmatricularAlumnoDeAsignatura(alumno.getId(), asignatura);
                         }
                     }
                 }
@@ -173,7 +173,7 @@ public class AsignaturaService {
             throw new IllegalArgumentException("El alumno no pertenece a ningún grado de esta asignatura");
         }
 
-        alumnoService.matricularAlumnoEnAsignatura(alumnoId, asignaturaId);
+        alumnoService.matricularAlumnoEnAsignatura(alumnoId, asignatura);
     }
 
     @Transactional
@@ -185,7 +185,7 @@ public class AsignaturaService {
             throw new EntityNotFoundException("Asignatura no encontrada con id: " + asignaturaId);
         }
 
-        alumnoService.desmatricularAlumnoDeAsignatura(alumnoId, asignaturaId);
+        alumnoService.desmatricularAlumnoDeAsignatura(alumnoId, asignatura);
     }
 
     public void eliminarAsignatura(Long id, Long docenteId) {
@@ -227,7 +227,7 @@ public class AsignaturaService {
             List<Alumno> alumnos = new ArrayList<>(asignatura.getAlumnos());
             for (Alumno alumno : alumnos) {
                 if (alumno.getGrado() != null && alumno.getGrado().getId().equals(gradoId)) {
-                    alumnoService.desmatricularAlumnoDeAsignatura(alumno.getId(), asignatura.getId());
+                    alumnoService.desmatricularAlumnoDeAsignatura(alumno.getId(), asignatura);
                     alumnoService.quitarAlumnoDeGrado(gradoId, alumno.getId());
                 }
             }
@@ -272,5 +272,13 @@ public class AsignaturaService {
         }
 
         return dto;
+    }
+
+    public List<Long> obtenerGradoIds(Long asignaturaId) {
+        return asignaturaRepository.findById(asignaturaId)
+                .orElseThrow(() -> new EntityNotFoundException("Asignatura no encontrada"))
+                .getGrados().stream()
+                .map(Grado::getId)
+                .collect(Collectors.toList());
     }
 }

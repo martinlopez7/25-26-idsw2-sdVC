@@ -7,7 +7,6 @@ import com.martin.exam_generator.entities.Alumno;
 import com.martin.exam_generator.entities.Asignatura;
 import com.martin.exam_generator.entities.Grado;
 import com.martin.exam_generator.repository.AlumnoRepository;
-import com.martin.exam_generator.repository.AsignaturaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,11 +19,9 @@ import java.util.stream.Collectors;
 public class AlumnoService {
 
     private final AlumnoRepository alumnoRepository;
-    private final AsignaturaRepository asignaturaRepository;
 
-    public AlumnoService(AlumnoRepository alumnoRepository, AsignaturaRepository asignaturaRepository) {
+    public AlumnoService(AlumnoRepository alumnoRepository) {
         this.alumnoRepository = alumnoRepository;
-        this.asignaturaRepository = asignaturaRepository;
     }
 
     public List<AlumnoDTO> obtenerAlumnosDelDocente(Long docenteId) {
@@ -142,13 +139,6 @@ public class AlumnoService {
                 .collect(Collectors.toList());
     }
 
-    public List<AlumnoDTO> obtenerAlumnosPorAsignaturaYGrado(Long asignaturaId, Long gradoId) {
-        List<Alumno> alumnos = alumnoRepository.findByAsignaturaIdAndGradoId(asignaturaId, gradoId);
-        return alumnos.stream()
-                .map(AlumnoDTO::fromEntity)
-                .collect(Collectors.toList());
-    }
-
     public List<AlumnoDTO> obtenerAlumnosPorAsignaturaYGrados(Long asignaturaId, List<Long> gradoIds) {
         List<Alumno> alumnos = alumnoRepository.findByAsignaturaIdAndGradoIdIn(asignaturaId, gradoIds);
         return alumnos.stream()
@@ -161,12 +151,9 @@ public class AlumnoService {
     }
 
     @Transactional
-    public void matricularAlumnoEnAsignatura(Long alumnoId, Long asignaturaId) {
+    public void matricularAlumnoEnAsignatura(Long alumnoId, Asignatura asignatura) {
         Alumno alumno = alumnoRepository.findById(alumnoId)
                 .orElseThrow(() -> new EntityNotFoundException("Alumno no encontrado con id: " + alumnoId));
-
-        Asignatura asignatura = asignaturaRepository.findById(asignaturaId)
-                .orElseThrow(() -> new EntityNotFoundException("Asignatura no encontrada con id: " + asignaturaId));
 
         if (!alumno.getAsignaturas().contains(asignatura)) {
             alumno.getAsignaturas().add(asignatura);
@@ -175,12 +162,9 @@ public class AlumnoService {
     }
 
     @Transactional
-    public void desmatricularAlumnoDeAsignatura(Long alumnoId, Long asignaturaId) {
+    public void desmatricularAlumnoDeAsignatura(Long alumnoId, Asignatura asignatura) {
         Alumno alumno = alumnoRepository.findById(alumnoId)
                 .orElseThrow(() -> new EntityNotFoundException("Alumno no encontrado con id: " + alumnoId));
-
-        Asignatura asignatura = asignaturaRepository.findById(asignaturaId)
-                .orElseThrow(() -> new EntityNotFoundException("Asignatura no encontrada con id: " + asignaturaId));
 
         if (alumno.getAsignaturas().contains(asignatura)) {
             alumno.getAsignaturas().remove(asignatura);
@@ -194,7 +178,7 @@ public class AlumnoService {
         return alumno.getGrado() != null && alumno.getGrado().getId().equals(gradoId);
     }
 
-    public boolean verificarAlumnoPerteneceAGrado(Long alumnoId, List<Long> gradoIds) {
+    public boolean verificarAlumnoPerteneceAGrados(Long alumnoId, List<Long> gradoIds) {
         if (gradoIds == null || gradoIds.isEmpty()) {
             return false;
         }
