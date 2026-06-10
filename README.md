@@ -25,4 +25,4 @@ Puedes encontrar el análisis de todos los casos de uso [aquí](/documents/anali
 Puedes encontrar los diseños de todos los casos de uso y el stack tecnológico escogido [aquí](/documents/diseño/README.md)
 
 ### Disciplina de implementación
-Puedes encontrar la implementación del sistema [aquí](/src/)
+Puedes encontrar la implementación del sistema [aquí](/src/README.md)
