@@ -1,124 +1,97 @@
-# Fase de diseño
+# Diseño
 
-## Propósito
-Esta fase tiene como objetivo definir la arquitectura del sistema, la selección tecnológica y el diseño detallado de los componentes para guiar la implementación.
+## Stack tecnológico
 
-## Stack tecnológico seleccionado
+El stack tecnológico utilizado es [este](/documents/diseño/stackTecnologico.md)
 
-Para la construcción del sistema de generación de exámenes universitarios, se ha seleccionado una arquitectura de **Single Page Application (SPA)** con API REST, priorizando la separación de responsabilidades.
+## Diseño de los casos de uso compartidos por ambos actores
 
-### Backend: Java + Spring Boot
-*   **Framework**: Spring Boot 4.0.6
-*   **Ventajas**: Ecosistema maduro, inyección de dependencias robusta, Spring Security para autenticación/autorización, Spring Data JPA para persistencia, documentación extensa.
-*   **Rol**: Exponer la lógica de negocio y acceso a datos a través de una API RESTful.
+[Diseño de iniciarSesion()](/documents/diseño/iniciarSesion/README.md)
 
-### Frontend: React + TypeScript
-*   **Framework**: React 19.2.6
-*   **Lenguaje**: TypeScript nativo.
-*   **Estilos**: Bootstrap o Tailwind CSS (a definir en implementación).
-*   **Rol**: Interfaz de usuario interactiva y gestión del estado de la aplicación con componentes y hooks.
+[Diseño de cerrarSesion()](/documents/diseño/cerrarSesion/README.md)
 
-### Base de Datos: PostgreSQL
-*   **Motor**: PostgreSQL.
-*   **ORM**: Spring Data JPA con Hibernate.
-*   **Ventajas**: Robusto, excelente manejo de relaciones entre entidades, facilmente migrable a otros motores.
+[Diseño de completarGestion()](/documents/diseño/completarGestion/README.md)
 
-## Diagrama de arquitectura
+## Diseño de los casos de uso del actor `Administrador Institucional`
 
-| ![Diagrama de arquitectura](/images/diseño/diagramaArquitectura/diagramaArquitectura.svg) |
-| --------- |
-| [Código UML](/modelosUML/diseño/diagramaArquitectura/diagramaArquitectura.puml)|
+### Módulo Docente
 
-## Dependencias
+[Diseño de crearDocente()](/documents/diseño/crearDocente/README.md)
 
-```xml
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-api</artifactId>
-			<version>0.12.5</version>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-impl</artifactId>
-			<version>0.12.5</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-jackson</artifactId>
-			<version>0.12.5</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webmvc-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.15.2</version>
-		</dependency>
-		<dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.15.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.librepdf</groupId>
-            <artifactId>openpdf</artifactId>
-            <version>1.3.30</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.pdfbox</groupId>
-            <artifactId>pdfbox</artifactId>
-            <version>3.0.5</version>
-        </dependency>
-    </dependencies>
-```
+[Diseño de verDocentes()](/documents/diseño/verDocentes/README.md)
 
-## Diagrama entidad-relación del sistema
+[Diseño de editarDocente()](/documents/diseño/editarDocente/README.md)
 
-| ![Diagrama](/images/diseño/diagramaEntidadRelacion/diagramaEntidadRelacion.svg) |
-| --------- |
-| [Código UML](/modelosUML/diseño/diagramaEntidadRelacion/diagramaEntidadRelacion.puml)|
+[Diseño de eliminarDocente()](/documents/diseño/eliminarDocente/README.md)
 
+## Diseño de los casos de uso del actor `Docente`
 
+### Módulo Alumno
 
+[Diseño de crearAlumno()](/documents/diseño/crearAlumno/README.md)
+
+[Diseño de verAlumnos()](/documents/diseño/verAlumnos/README.md)
+
+[Diseño de editarAlumno()](/documents/diseño/editarAlumno/README.md)
+
+[Diseño de eliminarAlumno()](/documents/diseño/eliminarAlumno/README.md)
+
+### Módulo Grado
+
+[Diseño de crearGrado()](/documents/diseño/crearGrado/README.md)
+
+[Diseño de verGrados()](/documents/diseño/verGrados/README.md)
+
+[Diseño de editarGrado()](/documents/diseño/editarGrado/README.md)
+
+[Diseño de eliminarGrado()](/documents/diseño/eliminarGrado/README.md)
+
+### Módulo Asignatura
+
+[Diseño de crearAsignatura()](/documents/diseño/crearAsignatura/README.md)
+
+[Diseño de verAsignaturas()](/documents/diseño/verAsignaturas/README.md)
+
+[Diseño de editarAsignatura()](/documents/diseño/editarAsignatura/README.md)
+
+[Diseño de eliminarAsignatura()](/documents/diseño/eliminarAsignatura/README.md)
+
+### Módulo Pregunta
+
+[Diseño de crearPregunta()](/documents/diseño/crearPregunta/README.md)
+
+[Diseño de verPreguntas()](/documents/diseño/verPreguntas/README.md)
+
+[Diseño de editarPregunta()](/documents/diseño/editarPregunta/README.md)
+
+[Diseño de eliminarPregunta()](/documents/diseño/eliminarPregunta/README.md)
+
+### Módulo Respuesta
+
+[Diseño de crearRespuesta()](/documents/diseño/crearRespuesta/README.md)
+
+[Diseño de verRespuestas()](/documents/diseño/verRespuestas/README.md)
+
+[Diseño de editarRespuesta()](/documents/diseño/editarRespuesta/README.md)
+
+[Diseño de eliminarRespuesta()](/documents/diseño/eliminarRespuesta/README.md)
+
+### Módulo Configuración General
+
+[Diseño de exportarConfiguracionGlobal()](/documents/diseño/exportarConfiguracionGlobal/README.md)
+
+[Diseño de importarConfiguracionGlobal()](/documents/diseño/importarConfiguracionGlobal/README.md)
+
+### Módulo Examen
+
+[Diseño de generarExamenes()](/documents/diseño/generarExamenes/README.md)
+
+[Diseño de asignarExamenes()](/documents/diseño/asignarExamenes/README.md)
+
+[Diseño de cancelarGeneracion()](/documents/diseño/cancelarGeneracion/README.md)
+
+[Diseño de corregirExamenes()](/documents/diseño/corregirExamenes/README.md)
+
+---
+
+[Volver](/README.md)

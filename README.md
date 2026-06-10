@@ -19,10 +19,10 @@ Para este segundo cuatrimestre se han tenido que aplicar las siguientes discipli
 ## ¿Qué hay en este proyecto?
 
 ### Disciplina de análisis
-Puedes encontrar los análisis de todos los casos de uso [aquí](/documents/analisis/)
+Puedes encontrar el análisis de todos los casos de uso [aquí](/documents/analisis/README.md)
 
 ### Disciplina de diseño
-Puedes encontrar los diseños de todos los casos de uso [aquí](/documents/diseño/) y la descripción del stack tecnológico escogido [aquí](/documents/diseño/README.md)
+Puedes encontrar los diseños de todos los casos de uso y el stack tecnológico escogido [aquí](/documents/diseño/README.md)
 
 ### Disciplina de implementación
 Puedes encontrar la implementación del sistema [aquí](/src/)
