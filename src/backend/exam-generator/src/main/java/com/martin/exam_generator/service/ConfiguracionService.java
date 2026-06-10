@@ -21,7 +21,6 @@ public class ConfiguracionService {
     private final AsignaturaRepository asignaturaRepository;
     private final AlumnoRepository alumnoRepository;
     private final PreguntaRepository preguntaRepository;
-    private final RespuestaRepository respuestaRepository;
     private final UsuarioRepository usuarioRepository;
 
     public ConfiguracionService(
@@ -29,13 +28,11 @@ public class ConfiguracionService {
             AsignaturaRepository asignaturaRepository,
             AlumnoRepository alumnoRepository,
             PreguntaRepository preguntaRepository,
-            RespuestaRepository respuestaRepository,
             UsuarioRepository usuarioRepository) {
         this.gradoRepository = gradoRepository;
         this.asignaturaRepository = asignaturaRepository;
         this.alumnoRepository = alumnoRepository;
         this.preguntaRepository = preguntaRepository;
-        this.respuestaRepository = respuestaRepository;
         this.usuarioRepository = usuarioRepository;
     }
 
@@ -106,10 +103,10 @@ public class ConfiguracionService {
         eliminarDatosDocente(docenteId);
 
         Map<Long, Long> gradoIdMap = new HashMap<>();
-        List<Grado> gradosImportados = importarGrados(configuracion.getElementos().getGrados(), docenteId, gradoIdMap);
+        importarGrados(configuracion.getElementos().getGrados(), docenteId, gradoIdMap);
 
         Map<Long, Long> asignaturaIdMap = new HashMap<>();
-        List<Asignatura> asignaturasImportadas = importarAsignaturas(
+        importarAsignaturas(
                 configuracion.getElementos().getAsignaturas(),
                 docenteId,
                 gradoIdMap,
@@ -137,8 +134,7 @@ public class ConfiguracionService {
         gradoRepository.deleteByDocenteId(docenteId);
     }
 
-    private List<Grado> importarGrados(List<GradoExportDTO> gradosDTO, Long docenteId, Map<Long, Long> gradoIdMap) {
-        List<Grado> grados = new ArrayList<>();
+    private void importarGrados(List<GradoExportDTO> gradosDTO, Long docenteId, Map<Long, Long> gradoIdMap) {
         for (GradoExportDTO gDTO : gradosDTO) {
             Grado grado = new Grado();
             grado.setTitulo(gDTO.getTitulo());
@@ -146,17 +142,14 @@ public class ConfiguracionService {
             grado.setDocenteId(docenteId);
             Grado savedGrado = gradoRepository.save(grado);
             gradoIdMap.put(gDTO.getId(), savedGrado.getId());
-            grados.add(savedGrado);
         }
-        return grados;
     }
 
-    private List<Asignatura> importarAsignaturas(
+    private void importarAsignaturas(
             List<AsignaturaExportDTO> asignaturasDTO,
             Long docenteId,
             Map<Long, Long> gradoIdMap,
             Map<Long, Long> asignaturaIdMap) {
-        List<Asignatura> asignaturas = new ArrayList<>();
         for (AsignaturaExportDTO aDTO : asignaturasDTO) {
             Asignatura asignatura = new Asignatura();
             asignatura.setTitulo(aDTO.getTitulo());
@@ -180,9 +173,7 @@ public class ConfiguracionService {
 
             Asignatura savedAsignatura = asignaturaRepository.save(asignatura);
             asignaturaIdMap.put(aDTO.getId(), savedAsignatura.getId());
-            asignaturas.add(savedAsignatura);
         }
-        return asignaturas;
     }
 
     private void importarAlumnos(

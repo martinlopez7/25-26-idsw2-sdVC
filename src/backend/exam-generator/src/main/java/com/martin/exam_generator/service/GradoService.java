@@ -6,7 +6,6 @@ import com.martin.exam_generator.dto.grado.GradoDTO;
 import com.martin.exam_generator.dto.grado.GradoUpdateDTO;
 import com.martin.exam_generator.entities.Grado;
 import com.martin.exam_generator.repository.GradoRepository;
-import com.martin.exam_generator.repository.AsignaturaRepository;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
